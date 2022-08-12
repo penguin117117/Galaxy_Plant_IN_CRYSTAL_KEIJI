@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
+{
+    internal class Game
+    {
+        internal string Galaxy { get; private set; }
+
+        internal Game() 
+        {
+            
+        }
+    }
+}
