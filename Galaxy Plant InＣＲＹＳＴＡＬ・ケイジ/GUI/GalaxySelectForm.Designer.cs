@@ -30,13 +30,13 @@
         {
             this.MainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.ファイルToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.MainPanel = new System.Windows.Forms.Panel();
-            this.GalaxyNameTreeView = new System.Windows.Forms.TreeView();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openGalaxyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.infoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.MainPanel = new System.Windows.Forms.Panel();
+            this.GalaxyNameTreeView = new System.Windows.Forms.TreeView();
             this.MainMenuStrip.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -61,6 +61,31 @@
             this.ファイルToolStripMenuItem.Name = "ファイルToolStripMenuItem";
             this.ファイルToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.ファイルToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openToolStripMenuItem.Text = "Open";
+            this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
+            // 
+            // openGalaxyToolStripMenuItem
+            // 
+            this.openGalaxyToolStripMenuItem.Name = "openGalaxyToolStripMenuItem";
+            this.openGalaxyToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
+            this.openGalaxyToolStripMenuItem.Text = "EditFiles";
+            // 
+            // configToolStripMenuItem
+            // 
+            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
+            this.configToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.configToolStripMenuItem.Text = "Setting";
+            // 
+            // infoToolStripMenuItem
+            // 
+            this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
+            this.infoToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
+            this.infoToolStripMenuItem.Text = "Info";
             // 
             // statusStrip1
             // 
@@ -89,31 +114,7 @@
             this.GalaxyNameTreeView.Size = new System.Drawing.Size(800, 404);
             this.GalaxyNameTreeView.TabIndex = 0;
             // 
-            // openToolStripMenuItem
-            // 
-            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openToolStripMenuItem.Text = "Open";
-            // 
-            // openGalaxyToolStripMenuItem
-            // 
-            this.openGalaxyToolStripMenuItem.Name = "openGalaxyToolStripMenuItem";
-            this.openGalaxyToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
-            this.openGalaxyToolStripMenuItem.Text = "EditFiles";
-            // 
-            // configToolStripMenuItem
-            // 
-            this.configToolStripMenuItem.Name = "configToolStripMenuItem";
-            this.configToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
-            this.configToolStripMenuItem.Text = "Setting";
-            // 
-            // infoToolStripMenuItem
-            // 
-            this.infoToolStripMenuItem.Name = "infoToolStripMenuItem";
-            this.infoToolStripMenuItem.Size = new System.Drawing.Size(40, 20);
-            this.infoToolStripMenuItem.Text = "Info";
-            // 
-            // Form1
+            // GalaxySelectForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -121,8 +122,7 @@
             this.Controls.Add(this.MainPanel);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.MainMenuStrip);
-            this.MainMenuStrip = this.MainMenuStrip;
-            this.Name = "Form1";
+            this.Name = "GalaxySelectForm";
             this.Text = "Galaxy Plant InＣＲＹＳＴＡＬ・ケイジ";
             this.MainMenuStrip.ResumeLayout(false);
             this.MainMenuStrip.PerformLayout();
