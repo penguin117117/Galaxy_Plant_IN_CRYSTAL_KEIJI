@@ -12,8 +12,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
             GalaxyProjectFolder galaxyProjectFolder = new();
         }
+
+        
     }
 }
