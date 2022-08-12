@@ -10,15 +10,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
 {
     public class Yaz0
     {
-        private static string s_magic;
-        private static int s_unknown1, s_unknown2;
+        private static string _magic;
+        private static int _unknown1, _unknown2;
         public string Magic
         {
-            set => s_magic = value;
+            set => _magic = value;
             get
             {
-                s_magic = "Yaz0";
-                return s_magic;
+                _magic = "Yaz0";
+                return _magic;
             }
         }
         public int OriginalDataSize { get; set; }
@@ -28,19 +28,14 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             {
                 if (value != 0x00000000)
                 {
-                    Console.WriteLine("Yaz0のUnknown1プロパティで例外が発生しました");
-                    Console.WriteLine("下記のエラー内容を最下段のURLに報告してください。");
-                    Console.WriteLine("エラー：Unknown1「" + value.ToString("X8") + "」");
-                    Console.WriteLine("https://github.com/penguin117117/ARCTool/issues");
-                    Console.ReadKey();
-                    Environment.Exit(0);
+                    throw new Exception("Error:Yaz0のUnknown1プロパティでエラーが発生しました。");
                 }
-                s_unknown1 = value;
+                _unknown1 = value;
             }
             get
             {
-                s_unknown1 = 0x00000000;
-                return s_unknown1;
+                _unknown1 = 0x00000000;
+                return _unknown1;
             }
 
         }
@@ -50,55 +45,22 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             {
                 if (value != 0x00000000)
                 {
-                    Console.WriteLine("Yaz0のUnknown1プロパティで例外が発生しました");
-                    Console.WriteLine("下記のエラー内容を最下段のURLに報告してください。");
-                    Console.WriteLine("エラー：Unknown1「" + value.ToString("X8") + "」");
-                    Console.WriteLine("https://github.com/penguin117117/ARCTool/issues");
-                    Console.ReadKey();
-                    Environment.Exit(0);
+                    throw new Exception("Error:Yaz0のUnknown2プロパティでエラーが発生しました。");
                 }
-                s_unknown2 = value;
+                _unknown2 = value;
             }
             get
             {
-                s_unknown2 = 0x00000000;
-                return s_unknown2;
+                _unknown2 = 0x00000000;
+                return _unknown2;
             }
         }
 
-        private readonly Byte[] IsNormalRead = {
-            0b_1000_0000 ,
-            0b_0100_0000 ,
-            0b_0010_0000 ,
-            0b_0001_0000 ,
-            0b_0000_1000 ,
-            0b_0000_0100 ,
-            0b_0000_0010 ,
-            0b_0000_0001
-        };
-        //private readonly bool[] IsNormalRead = { true, true, true, true, true, true, true };
-
-        public struct ChunkData
-        {
-            public bool IsNormalRead;
-            public List<byte> ByteList;
-            public ChunkData(bool isRead, List<byte> byteList)
-            {
-                IsNormalRead = isRead;
-                ByteList = new List<byte>(byteList);
-
-            }
-        }
-
-        private ChunkData[] ChunkDatas = new ChunkData[8];
-
-        private static List<string> s_debug = new List<string>();
         public void Decord(string filepath)
         {
-
             List<bool> bitlist = new();
-            List<byte> Yaz0DecDeta = new();
-            //var DecFile = 0;
+            List<byte> Yaz0DecData = new();
+
             var savedirectory = filepath.Substring(0, filepath.LastIndexOf(@"\"));
             var savefilename = Path.GetFileNameWithoutExtension(filepath) + ".rarc";
             var savefullpath = Path.Combine(savedirectory, savefilename);
@@ -113,7 +75,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             Unknown2 = Calculation.Byte2Int(br);
 
             //解凍処理
-            while (Yaz0DecDeta.Count < OriginalDataSize)
+            while (Yaz0DecData.Count < OriginalDataSize)
             {
 
                 byte StrReadType = br.ReadByte();
@@ -121,7 +83,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
 
 
                 //ビット反転
-                System.Collections.BitArray bitArray = new(bits);
+                BitArray bitArray = new(bits);
                 bitlist = BitArrayReverser(bitArray, bitlist);
 
 
@@ -134,15 +96,13 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
 
                         //ビットが1の場合1バイトをそのまま読み込む
                         var writedata = br.ReadByte();
-                        Yaz0DecDeta.Add(writedata);
+                        Yaz0DecData.Add(writedata);
                     }
                     else
                     {
                         //ビットが0の場合の処理
                         var bita = br.ReadByte();
                         var bitb = br.ReadByte();
-                        //s_debug.Add(bita.ToString("X2"));
-                        //s_debug.Add(bitb.ToString("X2"));
                         byte a_top4 = (byte)(bita >> 4);
                         byte a_last4 = (byte)(bita << 4);
                         int pos_same_String = (a_last4 << 4 | bitb) + 1;
@@ -154,30 +114,25 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
                             //a_top4のサイズが0xFが最大なのでそれよりも大きい場合の処理
                             byte ByteC = br.ReadByte();
                             writebyteNum = ByteC + 0x12;
-                            //s_debug.Add(ByteC.ToString("X2"));
                         }
                         else
                         {
                             writebyteNum = a_top4 + 2;
                         }
 
-                        //s_debug.Add("\n");
                         for (int i = 0; i < writebyteNum; i++)
                         {
-                            var sameindex = Yaz0DecDeta.Count - pos_same_String;
-                            Yaz0DecDeta.Add(Yaz0DecDeta[sameindex]);
-                            s_debug.Add(Yaz0DecDeta[sameindex].ToString("X2") + " ");
-
+                            var sameindex = Yaz0DecData.Count - pos_same_String;
+                            Yaz0DecData.Add(Yaz0DecData[sameindex]);
                         }
-                        //s_debug.Add("\n");
                     }
-                    if (Yaz0DecDeta.Count == OriginalDataSize) break;
+                    if (Yaz0DecData.Count == OriginalDataSize) break;
                 }
             }
 
             FileStream fs2 = new(savefullpath, FileMode.Create);
             BinaryWriter bwYaz0 = new(fs2);
-            bwYaz0.Write(Yaz0DecDeta.ToArray());
+            bwYaz0.Write(Yaz0DecData.ToArray());
 
 
             br.Close();
