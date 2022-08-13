@@ -37,6 +37,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.GalaxyNameTreeView = new System.Windows.Forms.TreeView();
+            this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuStrip.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -47,7 +48,8 @@
             this.ファイルToolStripMenuItem,
             this.openGalaxyToolStripMenuItem,
             this.configToolStripMenuItem,
-            this.infoToolStripMenuItem});
+            this.infoToolStripMenuItem,
+            this.debugToolStripMenuItem});
             this.MainMenuStrip.Location = new System.Drawing.Point(0, 0);
             this.MainMenuStrip.Name = "MainMenuStrip";
             this.MainMenuStrip.Size = new System.Drawing.Size(800, 24);
@@ -94,7 +96,6 @@
             this.statusStrip1.Size = new System.Drawing.Size(800, 22);
             this.statusStrip1.TabIndex = 1;
             this.statusStrip1.Text = "statusStrip1";
-            //this.statusStrip1.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.statusStrip1_ItemClicked);
             // 
             // MainPanel
             // 
@@ -114,6 +115,13 @@
             this.GalaxyNameTreeView.Name = "GalaxyNameTreeView";
             this.GalaxyNameTreeView.Size = new System.Drawing.Size(800, 404);
             this.GalaxyNameTreeView.TabIndex = 0;
+            // 
+            // debugToolStripMenuItem
+            // 
+            this.debugToolStripMenuItem.Name = "debugToolStripMenuItem";
+            this.debugToolStripMenuItem.Size = new System.Drawing.Size(54, 20);
+            this.debugToolStripMenuItem.Text = "Debug";
+            this.debugToolStripMenuItem.Click += new System.EventHandler(this.DebugToolStripMenuItem_Click);
             // 
             // GalaxySelectForm
             // 
@@ -144,5 +152,6 @@
         private ToolStripMenuItem openGalaxyToolStripMenuItem;
         private ToolStripMenuItem configToolStripMenuItem;
         private ToolStripMenuItem infoToolStripMenuItem;
+        private ToolStripMenuItem debugToolStripMenuItem;
     }
 }
