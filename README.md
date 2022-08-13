@@ -18,6 +18,10 @@ git clone https://github.com/penguin117117/Galaxy_Plant_IN_CRYSTAL_KEIJI.git --r
 ## 現在のこのエディタの機能
 + フォルダの選択
 
+## コントリビューター
+* [penguin117117](https://github.com/penguin117117)
+* [Eigen-aiuHck](https://github.com/Eigen-aiuHck)
+
 ## リファレンス
 ### TakoChu
 https://github.com/shibbo/Takochu
