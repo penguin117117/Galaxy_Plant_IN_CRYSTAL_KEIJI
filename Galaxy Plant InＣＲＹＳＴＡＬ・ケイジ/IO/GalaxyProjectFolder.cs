@@ -27,9 +27,24 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO
             
             if (result != DialogResult.Cancel)
             {
-                Debug.WriteLine(fbd.SelectedPath);
-                PathSave(fbd.SelectedPath);
+                if (IsGalaxyProjectFolder(Directory.GetDirectories(fbd.SelectedPath))) 
+                {
+                    PathSave(fbd.SelectedPath);
+                    Debug.WriteLine("IsGalaxyFolder");
+                }
             }
+        }
+
+        private bool IsGalaxyProjectFolder(string[] directories) 
+        {
+            foreach (string directory in directories) 
+            {
+                if (Path.GetFileName(directory) == "StageData") 
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private void PathSave(string selectedDirPath) 
