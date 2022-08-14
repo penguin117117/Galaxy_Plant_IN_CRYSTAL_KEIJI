@@ -18,6 +18,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             {
                 using (BinaryReader br = new(fs)) 
                 {
+                    Header = new(br);
                     Decord(br);
                 };
             };
@@ -33,8 +34,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
         {
             List<bool> bitList = new();
             List<byte> Yaz0DecData = new();
-
-            Header = new(br);
 
             //解凍処理
             while (Yaz0DecData.Count < Header.OriginalDataSize)
