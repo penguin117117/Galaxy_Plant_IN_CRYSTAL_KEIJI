@@ -1,5 +1,5 @@
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO;
-
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
 {
@@ -12,12 +12,13 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            GalaxyProjectFolder galaxyProjectFolder = new();
+            GalaxyProjectFolder.Open();
         }
 
         private void DebugToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            
+            IODebugForm ioDebugForm = new();
+            ioDebugForm.ShowDialog();
         }
     }
 }

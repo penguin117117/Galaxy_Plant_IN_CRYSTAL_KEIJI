@@ -10,12 +10,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO
 {
     internal class GalaxyProjectFolder
     {
-        internal GalaxyProjectFolder() 
-        {
-            Open();
-        }
-
-        private void Open() 
+        internal static void Open() 
         {
             FolderBrowserDialog fbd = new()
             {
@@ -35,7 +30,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO
             }
         }
 
-        private bool IsGalaxyProjectFolder(string[] directories) 
+        private static bool IsGalaxyProjectFolder(string[] directories) 
         {
             foreach (string directory in directories) 
             {
@@ -47,13 +42,13 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO
             return false;
         }
 
-        private void PathSave(string selectedDirPath) 
+        private static void PathSave(string selectedDirPath) 
         {
             Properties.Settings.Default.GalaxyProjectPath = selectedDirPath;
             Properties.Settings.Default.Save();
         }
 
-        private string GetUserSelectFolder() 
+        private static string GetUserSelectFolder() 
         {
             bool foundDirectory = Directory.Exists(Properties.Settings.Default.GalaxyProjectPath);
 
