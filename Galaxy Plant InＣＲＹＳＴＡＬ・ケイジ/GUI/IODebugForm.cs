@@ -1,4 +1,5 @@
 ﻿using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,6 +60,19 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
         private void Yaz0EncButton_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void Yaz0DecRARCExtButton_Click(object sender, EventArgs e)
+        {
+            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0TargetFileNameComboBox.Text);
+            if (File.Exists(_yaz0DecFullPath) == false)
+            {
+                return;
+            }
+            Yaz0FilePathLabel.Text = _yaz0DecFullPath;
+            Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
+            RARCExtract rarcExtract = new(yaz0Decord.BinaryData,RARCExtract.ExtractType.ExtractRead);
+                
         }
     }
 }
