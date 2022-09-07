@@ -14,15 +14,20 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
         public byte[]? BinaryData { get; private set; }
         int DecordDataSize;
 
-        
+        int ErrorCode = 0; //Can't Compress = 1,IO Error 2,Other 3
 
         public Yaz0Encord(byte[]? SoceData)
         {
-            DecordDataSize = 0;
+            DecordDataSize = SoceData.Length;
+            if(DecordDataSize <= 8)
+            {
+                ErrorCode = 1;
+                return;
+            }
             BinaryData = Encord(SoceData);
         }
 
-        public void Save(string savefullpath, string changeExtention = "arc")
+        public void FileOutput(string savefullpath, string changeExtention = "arc")
         {
             if (BinaryData == null) return;
             File.WriteAllBytes(Path.ChangeExtension(savefullpath, changeExtention), BinaryData);
@@ -48,7 +53,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             byte[]? CompressedVal = null;
 
             //error chack
-            if (BinaryData == null)
+            if (SourceData == null)
             {
                 return CompressedVal;
             

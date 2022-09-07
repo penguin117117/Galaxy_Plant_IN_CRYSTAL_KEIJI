@@ -1,8 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Galaxy_Plant_In‚b‚q‚x‚r‚s‚`‚k_ƒPƒCƒW.IO.FileFormat.Yaz0;
+using Galaxy_Plant_Inï¿½bï¿½qï¿½xï¿½rï¿½sï¿½`ï¿½k_ï¿½Pï¿½Cï¿½W.IO.FileFormat.Yaz0;
 using System.IO;
 
-namespace Galaxy_Plant_In‚b‚q‚x‚r‚s‚`‚k_ƒPƒCƒWTest
+namespace Galaxy_Plant_Inï¿½bï¿½qï¿½xï¿½rï¿½sï¿½`ï¿½k_ï¿½Pï¿½Cï¿½WTest
 {
     [TestClass]
     public class Yaz0UnitTest
@@ -10,7 +10,7 @@ namespace Galaxy_Plant_In‚b‚q‚x‚r‚s‚`‚k_ƒPƒCƒWTest
         [TestMethod]
         public void TestMethod1()
         {
-            const string fileDir = @"E:\ƒhƒLƒ…ƒƒ“ƒg\ƒQ[ƒ€\ƒQ[ƒ€rom\Wii\iso\ISO\TakoChuTest\files\ObjectData\";
+            const string fileDir = @"E:\ï¿½hï¿½Lï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½g\ï¿½Qï¿½[ï¿½ï¿½\ï¿½Qï¿½[ï¿½ï¿½rom\Wii\iso\ISO\TakoChuTest\files\ObjectData\";
             Yaz0Decord yaz0Decord = new(fileDir + @"Abekobe2DMoveLift.arc");
             yaz0Decord.Save(fileDir + @"Abekobe2DMoveLift.arc");
             Assert.IsTrue(File.Exists(fileDir + @"Abekobe2DMoveLift.rarc"));
