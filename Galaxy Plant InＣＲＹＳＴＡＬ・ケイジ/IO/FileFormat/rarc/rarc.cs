@@ -11,7 +11,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
         public struct HeaderInfo
         {
-            public uint SectionName { get; set; }
+            public uint SectionName { get; private set; }
             public int FileSize { get; set; }
             public int Unknown1 { get; set; }
             public int FileDataOffset { get; set; }

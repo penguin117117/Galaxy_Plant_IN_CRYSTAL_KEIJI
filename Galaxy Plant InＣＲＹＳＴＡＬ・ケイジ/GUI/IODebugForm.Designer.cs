@@ -32,10 +32,12 @@
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.ファイルToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.Yaz0GroupBox = new System.Windows.Forms.GroupBox();
-            this.Yaz0EncButton = new System.Windows.Forms.Button();
-            this.Yaz0TargetFileNameComboBox = new System.Windows.Forms.ComboBox();
-            this.Yaz0FilePathLabel = new System.Windows.Forms.Label();
+            this.Yaz0EncComboBox = new System.Windows.Forms.ComboBox();
+            this.EncFilePathLabel = new System.Windows.Forms.Label();
             this.Yaz0DecRARCExtButton = new System.Windows.Forms.Button();
+            this.Yaz0EncButton = new System.Windows.Forms.Button();
+            this.Yaz0DecComboBox = new System.Windows.Forms.ComboBox();
+            this.Yaz0FilePathLabel = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.Yaz0GroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -68,9 +70,11 @@
             // 
             // Yaz0GroupBox
             // 
+            this.Yaz0GroupBox.Controls.Add(this.Yaz0EncComboBox);
+            this.Yaz0GroupBox.Controls.Add(this.EncFilePathLabel);
             this.Yaz0GroupBox.Controls.Add(this.Yaz0DecRARCExtButton);
             this.Yaz0GroupBox.Controls.Add(this.Yaz0EncButton);
-            this.Yaz0GroupBox.Controls.Add(this.Yaz0TargetFileNameComboBox);
+            this.Yaz0GroupBox.Controls.Add(this.Yaz0DecComboBox);
             this.Yaz0GroupBox.Controls.Add(this.Yaz0FilePathLabel);
             this.Yaz0GroupBox.Controls.Add(this.Yaz0Dec);
             this.Yaz0GroupBox.Location = new System.Drawing.Point(12, 38);
@@ -80,9 +84,36 @@
             this.Yaz0GroupBox.TabStop = false;
             this.Yaz0GroupBox.Text = "Yaz0";
             // 
+            // Yaz0EncComboBox
+            // 
+            this.Yaz0EncComboBox.FormattingEnabled = true;
+            this.Yaz0EncComboBox.Location = new System.Drawing.Point(324, 37);
+            this.Yaz0EncComboBox.Name = "Yaz0EncComboBox";
+            this.Yaz0EncComboBox.Size = new System.Drawing.Size(302, 23);
+            this.Yaz0EncComboBox.TabIndex = 8;
+            // 
+            // EncFilePathLabel
+            // 
+            this.EncFilePathLabel.AutoSize = true;
+            this.EncFilePathLabel.Location = new System.Drawing.Point(324, 19);
+            this.EncFilePathLabel.Name = "EncFilePathLabel";
+            this.EncFilePathLabel.Size = new System.Drawing.Size(96, 15);
+            this.EncFilePathLabel.TabIndex = 7;
+            this.EncFilePathLabel.Text = "EncFilePathLabel";
+            // 
+            // Yaz0DecRARCExtButton
+            // 
+            this.Yaz0DecRARCExtButton.Location = new System.Drawing.Point(160, 66);
+            this.Yaz0DecRARCExtButton.Name = "Yaz0DecRARCExtButton";
+            this.Yaz0DecRARCExtButton.Size = new System.Drawing.Size(148, 23);
+            this.Yaz0DecRARCExtButton.TabIndex = 6;
+            this.Yaz0DecRARCExtButton.Text = "Yaz0DecRARCExt";
+            this.Yaz0DecRARCExtButton.UseVisualStyleBackColor = true;
+            this.Yaz0DecRARCExtButton.Click += new System.EventHandler(this.Yaz0DecRARCExtButton_Click);
+            // 
             // Yaz0EncButton
             // 
-            this.Yaz0EncButton.Location = new System.Drawing.Point(160, 66);
+            this.Yaz0EncButton.Location = new System.Drawing.Point(324, 66);
             this.Yaz0EncButton.Name = "Yaz0EncButton";
             this.Yaz0EncButton.Size = new System.Drawing.Size(148, 23);
             this.Yaz0EncButton.TabIndex = 5;
@@ -90,13 +121,13 @@
             this.Yaz0EncButton.UseVisualStyleBackColor = true;
             this.Yaz0EncButton.Click += new System.EventHandler(this.Yaz0EncButton_Click);
             // 
-            // Yaz0TargetFileNameComboBox
+            // Yaz0DecComboBox
             // 
-            this.Yaz0TargetFileNameComboBox.FormattingEnabled = true;
-            this.Yaz0TargetFileNameComboBox.Location = new System.Drawing.Point(6, 37);
-            this.Yaz0TargetFileNameComboBox.Name = "Yaz0TargetFileNameComboBox";
-            this.Yaz0TargetFileNameComboBox.Size = new System.Drawing.Size(302, 23);
-            this.Yaz0TargetFileNameComboBox.TabIndex = 4;
+            this.Yaz0DecComboBox.FormattingEnabled = true;
+            this.Yaz0DecComboBox.Location = new System.Drawing.Point(6, 37);
+            this.Yaz0DecComboBox.Name = "Yaz0DecComboBox";
+            this.Yaz0DecComboBox.Size = new System.Drawing.Size(302, 23);
+            this.Yaz0DecComboBox.TabIndex = 4;
             // 
             // Yaz0FilePathLabel
             // 
@@ -106,16 +137,6 @@
             this.Yaz0FilePathLabel.Size = new System.Drawing.Size(69, 15);
             this.Yaz0FilePathLabel.TabIndex = 3;
             this.Yaz0FilePathLabel.Text = "DecFilePath";
-            // 
-            // Yaz0DecRARCExtButton
-            // 
-            this.Yaz0DecRARCExtButton.Location = new System.Drawing.Point(6, 137);
-            this.Yaz0DecRARCExtButton.Name = "Yaz0DecRARCExtButton";
-            this.Yaz0DecRARCExtButton.Size = new System.Drawing.Size(148, 23);
-            this.Yaz0DecRARCExtButton.TabIndex = 6;
-            this.Yaz0DecRARCExtButton.Text = "Yaz0DecRARCExt";
-            this.Yaz0DecRARCExtButton.UseVisualStyleBackColor = true;
-            this.Yaz0DecRARCExtButton.Click += new System.EventHandler(this.Yaz0DecRARCExtButton_Click);
             // 
             // IODebugForm
             // 
@@ -142,9 +163,11 @@
         private MenuStrip menuStrip1;
         private GroupBox Yaz0GroupBox;
         private Label Yaz0FilePathLabel;
-        private ComboBox Yaz0TargetFileNameComboBox;
+        private ComboBox Yaz0DecComboBox;
         private Button Yaz0EncButton;
         private ToolStripMenuItem ファイルToolStripMenuItem;
         private Button Yaz0DecRARCExtButton;
+        private ComboBox Yaz0EncComboBox;
+        private Label EncFilePathLabel;
     }
 }

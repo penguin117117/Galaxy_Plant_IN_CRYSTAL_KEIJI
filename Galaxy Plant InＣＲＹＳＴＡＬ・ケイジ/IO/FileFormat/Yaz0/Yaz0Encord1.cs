@@ -16,15 +16,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
 
         int ErrorCode = 0; //Can't Compress = 1,IO Error 2,Other 3
 
-        public Yaz0Encord(byte[]? SoceData)
+        public Yaz0Encord(byte[]? SourceData)
         {
-            DecordDataSize = SoceData.Length;
+            DecordDataSize = SourceData.Length;
             if(DecordDataSize <= 8)
             {
                 ErrorCode = 1;
                 return;
             }
-            BinaryData = Encord(SoceData);
+            BinaryData = Encord(SourceData);
         }
 
         public void FileOutput(string savefullpath, string changeExtention = "arc")
@@ -32,9 +32,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             if (BinaryData == null) return;
             File.WriteAllBytes(Path.ChangeExtension(savefullpath, changeExtention), BinaryData);
         }
-
-
-        //private
 
         private struct Dictionary
         {

@@ -8,8 +8,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
         public enum ExtractType 
         {
-            ExtractRead,
-            ExtractFileGenerate
+            Read,
+            FileGenerate
         }
 
         public RARCExtract(string targetFileName,ExtractType extractType)
