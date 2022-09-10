@@ -85,7 +85,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
                 return;
             }
             Yaz0Encord yaz0Encord = new(File.ReadAllBytes(_yaz0EncFullPath));
-            yaz0Encord.Save(_yaz0EncFullPath,"yaz0");
+            yaz0Encord.FileOutput(_yaz0EncFullPath,"yaz0");
             MessageBox.Show("OK");
         }
 
