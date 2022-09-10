@@ -14,12 +14,10 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
         public byte[]? BinaryData { get; private set; }
         int DecordDataSize;
 
-        
-
-        public Yaz0Encord(byte[]? SoceData)
+        public Yaz0Encord(byte[]? sourceData)
         {
             DecordDataSize = 0;
-            BinaryData = Encord(SoceData);
+            BinaryData = Encord(sourceData);
         }
 
         public void Save(string savefullpath, string changeExtention = "arc")
@@ -27,9 +25,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             if (BinaryData == null) return;
             File.WriteAllBytes(Path.ChangeExtension(savefullpath, changeExtention), BinaryData);
         }
-
-
-        //private
 
         private struct Dictionary
         {
