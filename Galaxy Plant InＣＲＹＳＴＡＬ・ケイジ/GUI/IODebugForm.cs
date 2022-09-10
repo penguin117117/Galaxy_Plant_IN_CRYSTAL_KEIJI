@@ -65,6 +65,16 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             }
         }
 
+        private void Yaz0EncComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Yaz0DecComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
         private void Yaz0Dec_Click(object sender, EventArgs e)
         {
             _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath,Yaz0DecComboBox.Text);
@@ -75,18 +85,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             //Yaz0FilePathLabel.Text = _yaz0DecFullPath;
             Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
             yaz0Decord.Save(_yaz0DecFullPath);
-        }
-
-        private void Yaz0EncButton_Click(object sender, EventArgs e)
-        {
-            _yaz0EncFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
-            if (File.Exists(_yaz0EncFullPath) == false)
-            {
-                return;
-            }
-            Yaz0Encord yaz0Encord = new(File.ReadAllBytes(_yaz0EncFullPath));
-            yaz0Encord.FileOutput(_yaz0EncFullPath,"yaz0");
-            MessageBox.Show("OK");
         }
 
         private void Yaz0DecRARCExtButton_Click(object sender, EventArgs e)
@@ -101,5 +99,18 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             RARCExtract rarcExtract = new(yaz0Decord.BinaryData,RARCExtract.ExtractType.FileGenerate);
                 
         }
+
+        private void Yaz0EncButton_Click(object sender, EventArgs e)
+        {
+            _yaz0EncFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0EncComboBox.Text);
+            if (File.Exists(_yaz0EncFullPath) == false)
+            {
+                return;
+            }
+            Yaz0Encord yaz0Encord = new(File.ReadAllBytes(_yaz0EncFullPath));
+            yaz0Encord.FileWrite(_yaz0EncFullPath,"yaz0");
+            MessageBox.Show("OK");
+        }
+
     }
 }

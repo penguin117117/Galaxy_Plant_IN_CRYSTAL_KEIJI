@@ -65,7 +65,7 @@
             // ファイルToolStripMenuItem
             // 
             this.ファイルToolStripMenuItem.Name = "ファイルToolStripMenuItem";
-            this.ファイルToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
+            this.ファイルToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
             this.ファイルToolStripMenuItem.Text = "ファイル";
             // 
             // Yaz0GroupBox
@@ -91,6 +91,7 @@
             this.Yaz0EncComboBox.Name = "Yaz0EncComboBox";
             this.Yaz0EncComboBox.Size = new System.Drawing.Size(302, 23);
             this.Yaz0EncComboBox.TabIndex = 8;
+            this.Yaz0EncComboBox.SelectedIndexChanged += new System.EventHandler(this.Yaz0EncComboBox_SelectedIndexChanged);
             // 
             // EncFilePathLabel
             // 
@@ -128,6 +129,7 @@
             this.Yaz0DecComboBox.Name = "Yaz0DecComboBox";
             this.Yaz0DecComboBox.Size = new System.Drawing.Size(302, 23);
             this.Yaz0DecComboBox.TabIndex = 4;
+            this.Yaz0DecComboBox.SelectedIndexChanged += new System.EventHandler(this.Yaz0DecComboBox_SelectedIndexChanged);
             // 
             // Yaz0FilePathLabel
             // 
