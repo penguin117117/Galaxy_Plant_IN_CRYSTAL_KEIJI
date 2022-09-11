@@ -10,24 +10,42 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
 {
     internal class Yaz0Encord : Yaz0
     {
+        const int HeaderIndex = 16;
 
-        public byte[]? BinaryData { get; private set; }
-        int DecordDataSize;
+        public readonly byte[]? BinaryData;
+        public readonly int DecordDataSize;
 
-        int ErrorCode = 0; //Can't Compress = 1,IO Error 2,Other 3
+        private byte[]? SourceData;
+        private int FileSize;
 
-        public Yaz0Encord(byte[]? SourceData)
+        private readonly byte[] Header = new byte[HeaderIndex];
+        private int ErrorCode = 0; //Can't Compress = 1,IO Error 2,Other 3
+
+        public Yaz0Encord(byte[]? Argv_SourceData)
         {
-            DecordDataSize = SourceData.Length;
-            if(DecordDataSize <= 8)
+            if(Argv_SourceData.Length <= 8)
             {
                 ErrorCode = 1;
                 return;
             }
-            BinaryData = Encord(SourceData);
+            DecordDataSize = Argv_SourceData.Length;
+            SourceData = Argv_SourceData;
+            byte[] BinaryDataBuf = Encord();
+
+            CreateHeader();
+            BinaryData = new byte[FileSize + HeaderIndex];
+            for(int i = 0; i < HeaderIndex; i++)
+            {
+                BinaryData[i] = Header[i];
+            }
+
+            for(int i = 0; i < FileSize; i++)
+            {
+                BinaryData[i + HeaderIndex] = BinaryDataBuf[i];
+            }
         }
 
-        public void FileOutput(string savefullpath, string changeExtention = "arc")
+        public void FileWrite(string savefullpath, string changeExtention = "yaz0")
         {
             if (BinaryData == null) return;
             File.WriteAllBytes(Path.ChangeExtension(savefullpath, changeExtention), BinaryData);
@@ -35,19 +53,40 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
 
         private struct Dictionary
         {
-            public UInt32 CompressRegth;
+            public UInt32 CompressLenghe;
             public UInt32 Offset;
 
             public Dictionary(UInt32 argv, UInt32 argv1)
             {
-                CompressRegth = argv;
+                CompressLenghe = argv;
                 Offset = argv1;
             }
         }
 
-        private byte[]? Encord(byte[]? SourceData)
+        private void CreateHeader()
         {
-            byte[]? CompressedVal = null;
+            int HeaderPlace = 0;
+            Header[HeaderPlace++] = (byte)'Y';
+            Header[HeaderPlace++] = (byte)'a';
+            Header[HeaderPlace++] = (byte)'z';
+            Header[HeaderPlace++] = (byte)'0';
+
+            for(int i = 4; i > 0;)
+            {
+                i--;
+                Header[HeaderPlace++] = (byte)(DecordDataSize >> (8 * i) & 0xff);
+            }
+
+            for(int i = 0; i < 8; i++)
+            {
+                Header[HeaderPlace++] = 0x00;
+            }
+            return;
+        }
+
+        private byte[]? Encord()
+        {
+            byte[]? CompressedVal = new byte[SourceData.Length];
 
             //error chack
             if (SourceData == null)
@@ -80,26 +119,26 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
                 {
                     UncompressFlagWritePlace = CompressedPlace++;
                     CompressedVal[UncompressFlagWritePlace] = 0x00;
-                    UncompressFlagWritePlace = 8;
+                    UncompressFlagCoount = 8;
                 }
                 UncompressFlagCoount--;
 
 
                 //serch(function)
-                Dictionary dictionary = SerchDictionaly(SourceData, (int)SourceDataPlace, SourceData.Length);
+                Dictionary dictionary = SerchDictionaly((int)SourceDataPlace);
 
 
-                if (dictionary.CompressRegth <= 2)
+                if (dictionary.CompressLenghe <= 2)
                 {
                     //don't compress
-                    CompressedVal[UncompressFlagWritePlace] |= (byte)(0x01 << UncompressFlagWritePlace);
+                    CompressedVal[UncompressFlagWritePlace] |= (byte)(0x01 << UncompressFlagCoount);
                     CompressedVal[CompressedPlace++] = SourceData[SourceDataPlace++];
 
                 }
                 else
                 {
                     //compress
-                    uint TergetLength = dictionary.CompressRegth;
+                    uint TergetLength = dictionary.CompressLenghe;
                     if (TergetLength <= 0x11) // 0x11 compress 2byte format size
                     {
                         //2 byte format
@@ -142,11 +181,13 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             
             }
 
+            FileSize = CompressedPlace;
+
             return CompressedVal;
         }
 
 
-        private Dictionary SerchDictionaly(byte[]? SourceData, int SourceDataPlace, int SourceDataSize)
+        private Dictionary SerchDictionaly(int SourceDataPlace)
         {
             int CompLength = 0,
                 CompLengthBuf = 0,
@@ -154,7 +195,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
                 MinReferencePlace = SourceDataPlace - 1,
                 MaxReferencePlace = MinReferencePlace - 0x0fff; // 0xfff は参照できる最大要素数
 
-            if(MaxReferencePlace == 0)
+            if(MaxReferencePlace < 0)
             {
                 MaxReferencePlace = 0;
 
@@ -164,15 +205,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
             {
                 CompLengthBuf = 0;
 
-                while (SourceData[SourceDataPlace + CompLengthBuf] == SourceData[SourceDataPlace + CompLengthBuf])
+                while (SourceData[DictionaryPlace + CompLengthBuf] == SourceData[SourceDataPlace + CompLengthBuf])
                 {
-                    CompLength++;
+                    CompLengthBuf++;
 
-                    if (SourceDataPlace + CompLengthBuf == SourceDataSize ||
+                    if (SourceDataPlace + CompLengthBuf == DecordDataSize ||
                         CompLengthBuf > 0x0112 //0x0112 = (0x10 + 0x2) + 0x100 : 最大圧縮データサイズ = 2Byteの要素数 + 3Byteの要素数
                         )
                     {
-                        CompLength--;
+                        CompLengthBuf--;
                         break;
 
                     }
