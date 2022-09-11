@@ -17,6 +17,7 @@ git clone https://github.com/penguin117117/Galaxy_Plant_IN_CRYSTAL_KEIJI.git --r
 
 ## 現在のこのエディタの機能
 + フォルダの選択
++ Yaz0圧縮、解凍
 
 ## コントリビューター
 * [penguin117117](https://github.com/penguin117117)
@@ -29,4 +30,6 @@ https://github.com/shibbo/Takochu
 https://github.com/SunakazeKun/galaxydatabase
 
 ## 補足
-英語の文法はダサさを醸し出すためにあえてミスっているので気にしないでください。
+英語の文法はダサさを醸し出すためにあえてミスっているので気にしないでください。</br>
+また、このプロジェクトはTakoChuの開発がもう行われなくなったので、少人数で行っているものです。
+TakoChuのマスターが戻ってきたらそちらに戻る予定です。
