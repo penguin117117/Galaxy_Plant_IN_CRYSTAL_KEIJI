@@ -96,8 +96,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             }
             //Yaz0FilePathLabel.Text = _yaz0DecFullPath;
             Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
-            RARCExtract rarcExtract = new(yaz0Decord.BinaryData,RARCExtract.ExtractType.FileGenerate);
-                
+            //RARCExtract rarcExtract = new(yaz0Decord.BinaryData,RARCExtract.ExtractType.FileGenerate);
+            RARCFile.ExtractToDirectory(yaz0Decord.BinaryData,Path.GetDirectoryName(_yaz0DecFullPath));    
         }
 
         private void Yaz0EncButton_Click(object sender, EventArgs e)

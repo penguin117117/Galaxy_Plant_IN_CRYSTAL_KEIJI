@@ -10,10 +10,10 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     public class Archive
     {
         public HeaderInfo Header { get; private set; }
-        public DirNodeSection? dirNodeSection { get; protected set; }
-        public FileNodeSection? fileNodeSection { get; protected set; }
-        public string? stringTable { get; protected set; }
-        public string? fileDataSection { get; protected set; }
+        public DirNodeSection? DirectoryNodes { get; protected set; }
+        public FileNodeSection? FileNodes { get; protected set; }
+        public string? StringTable { get; protected set; }
+        public string? FileDataSection { get; protected set; }
 
         public Archive(BinaryReader br) 
         {

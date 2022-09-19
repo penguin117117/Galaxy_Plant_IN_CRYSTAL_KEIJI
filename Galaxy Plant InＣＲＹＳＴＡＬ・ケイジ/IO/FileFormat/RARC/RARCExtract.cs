@@ -2,94 +2,105 @@
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 {
-    public sealed class RARCExtract : RARC
+    public sealed class RARCExtract : RARCHeader
     {
         public Archive Archive { get; private set; }
 
-        public enum ExtractType 
+        public enum ExtractType
         {
             Read,
             FileGenerate
         }
 
-        public RARCExtract(string targetFileName,ExtractType extractType)
+        private readonly Dictionary<string, ushort> DataTypePairs = new() 
         {
-            if(FilePathNullCheck(targetFileName)) return;
+            { "File"     , 0x1100 },
+            { "Folder"   , 0x0200 },
+            { "ArcFile"  , 0x9500 }
+        };
 
-            using (FileStream fs = new(targetFileName, FileMode.Open)) 
-            {
-                Read(fs);
-            };
+        public RARCExtract(BinaryReader br) : base(br)
+        {
         }
 
-        public RARCExtract(byte[] targetBinaryData, ExtractType extractType) 
-        {
-            using (MemoryStream ms = new(targetBinaryData))
-            {
-                Read(ms);
-            };
-        }
+        //public RARCExtract(string targetFileName,ExtractType extractType)
+        //{
+        //    if(FilePathNullCheck(targetFileName)) return;
 
-        private void Read(Stream stream) 
-        {
-            using (BinaryReader br = new(stream))
-            {
-                Header = new HeaderInfo(br);
-                Archive = new Archive(br);
-                Debug.WriteLine(br.BaseStream.Position.ToString("X"));
-            };
-        }
+        //    using (FileStream fs = new(targetFileName, FileMode.Open)) 
+        //    {
+        //        Read(fs);
+        //    };
+        //}
 
-        private bool FilePathNullCheck(string targetFileName) 
-        {
-            if (string.IsNullOrEmpty(targetFileName)) return false;
+        //public RARCExtract(byte[] targetBinaryData, ExtractType extractType) 
+        //{
+        //    using (MemoryStream ms = new(targetBinaryData))
+        //    {
+        //        Read(ms);
+        //    };
+        //}
 
-            return true;
-        }
+        //private void Read(Stream stream) 
+        //{
+        //    using (BinaryReader br = new(stream))
+        //    {
+        //        Header = new HeaderInfo(br);
+        //        Archive = new Archive(br);
+        //        Debug.WriteLine(br.BaseStream.Position.ToString("X"));
+        //    };
+        //}
 
-        //io arc
-        public void ArchiveFileInport()
-        {
+        //private bool FilePathNullCheck(string targetFileName) 
+        //{
+        //    if (string.IsNullOrEmpty(targetFileName)) return false;
 
-        }
+        //    return true;
+        //}
 
-        public void ArchiveFileOutport()
-        {
+        ////io arc
+        //public void ArchiveFileInport()
+        //{
 
-        }
+        //}
 
-        //io file
-        public void AddFile(string TergetFileName)
-        {
+        //public void ArchiveFileOutport()
+        //{
 
-        }
+        //}
 
-        public void DeleteFile(string TergetFileName)
-        {
+        ////io file
+        //public void AddFile(string TergetFileName)
+        //{
 
-        }
+        //}
 
-        //io dir
-        public void AddDirectory(string TergetDir)
-        {
-            DirectoryNumbCtl(1);
-        }
+        //public void DeleteFile(string TergetFileName)
+        //{
 
-        public void DeleteDirectory(string TergetDir)
-        {
-            DirectoryNumbCtl(-1);
-        }
+        //}
 
-        private void DirectoryNumbCtl(int addvalue)
-        {
-            //Archive.Header.dirNodeNumber += (UInt32)addvalue;
-            //Archive.fileNodeNumber += (UInt32)addvalue;
-        }
+        ////io dir
+        //public void AddDirectory(string TergetDir)
+        //{
+        //    DirectoryNumbCtl(1);
+        //}
 
-        //ls
-        public void LookDir(string Terget)
-        {
+        //public void DeleteDirectory(string TergetDir)
+        //{
+        //    DirectoryNumbCtl(-1);
+        //}
 
-        }
+        //private void DirectoryNumbCtl(int addvalue)
+        //{
+        //    //Archive.Header.dirNodeNumber += (UInt32)addvalue;
+        //    //Archive.fileNodeNumber += (UInt32)addvalue;
+        //}
+
+        ////ls
+        //public void LookDir(string Terget)
+        //{
+
+        //}
     }
 }
