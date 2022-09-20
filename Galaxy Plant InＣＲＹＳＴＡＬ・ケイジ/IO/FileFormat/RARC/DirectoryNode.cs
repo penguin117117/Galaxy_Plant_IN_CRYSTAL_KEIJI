@@ -11,7 +11,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     /// 4文字,4byte,2byte,2byte,4byteで区切られるセクション。
     /// ディレクトリの情報を格納します。
     /// </summary>
-    public class EntryInfo
+    public class DirectoryNode
     {
         /// <summary>
         /// ディレクトリ名の先頭4文字を大文字で表す。4文字に満たない場合は空白文字で埋められる。
@@ -22,9 +22,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         public short FolderDirectoryCount { get; private set; }
         public int FirstDirectoryIndex { get; private set; }
 
-        public static EntryInfo Read(BinaryReader br)
+        public static DirectoryNode Read(BinaryReader br)
         {
-            return new EntryInfo
+            return new DirectoryNode
             {
                 EntryShortName       = br.ReadChars(4),
                 StringTopOffset      = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4)),

@@ -14,7 +14,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     {
         public RARCHeader RARCHeader { get; private set; }
         public RARCEntryHeader RARCEntryHeader { get; private set; }
-        public EntryInfo[] EntriesInfo { get; private set; }
+        public DirectoryNode[] DirectoryNodes { get; private set; }
         public ReadOnlyCollection<RARCArchiveEntry> Entries { get; }
         private Stream _stream;
 
@@ -30,23 +30,29 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             RARCHeader = new(br);
             RARCEntryHeader = new(br);
 
-            EntriesInfo = new EntryInfo[RARCEntryHeader.NodeLength];
+            //DirectoryNodeSection
+            DirectoryNodes = new DirectoryNode[RARCEntryHeader.NodeLength];
 
             for (int entryIndex = 0; entryIndex < RARCEntryHeader.NodeLength; entryIndex++) 
             {
-                EntriesInfo[entryIndex] = EntryInfo.Read(br);
+                DirectoryNodes[entryIndex] = DirectoryNode.Read(br);
             }
 
             BinarySystemPadding.SkipEndPosition(br.BaseStream);
-            Debug.WriteLine("EntriesInfoEndPosition: " + br.BaseStream.Position.ToString("X"));
+            Debug.WriteLine("DirectoryNodeSection EndPosition: " + br.BaseStream.Position.ToString("X"));
 
-            foreach (EntryInfo entryInfo in EntriesInfo) 
+            //FileNodeSection
+            List<FileNode> FileNodes = new List<FileNode>();
+
+            foreach (DirectoryNode entryInfo in DirectoryNodes) 
             {
                 for (int entryIndex = 0; entryIndex < entryInfo.FolderDirectoryCount; entryIndex++) 
                 {
-                    
+                    FileNodes.Add(new FileNode(br));
                 }
             }
+            BinarySystemPadding.SkipEndPosition(br.BaseStream);
+            Debug.WriteLine("FileNodeSection EndPosition: " + br.BaseStream.Position.ToString("X"));
         }
 
         public RARCArchiveEntry CreateEntry(string entryName) 

@@ -23,28 +23,24 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                 return;
             }
 
-            using (FileStream fs = new(sourceArchiveFileName, FileMode.Open)) 
-            {
-                RARCArchive rarcArchive = new(fs);
-                //foreach (RARCArchiveEntry entry in rarcArchive.Entries) 
-                //{
-                    
-                //}
-            }
+            using FileStream fs = new(sourceArchiveFileName, FileMode.Open);
+            RARCArchive rarcArchive = new(fs);
+            //foreach (RARCArchiveEntry entry in rarcArchive.Entries) 
+            //{
+
+            //}
         }
 
         public static void ExtractToDirectory(byte[] sourceArchiveBinaries, string destinationDirectoryName)
         {
-            
 
-            using (MemoryStream ms = new(sourceArchiveBinaries))
-            {
-                RARCArchive rarcArchive = new(ms);
-                //foreach (RARCArchiveEntry entry in rarcArchive.Entries) 
-                //{
 
-                //}
-            }
+            using MemoryStream ms = new(sourceArchiveBinaries);
+            RARCArchive rarcArchive = new(ms);
+            //foreach (RARCArchiveEntry entry in rarcArchive.Entries) 
+            //{
+
+            //}
         }
 
         public static RARCArchive Open(string arciveFileName) 

@@ -26,7 +26,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             TotalDirectoryCount  = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             FirstDirectoryOffset = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             StringTableLength    = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
-            DirectoryFileNum     = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(4));
+            DirectoryFileNum     = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2));
             Unknown4             = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2));
             Unknown5             = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
         }
