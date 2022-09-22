@@ -8,7 +8,7 @@ using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
 {
-    internal class Yaz0Encord : Yaz0
+    internal class Yaz0Encord
     {
         const int HeaderIndex = 16;
 
