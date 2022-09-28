@@ -38,7 +38,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                 DirectoryNodes[entryIndex] = DirectoryNode.Read(br);
             }
 
-            BinarySystemPadding.SkipEndPosition(br.BaseStream);
+            BinarySystem.PaddingSkip(br.BaseStream);
             Debug.WriteLine("DirectoryNodeSection EndPosition: " + br.BaseStream.Position.ToString("X"));
 
             //FileNodeSection
@@ -51,8 +51,17 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                     FileNodes.Add(new FileNode(br));
                 }
             }
-            BinarySystemPadding.SkipEndPosition(br.BaseStream);
+            BinarySystem.PaddingSkip(br.BaseStream);
             Debug.WriteLine("FileNodeSection EndPosition: " + br.BaseStream.Position.ToString("X"));
+
+            foreach (FileNode fileNode in FileNodes) 
+            {
+                Debug.WriteLine(BinarySystem.ReadStringNullEnd(br,fileNode.NameOffset,FileNodes[^1].NameOffset.Equals(fileNode.NameOffset)));
+            }
+            BinarySystem.PaddingSkip(br.BaseStream);
+            Debug.WriteLine("FileNameSection EndPosition: " + br.BaseStream.Position.ToString("X"));
+
+
         }
 
         public RARCArchiveEntry CreateEntry(string entryName) 
