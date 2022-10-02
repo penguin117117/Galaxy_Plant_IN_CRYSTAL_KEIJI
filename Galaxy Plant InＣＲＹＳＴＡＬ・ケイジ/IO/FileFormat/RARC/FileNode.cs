@@ -12,7 +12,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     {
         public short ID { get; private set; }
         public short Hash { get; private set; }
-        public ushort FileType { get; private set; }
+        public RARCFileNodeType FileType { get; private set; }
+        public byte BytePadding { get; private set; }
         public ushort NameOffset { get; private set; }
         /// <summary>
         /// <see cref="FileType"/>がFileならOffsetとファイルサイズが読み込まれます。<br/>
@@ -25,10 +26,22 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         {
             ID = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2));
             Hash = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2));
-            FileType = BinaryPrimitives.ReadUInt16BigEndian(br.ReadBytes(2));
+            FileType = (RARCFileNodeType)br.ReadByte();
+            BytePadding = br.ReadByte();
             NameOffset = BinaryPrimitives.ReadUInt16BigEndian(br.ReadBytes(2));
             Argments = (BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4)), BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4)));
             Padding = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
         }
+    }
+
+    public enum RARCFileNodeType : byte 
+    {
+        File = 0x01,
+        Directory = 0x02,
+        Compressed = 0x04,
+        PreloadToMRAM = 0x10,
+        PreloadToARAM = 0x20,
+        LoadFromDVD = 0x40,
+        Yaz0Compressed = 0x80
     }
 }

@@ -46,5 +46,23 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
 
             return str[0..^1];
         }
+
+        public static string ReadStringNullEnd(BinaryReader br) 
+        {
+            List<byte> stringBytes = new();
+            while (true)
+            {
+                stringBytes.Add(br.ReadByte());
+                if (stringBytes[^1] == 0x00)
+                {
+                    break;
+                }
+            }
+
+            var bitarray = stringBytes.ToArray();
+            var nameString = Encoding.GetEncoding(65001).GetString(bitarray);
+
+            return nameString[0..^1];
+        }
     }
 }

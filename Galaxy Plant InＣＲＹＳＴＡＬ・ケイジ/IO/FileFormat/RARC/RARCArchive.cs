@@ -23,8 +23,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             stream = stream ?? throw new ArgumentNullException(nameof(stream));
             if (!stream.CanRead) throw new ArgumentException("このストリームは読み取りが出来ないかストリームが終了しています。");
 
-            
-
             _stream = stream;
             using BinaryReader br = new(_stream);
             RARCHeader = new(br);
@@ -32,18 +30,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
             //DirectoryNodeSection
             DirectoryNodes = new DirectoryNode[RARCEntryHeader.NodeLength];
-
             for (int entryIndex = 0; entryIndex < RARCEntryHeader.NodeLength; entryIndex++) 
             {
                 DirectoryNodes[entryIndex] = DirectoryNode.Read(br);
             }
-
             BinarySystem.PaddingSkip(br.BaseStream);
             Debug.WriteLine("DirectoryNodeSection EndPosition: " + br.BaseStream.Position.ToString("X"));
 
             //FileNodeSection
-            List<FileNode> FileNodes = new List<FileNode>();
-
+            List<FileNode> FileNodes = new();
             foreach (DirectoryNode entryInfo in DirectoryNodes) 
             {
                 for (int entryIndex = 0; entryIndex < entryInfo.FolderDirectoryCount; entryIndex++) 
@@ -54,14 +49,23 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             BinarySystem.PaddingSkip(br.BaseStream);
             Debug.WriteLine("FileNodeSection EndPosition: " + br.BaseStream.Position.ToString("X"));
 
-            foreach (FileNode fileNode in FileNodes) 
+            //String Table
+            Debug.WriteLine($"StringTableSize::{RARCEntryHeader.StringTableLength:X}");
+            for (int i = 0; i < RARCEntryHeader.DirectoryFileNum + RARCEntryHeader.TotalDirectoryCount + 1; i++) 
             {
-                Debug.WriteLine(BinarySystem.ReadStringNullEnd(br,fileNode.NameOffset,FileNodes[^1].NameOffset.Equals(fileNode.NameOffset)));
+                Debug.WriteLine(BinarySystem.ReadStringNullEnd(br));
             }
             BinarySystem.PaddingSkip(br.BaseStream);
-            Debug.WriteLine("FileNameSection EndPosition: " + br.BaseStream.Position.ToString("X"));
+            Debug.WriteLine("StringTableSection EndPosition: " + br.BaseStream.Position.ToString("X"));
 
-
+            foreach (FileNode fileNode in FileNodes) 
+            {
+                if (!((fileNode.FileType & RARCFileNodeType.File) == RARCFileNodeType.File))continue;
+                br.ReadBytes(fileNode.Argments.Item2);
+                
+                BinarySystem.PaddingSkip(br.BaseStream);
+                Debug.WriteLine("FileEnd::" + br.BaseStream.Position.ToString("X"));
+            }
         }
 
         public RARCArchiveEntry CreateEntry(string entryName) 
