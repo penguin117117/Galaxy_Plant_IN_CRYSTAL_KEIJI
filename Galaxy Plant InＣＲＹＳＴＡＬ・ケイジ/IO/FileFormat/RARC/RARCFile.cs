@@ -37,10 +37,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
             using MemoryStream ms = new(sourceArchiveBinaries);
             RARCArchive rarcArchive = new(ms);
-            //foreach (RARCArchiveEntry entry in rarcArchive.Entries) 
-            //{
 
-            //}
+            if (!Directory.Exists(Path.Combine(destinationDirectoryName, @"Export"))) Directory.CreateDirectory(Path.Combine(destinationDirectoryName, @"Export"));
+
+            foreach (var fileEntry in rarcArchive.FileKeyValuePairs)
+            {
+                using FileStream fs = new(Path.Combine(Path.Combine(destinationDirectoryName, @"Export"), fileEntry.Key), FileMode.Create);
+                using BinaryWriter bw = new BinaryWriter(fs);
+                bw.Write(fileEntry.Value);
+            }
         }
 
         public static RARCArchive Open(string arciveFileName) 
