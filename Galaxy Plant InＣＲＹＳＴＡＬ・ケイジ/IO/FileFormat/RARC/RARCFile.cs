@@ -33,8 +33,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
         public static void ExtractToDirectory(byte[] sourceArchiveBinaries, string destinationDirectoryName)
         {
-
-
             using MemoryStream ms = new(sourceArchiveBinaries);
             RARCArchive rarcArchive = new(ms);
 
@@ -43,7 +41,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             foreach (var fileEntry in rarcArchive.FileKeyValuePairs)
             {
                 using FileStream fs = new(Path.Combine(Path.Combine(destinationDirectoryName, @"Export"), fileEntry.Key), FileMode.Create);
-                using BinaryWriter bw = new BinaryWriter(fs);
+                using BinaryWriter bw = new(fs);
                 bw.Write(fileEntry.Value);
             }
         }

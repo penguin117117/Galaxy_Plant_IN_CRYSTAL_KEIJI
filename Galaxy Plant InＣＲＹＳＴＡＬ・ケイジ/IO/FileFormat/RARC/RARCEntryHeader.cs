@@ -15,8 +15,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         public int FirstDirectoryOffset { get; set; }
         public int StringTableLength { get; set; }
         public int StringTableOffset { get; set; }
-        public short DirectoryFileNum { get; set; }
-        public short Unknown4 { get; set; }
+        public int DirectoryFileNum { get; set; }
+        public int Unknown4 { get; set; }
         public int Unknown5 { get; set; }
 
         public RARCEntryHeader(BinaryReader br) 
@@ -26,8 +26,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             TotalDirectoryCount  = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             FirstDirectoryOffset = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             StringTableLength    = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
-            DirectoryFileNum     = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2));
-            Unknown4             = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2));
+            DirectoryFileNum     = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
+            Unknown4             = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             Unknown5             = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
         }
     }

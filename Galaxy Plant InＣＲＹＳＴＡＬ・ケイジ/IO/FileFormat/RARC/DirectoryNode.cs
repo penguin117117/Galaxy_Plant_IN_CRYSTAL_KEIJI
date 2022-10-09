@@ -21,6 +21,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         public ushort StringHash { get; private set; }
         public short FolderDirectoryCount { get; private set; }
         public int FirstDirectoryIndex { get; private set; }
+        public string Name = string.Empty;
+        public List<RARCEntry> RARCEntries;
 
         public static DirectoryNode Read(BinaryReader br)
         {

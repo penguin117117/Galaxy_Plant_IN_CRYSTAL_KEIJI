@@ -49,13 +49,14 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
         private void ParamWatcher() 
         {
+            //Debug.WriteLine("/////////////////////////////////////////////////");
+            Debug.WriteLine("ID: "+ID.ToString("X"));
+            Debug.WriteLine("Hash: "+Hash.ToString("X"));
+            Debug.WriteLine("EntryType: "+EntryType.ToString("X"));
+            Debug.WriteLine("NameOffset: "+NameOffset.ToString("X"));
+            Debug.WriteLine("Arg1: "+Argments.Item1.ToString("X"));
+            Debug.WriteLine("Arg2: "+Argments.Item2.ToString("X"));
             Debug.WriteLine("/////////////////////////////////////////////////");
-            Debug.WriteLine(ID.ToString("X"));
-            Debug.WriteLine(Hash.ToString("X"));
-            Debug.WriteLine(EntryType.ToString("X"));
-            Debug.WriteLine(NameOffset.ToString("X"));
-            Debug.WriteLine(Argments.Item1.ToString("X"));
-            Debug.WriteLine(Argments.Item2.ToString("X"));
         }
     }
 

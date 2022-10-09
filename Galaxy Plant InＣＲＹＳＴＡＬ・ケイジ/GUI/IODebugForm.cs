@@ -30,27 +30,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
                 Yaz0EncComboBox.Items.Add(@"ObjectData\" + Path.GetFileName(fileName));
             }
 
-            
             Yaz0DecComboBox.Items.Add(@"StageData\MagicGalaxy\MagicGalaxyLight.arc");
             Yaz0DecComboBox.SelectedIndex = 0;
             Yaz0DecComboBox.SelectedIndex = 0;
-
-
-
-            //_objectDataDirectoryNameArray = Directory.GetDirectories(objectDataDirPath);
-
-
-            //if (_objectDataDirectoryNameArray.Length == 0)
-            //{
-            //    Yaz0EncComboBox.Enabled = false;
-            //    return;
-            //}
-
-            //foreach (string dirName in _objectDataDirectoryNameArray) 
-            //{
-            //    Yaz0DecComboBox.Items.Add(@"ObjectData\" + Path.GetDirectoryName(dirName));
-            //}
-            //Yaz0DecComboBox.SelectedIndex = 0;
         }
 
         private void ButtonDisable() 
