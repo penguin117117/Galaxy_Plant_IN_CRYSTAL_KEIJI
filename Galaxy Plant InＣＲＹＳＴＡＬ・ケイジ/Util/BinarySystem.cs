@@ -64,5 +64,27 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
 
             return nameString[0..^1];
         }
+
+        /// <summary>
+        /// <see href="seekStringOffset"/> で指定した場所までSeekを行い文字列をNull末端まで取得します。<br/>
+        /// その後Seek直前の位置まで現在のストリーム位置をSeekします。
+        /// </summary>
+        /// <param name="br"></param>
+        /// <param name="seekStringOffset"></param>
+        /// <returns></returns>
+        public static string ReadSeekStringNullEndAndSeekFix(BinaryReader br, long seekStringOffset) 
+        {
+            long fixPosition = br.BaseStream.Position;
+
+            //ファイル名の取得
+            br.BaseStream.Seek(seekStringOffset, SeekOrigin.Begin);
+            string dirName = BinarySystem.ReadStringNullEnd(br);
+            //Debug.WriteLine("StringEndPosition: " + br.BaseStream.Position.ToString("X"));
+
+            //ストリームの位置を元に戻す
+            br.BaseStream.Seek(fixPosition, SeekOrigin.Begin);
+
+            return dirName;
+        }
     }
 }

@@ -15,14 +15,11 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         public RARCHeader RARCHeader { get; private set; }
         public RARCEntryHeader RARCEntryHeader { get; private set; }
         public DirectoryNode[] DirectoryNodes { get; private set; }
-        //public List<RARCEntry> RARCEntries { get; private set; }
-        public Dictionary<string, byte[]> FileKeyValuePairs{ get; private set; }
-        private Dictionary<uint, string> directoryKeyValuePairs;
+        //public Dictionary<string, byte[]> FileKeyValuePairs{ get; private set; }
 
         private Stream _stream;
 
         private long stringDataTablePosition;
-        private long fileDataEndPosition;
 
         public RARCArchive(Stream stream) 
         {
@@ -35,6 +32,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             RARCEntryHeader = new(br);
 
             DirectoryNodes = ReadDirectoryNodeSection(br);
+
+            //各DirectoryNodeに含まれるRARCEntriesをセットします。
             for (int dirNodeIndex = 0; dirNodeIndex < DirectoryNodes.Length; dirNodeIndex++) 
             {
                 DirectoryNodes[dirNodeIndex].RARCEntries = ReadRARCEntries(br,DirectoryNodes[dirNodeIndex].FolderDirectoryCount);
@@ -48,7 +47,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             Debug.WriteLine("StringTableSection EndPosition: " + br.BaseStream.Position.ToString("X"));
 
             //FileDataSection
-            FileKeyValuePairs = new Dictionary<string, byte[]>();
+            //FileKeyValuePairs = new Dictionary<string, byte[]>();
             foreach (DirectoryNode directoryNode in DirectoryNodes)
             {
                 string dirPath = string.Empty;
@@ -61,36 +60,40 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                         byte[] fileBinaryData = br.ReadBytes((int)rarcEntry.Argments.Item2);
                         BinarySystem.PaddingSkip(br.BaseStream);
                         Debug.WriteLine("FileEnd::" + br.BaseStream.Position.ToString("X"));
-                        fileDataEndPosition = br.BaseStream.Position;
-
-                        //ファイル名の取得
-                        br.BaseStream.Seek(stringDataTablePosition + rarcEntry.NameOffset, SeekOrigin.Begin);
-                        string fileName = BinarySystem.ReadStringNullEnd(br);
-                        Debug.WriteLine("StringEndPosition: " + br.BaseStream.Position.ToString("X"));
-
-                        //ストリームの位置を元に戻す
-                        br.BaseStream.Seek(fileDataEndPosition, SeekOrigin.Begin);
+                        
+                        string fileName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.NameOffset);
 
                         Debug.WriteLine(fileName);
                         //ファイルのデータを格納
-                        FileKeyValuePairs.Add(fileName, fileBinaryData);
+                        //FileKeyValuePairs.Add(fileName, fileBinaryData);
+                        directoryNode.IncludeFileNameBinaryPairs.Add(fileName, fileBinaryData);
                     }
                     else if ((rarcEntry.EntryType & RARCEntryType.Directory) == RARCEntryType.Directory)
                     {
-                        long DirDataEndPosition = br.BaseStream.Position;
-
-                        //ファイル名の取得
-                        br.BaseStream.Seek(stringDataTablePosition + rarcEntry.NameOffset, SeekOrigin.Begin);
-                        string dirName = BinarySystem.ReadStringNullEnd(br);
-                        Debug.WriteLine("StringEndPosition: " + br.BaseStream.Position.ToString("X"));
-
-                        //ストリームの位置を元に戻す
-                        br.BaseStream.Seek(DirDataEndPosition, SeekOrigin.Begin);
+                        string dirName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br,stringDataTablePosition + rarcEntry.NameOffset);
 
                         if (dirName == ".")
                         {
-                            directoryNode.Name = dirName;
-                            Debug.WriteLine("dirName::" + dirName);
+                            directoryNode.CurrentDirectoryName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + directoryNode.DirectoryNameOffset);
+                            Debug.WriteLine("CurrentDirectoryName::" + directoryNode.CurrentDirectoryName);
+                        }
+                        else if (dirName == "..")
+                        {
+                            //親ディレクトリがルートディレクトリのケース
+                            if (rarcEntry.Argments.Item1 == 0xFFFFFFFF)
+                            {
+                                directoryNode.ParentDirectoryName = "ROOT";
+                                Debug.WriteLine("ParentDirectoryName::" + directoryNode.ParentDirectoryName);
+                                continue;
+                            }
+                            directoryNode.ParentDirectoryName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.Argments.Item1);
+                            Debug.WriteLine("ParentDirectoryName::" + directoryNode.ParentDirectoryName);
+                        }
+                        else 
+                        {
+                            //string subDir = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.Argments.Item1);
+                            directoryNode.SubDirectories.Add(dirName);
+                            Debug.WriteLine("SubDirectoryName::" + dirName);
                         }
                     }
                     else
@@ -99,113 +102,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                         Application.Exit();
                     }
                 }
-                //directoryNode.RARCEntries = FileKeyValuePairs;
             }
 
-            //Dictionary<string, Dictionary<string, byte[]>> DirectoryPathFileNameValuePairs = new();
-            //FileKeyValuePairs = new Dictionary<string, byte[]>();
-            //Dictionary<uint,string>DirectoriesPath = new();
-            //foreach (DirectoryNode directoryNode in DirectoryNodes) 
-            //{
-            //    string dirPath = string.Empty;
-            //    foreach (RARCEntry rarcEntry in directoryNode.RARCEntries) 
-            //    {
-            //        //ファイルデータの取得
-            //        Debug.WriteLine((RARCEntryType)rarcEntry.EntryType);
-            //        if ((rarcEntry.EntryType & RARCEntryType.File) == RARCEntryType.File)
-            //        {
-            //            byte[] fileBinaryData = br.ReadBytes((int)rarcEntry.Argments.Item2);
-            //            BinarySystem.PaddingSkip(br.BaseStream);
-            //            Debug.WriteLine("FileEnd::" + br.BaseStream.Position.ToString("X"));
-            //            fileDataEndPosition = br.BaseStream.Position;
-
-            //            //ファイル名の取得
-            //            br.BaseStream.Seek(stringDataTablePosition + rarcEntry.NameOffset, SeekOrigin.Begin);
-            //            string fileName = BinarySystem.ReadStringNullEnd(br);
-            //            Debug.WriteLine("StringEndPosition: " + br.BaseStream.Position.ToString("X"));
-
-            //            //ストリームの位置を元に戻す
-            //            br.BaseStream.Seek(fileDataEndPosition, SeekOrigin.Begin);
-
-            //            //ファイルのデータを格納
-            //            FileKeyValuePairs.Add(fileName, fileBinaryData);
-            //        }
-            //        else if ((rarcEntry.EntryType & RARCEntryType.Directory) == RARCEntryType.Directory)
-            //        {
-            //            fileDataEndPosition = br.BaseStream.Position;
-
-            //            //ファイル名の取得
-            //            br.BaseStream.Seek(stringDataTablePosition + rarcEntry.NameOffset, SeekOrigin.Begin);
-            //            string dirName = BinarySystem.ReadStringNullEnd(br);
-            //            Debug.WriteLine("StringEndPosition: " + br.BaseStream.Position.ToString("X"));
-
-            //            //ストリームの位置を元に戻す
-            //            br.BaseStream.Seek(fileDataEndPosition, SeekOrigin.Begin);
-
-            //            //ファイルのデータを格納
-            //            if (!DirectoriesPath.ContainsKey(rarcEntry.Argments.Item1))
-            //                DirectoriesPath.Add(rarcEntry.Argments.Item1,dirName);
-            //        }
-            //        else 
-            //        {
-            //            throw new DataMisalignedException("このRARCファイルは、ファイルエントリセクションのRARCEntryTypeが壊れています。");
-            //            Application.Exit();
-            //        }
-            //    }
-
-            //    DirectoryPathFileNameValuePairs.Add(DirectoriesPath[(uint)DirectoriesPath.Count - 2],FileKeyValuePairs);
-            //}
-
-
-
-            //FileKeyValuePairs = new Dictionary<string, byte[]>();
-            //string dirPath = string.Empty;
-
-            //directoryKeyValuePairs = new Dictionary<uint, string>();
-            //foreach (RARCEntry rarcEntry in RARCEntries) 
-            //{
-            //    //ファイルデータの取得
-            //    Debug.WriteLine((RARCEntryType)rarcEntry.EntryType);
-            //    if ((rarcEntry.EntryType & RARCEntryType.File) == RARCEntryType.File)
-            //    {
-            //        byte[] fileBinaryData = br.ReadBytes((int)rarcEntry.Argments.Item2);
-            //        BinarySystem.PaddingSkip(br.BaseStream);
-            //        Debug.WriteLine("FileEnd::" + br.BaseStream.Position.ToString("X"));
-            //        fileDataEndPosition = br.BaseStream.Position;
-
-            //        //ファイル名の取得
-            //        br.BaseStream.Seek(stringDataTablePosition + rarcEntry.NameOffset, SeekOrigin.Begin);
-            //        string fileName = BinarySystem.ReadStringNullEnd(br);
-            //        Debug.WriteLine("StringEndPosition: " + br.BaseStream.Position.ToString("X"));
-
-            //        //ストリームの位置を元に戻す
-            //        br.BaseStream.Seek(fileDataEndPosition, SeekOrigin.Begin);
-
-            //        //ファイルのデータを格納
-            //        FileKeyValuePairs.Add(fileName, fileBinaryData);
-            //    }
-            //    else if ((rarcEntry.EntryType & RARCEntryType.Directory) == RARCEntryType.Directory)
-            //    {
-            //        long defaultPos = br.BaseStream.Position;
-            //        switch (rarcEntry.Argments.Item1) 
-            //        {
-            //            case 0xFFFFFFFF:
-            //                br.BaseStream.Seek(stringDataTablePosition + rarcEntry.NameOffset, SeekOrigin.Begin);
-            //                string directoryName = BinarySystem.ReadStringNullEnd(br);
-            //                dirPath += directoryName;
-            //                break;
-            //        }
-
-            //        br.BaseStream.Position = defaultPos;
-
-            //    }
-            //    else 
-            //    {
-            //        throw new DataMisalignedException("このRARCファイルは、ファイルエントリセクションのRARCEntryTypeが壊れています。");
-            //        Application.Exit();
-            //    }
-
-            //}
+            
         }
 
         private DirectoryNode[] ReadDirectoryNodeSection(BinaryReader br) 
