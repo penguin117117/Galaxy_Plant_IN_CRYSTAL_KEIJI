@@ -99,6 +99,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                         Application.Exit();
                     }
                 }
+                //directoryNode.RARCEntries = FileKeyValuePairs;
             }
 
             //Dictionary<string, Dictionary<string, byte[]>> DirectoryPathFileNameValuePairs = new();
@@ -251,15 +252,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             return rarcEntries;
         }
 
-        public RARCArchiveEntry CreateEntry(string entryName) 
-        {
-            throw new NotImplementedException();
-        }
+        //public RARCArchiveEntry CreateEntry(string entryName) 
+        //{
+        //    throw new NotImplementedException();
+        //}
 
-        public RARCArchiveEntry? GetEntry(string entryName) 
-        {
-            throw new NotImplementedException();
-        }
+        //public RARCArchiveEntry? GetEntry(string entryName) 
+        //{
+        //    throw new NotImplementedException();
+        //}
 
         public void Dispose()
         {
