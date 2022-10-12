@@ -38,7 +38,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             string yaz0IncludeDirectory = Path.GetDirectoryName(yaz0FullPath);
 
             string rootDirName = Path.GetFileNameWithoutExtension(yaz0FullPath);
-            string rootDirFullPath = Path.Combine(yaz0IncludeDirectory, rootDirName);
+            
 
             if (!Directory.Exists(yaz0IncludeDirectory)) 
             {
@@ -46,6 +46,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             }
 
             //ルートディレクトリの作成
+            string rootDirFullPath = Path.Combine(yaz0IncludeDirectory, rootDirName);
             if (!Directory.Exists(rootDirFullPath)) 
             {
                 Directory.CreateDirectory(rootDirFullPath);
@@ -123,11 +124,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
                         foreach (string subDirName in rarcArchive.DirectoryNodes[dirIndex].SubDirectories)
                         {
-                            string subPath = Path.Combine(curPath, subDirName);
-                            if (!Directory.Exists(subPath))
-                            {
-                                Directory.CreateDirectory(subPath);
-                            }
+                            DirectoryUtil.CreateDirectoryWhenDirectoryNotExist(curPath,subDirName,out string subPath);
                             directoryNodeDirectoryNames.Add(subDirName, subPath);
                         }
 
