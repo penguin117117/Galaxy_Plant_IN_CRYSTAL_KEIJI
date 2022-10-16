@@ -31,7 +31,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
                 Yaz0EncComboBox.Items.Add(@"ObjectData\" + Path.GetFileName(fileName));
             }
 
-            Yaz0DecComboBox.Items.Add(@"StageData\MagicGalaxy\MagicGalaxyLight.arc");
+            //Yaz0DecComboBox.Items.Add(@"StageData\MagicGalaxy\MagicGalaxyLight.arc");
+            Yaz0DecComboBox.Items.Add(@"StageData\IslandFleetGalaxy\IslandFleetGalaxyScenario.arc");
+            Yaz0DecComboBox.Items.Add(@"StageData\IslandFleetGalaxy\IslandFleetGalaxyMap.arc");
             Yaz0DecComboBox.SelectedIndex = 0;
             Yaz0DecComboBox.SelectedIndex = 0;
         }
@@ -72,6 +74,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 
         private void Yaz0DecRARCExtButton_Click(object sender, EventArgs e)
         {
+            RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
+            RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
+
             _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
             if (File.Exists(_yaz0DecFullPath) == false)
             {
@@ -81,7 +86,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             RARCFile.ExtractToDirectory(yaz0Decord.BinaryData, _yaz0DecFullPath);
             //byte[]? nullTest = null;
             //RARCFile.ExtractToDirectory(nullTest, _yaz0DecFullPath);
-
+            RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。";
+            RARCStatusToolStripStatusLabel.ForeColor = Color.Green;
         }
 
         private void Yaz0EncButton_Click(object sender, EventArgs e)

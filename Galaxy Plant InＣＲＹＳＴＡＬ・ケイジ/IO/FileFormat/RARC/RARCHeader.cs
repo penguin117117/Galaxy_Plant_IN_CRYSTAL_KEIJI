@@ -3,6 +3,10 @@ using System.Buffers.Binary;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 {
+    /// <summary>
+    /// RARCファイルのヘッダー情報を格納するクラス。<br/>
+    /// バイトの長さは 0x20 です。
+    /// </summary>
     public class RARCHeader
     {
 
@@ -27,6 +31,11 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             FileDataLength_2 = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             Unknown2         = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             Unknown3         = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
+        }
+
+        public bool IsRARC() 
+        {
+            return SectionName == 0x52415243;
         }
 
         

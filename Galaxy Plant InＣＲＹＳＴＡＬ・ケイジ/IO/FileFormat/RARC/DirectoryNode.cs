@@ -24,7 +24,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         public string CurrentDirectoryName = string.Empty;
         public string ParentDirectoryName = string.Empty;
         public List<RARCEntry> RARCEntries = new();
-        public Dictionary<string, byte[]>IncludeFileNameBinaryPairs = new();
+        public Dictionary<(string,uint), byte[]>IncludeFileNameBinaryPairs = new();
         public List<string> SubDirectories = new();
 
         public static DirectoryNode Read(BinaryReader br)

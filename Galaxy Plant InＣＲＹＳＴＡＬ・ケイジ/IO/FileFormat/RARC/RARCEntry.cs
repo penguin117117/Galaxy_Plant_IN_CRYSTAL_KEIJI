@@ -44,7 +44,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             Argments = (BinaryPrimitives.ReadUInt32BigEndian(br.ReadBytes(4)), BinaryPrimitives.ReadUInt32BigEndian(br.ReadBytes(4)));
             Padding = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
 
-            //ParamWatcher();
+            ParamWatcher();
         }
 
         private void ParamWatcher() 

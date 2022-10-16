@@ -38,8 +38,12 @@
             this.Yaz0EncButton = new System.Windows.Forms.Button();
             this.Yaz0DecComboBox = new System.Windows.Forms.ComboBox();
             this.Yaz0FilePathLabel = new System.Windows.Forms.Label();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.StatusTextToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.RARCStatusToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.menuStrip1.SuspendLayout();
             this.Yaz0GroupBox.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // Yaz0Dec
@@ -65,7 +69,7 @@
             // ファイルToolStripMenuItem
             // 
             this.ファイルToolStripMenuItem.Name = "ファイルToolStripMenuItem";
-            this.ファイルToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.ファイルToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.ファイルToolStripMenuItem.Text = "ファイル";
             // 
             // Yaz0GroupBox
@@ -140,11 +144,35 @@
             this.Yaz0FilePathLabel.TabIndex = 3;
             this.Yaz0FilePathLabel.Text = "DecFilePath";
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusTextToolStripStatusLabel,
+            this.RARCStatusToolStripStatusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 428);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(800, 22);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // StatusTextToolStripStatusLabel
+            // 
+            this.StatusTextToolStripStatusLabel.Name = "StatusTextToolStripStatusLabel";
+            this.StatusTextToolStripStatusLabel.Size = new System.Drawing.Size(43, 17);
+            this.StatusTextToolStripStatusLabel.Text = "状態：";
+            // 
+            // RARCStatusToolStripStatusLabel
+            // 
+            this.RARCStatusToolStripStatusLabel.Name = "RARCStatusToolStripStatusLabel";
+            this.RARCStatusToolStripStatusLabel.Size = new System.Drawing.Size(162, 17);
+            this.RARCStatusToolStripStatusLabel.Text = "ファイルが読み込まれていません。";
+            // 
             // IODebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.Yaz0GroupBox);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -154,6 +182,8 @@
             this.menuStrip1.PerformLayout();
             this.Yaz0GroupBox.ResumeLayout(false);
             this.Yaz0GroupBox.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,5 +201,8 @@
         private Button Yaz0DecRARCExtButton;
         private ComboBox Yaz0EncComboBox;
         private Label EncFilePathLabel;
+        private StatusStrip statusStrip1;
+        private ToolStripStatusLabel StatusTextToolStripStatusLabel;
+        private ToolStripStatusLabel RARCStatusToolStripStatusLabel;
     }
 }

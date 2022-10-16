@@ -22,25 +22,45 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
         private long stringDataTablePosition;
 
+        /// <summary>
+        /// RARCのアーカイブ情報を保持します。<br/>
+        /// このクラスは継承できません。
+        /// </summary>
+        /// <param name="br"></param>
+        /// <exception cref="NullReferenceException"></exception>
+        /// <exception cref="ArgumentException"></exception>
         public RARCArchive(BinaryReader br) 
         {
             if(br.BaseStream == null)
-                throw new ArgumentNullException(nameof(br.BaseStream));
+                throw new NullReferenceException(nameof(br.BaseStream));
             if (!br.BaseStream.CanRead) 
                 throw new ArgumentException("このストリームは読み取りが出来ないかストリームが終了しています。");
 
             RARCHeader = new(br);
+            if (!RARCHeader.IsRARC())
+            {
+                byte[] littleEndian = BitConverter.GetBytes(RARCHeader.SectionName);
+                byte[] bigEndian = littleEndian.Reverse().ToArray();
+                throw new DataMisalignedException($"このファイルは、「RARCファイル」ではなく {Encoding.ASCII.GetString(bigEndian)}ファイルです。");
+            } 
             RARCEntryHeader = new(br);
             DirectoryNodes = ReadDirectoryNodeSection(br);
             ReadArchive(br);
         }
 
+
+        /// <summary>
+        /// <see cref="RARCArchive"/>　を　<paramref name="br"/>　で指定した　<see cref="BinaryReader"/>　から読み込みます。
+        /// </summary>
+        /// <param name="br"></param>
+        /// <exception cref="DataMisalignedException"></exception>
         public void ReadArchive(BinaryReader br) 
         {
             //各DirectoryNodeに含まれるRARCEntriesをセットします。
             for (int dirNodeIndex = 0; dirNodeIndex < DirectoryNodes.Length; dirNodeIndex++)
             {
                 DirectoryNodes[dirNodeIndex].RARCEntries = ReadRARCEntries(br, DirectoryNodes[dirNodeIndex].FolderDirectoryCount);
+                Debug.WriteLine($"DirectoryNodeIndex::::::::::::{dirNodeIndex}");
             }
             BinarySystem.PaddingSkip(br.BaseStream);
 
@@ -57,7 +77,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                 foreach (RARCEntry rarcEntry in directoryNode.RARCEntries)
                 {
                     //ファイルデータの取得
-                    //Debug.WriteLine((RARCEntryType)rarcEntry.EntryType);
                     if ((rarcEntry.EntryType & RARCEntryType.File) == RARCEntryType.File)
                     {
                         byte[] fileBinaryData = br.ReadBytes((int)rarcEntry.Argments.Item2);
@@ -66,21 +85,23 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
                         string fileName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.NameOffset);
 
-                        //Debug.WriteLine(fileName);
+                        Debug.WriteLine($"FileName::{(RARCEntryType)rarcEntry.EntryType}::{fileName}::{(uint)rarcEntry.ID}");
                         //ファイルのデータを格納
                         //FileKeyValuePairs.Add(fileName, fileBinaryData);
-                        directoryNode.IncludeFileNameBinaryPairs.Add(fileName, fileBinaryData);
+                        directoryNode.IncludeFileNameBinaryPairs.Add((fileName,(uint)rarcEntry.ID), fileBinaryData);
                     }
                     else if ((rarcEntry.EntryType & RARCEntryType.Directory) == RARCEntryType.Directory)
                     {
-                        string dirName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.NameOffset);
+                        string directoryName = 
+                            BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.NameOffset);
 
-                        if (dirName == ".")
+                        if (directoryName == ".")
                         {
-                            directoryNode.CurrentDirectoryName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + directoryNode.DirectoryNameOffset);
+                            directoryNode.CurrentDirectoryName = 
+                                BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + directoryNode.DirectoryNameOffset);
                             //Debug.WriteLine("CurrentDirectoryName::" + directoryNode.CurrentDirectoryName);
                         }
-                        else if (dirName == "..")
+                        else if (directoryName == "..")
                         {
                             //親ディレクトリがルートディレクトリのケース
                             if (rarcEntry.Argments.Item1 == 0xFFFFFFFF)
@@ -89,20 +110,22 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                                 //Debug.WriteLine("ParentDirectoryName::" + directoryNode.ParentDirectoryName);
                                 continue;
                             }
-                            directoryNode.ParentDirectoryName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.Argments.Item1);
-                            //Debug.WriteLine("ParentDirectoryName::" + directoryNode.ParentDirectoryName);
+                            directoryNode.ParentDirectoryName = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.NameOffset);
+                            //directoryNode.ParentDirectoryName = rarcEntry.Argments.Item1
+                            Debug.WriteLine("ParentDirectoryName::" + directoryNode.ParentDirectoryName);
+
                         }
                         else
                         {
                             //string subDir = BinarySystem.ReadSeekStringNullEndAndSeekFix(br, stringDataTablePosition + rarcEntry.Argments.Item1);
-                            directoryNode.SubDirectories.Add(dirName);
+                            directoryNode.SubDirectories.Add(directoryName);
+                            //directoryNode..Add((dirName,rarcEntry.Argments.Item1),);
                             //Debug.WriteLine("SubDirectoryName::" + dirName);
                         }
                     }
                     else
                     {
                         throw new DataMisalignedException("このRARCファイルは、ファイルエントリセクションのRARCEntryTypeが壊れています。");
-                        Application.Exit();
                     }
                 }
             }
@@ -144,6 +167,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             for (int entryIndex = 0; entryIndex < folderDirectoryCount; entryIndex++)
             {
                 rarcEntries.Add(new RARCEntry(br));
+                //Debug.WriteLine($"{entryIndex}");
                 //Debug.WriteLine(rarcEntries[entryIndex].NameOffset.ToString("X"));
             }
             //BinarySystem.PaddingSkip(br.BaseStream);
