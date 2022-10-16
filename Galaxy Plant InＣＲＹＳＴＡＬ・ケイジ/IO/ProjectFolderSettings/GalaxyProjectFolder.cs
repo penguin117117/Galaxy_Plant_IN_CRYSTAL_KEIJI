@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Diagnostics;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO
 {
@@ -25,7 +26,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO
                 if (IsGalaxyProjectFolder(Directory.GetDirectories(fbd.SelectedPath))) 
                 {
                     PathSave(fbd.SelectedPath);
-                    Debug.WriteLine("IsGalaxyFolder");
+                    Debug.WriteLine(Game.Version);
                 }
             }
         }
@@ -34,8 +35,10 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO
         {
             foreach (string directory in directories) 
             {
-                if (Path.GetFileName(directory) == "StageData") 
+                if (Path.GetFileName(directory) == "ObjectData") 
                 {
+                    Debug.WriteLine(directory + "\\ProductMapObjDataTable.arc");
+                    Game.Version = Directory.GetFiles(directory).Contains(directory + "\\ProductMapObjDataTable.arc")?Game.GameVersion.SMG2 : Game.GameVersion.SMG1;
                     return true;
                 }
             }
