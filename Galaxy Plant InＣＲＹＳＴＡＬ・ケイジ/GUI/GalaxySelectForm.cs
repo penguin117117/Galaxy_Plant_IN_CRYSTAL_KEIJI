@@ -20,5 +20,11 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
             IODebugForm ioDebugForm = new();
             ioDebugForm.ShowDialog();
         }
+
+        private void configToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SystemSettingForm systemSettingForm = new SystemSettingForm();
+            systemSettingForm.ShowDialog();
+        }
     }
 }
