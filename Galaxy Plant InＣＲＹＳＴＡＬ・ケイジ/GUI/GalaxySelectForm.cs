@@ -56,5 +56,11 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
             SystemSettingForm systemSettingForm = new SystemSettingForm();
             systemSettingForm.ShowDialog();
         }
+
+        private void infoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            InformationForm informaItionForm = new InformationForm();
+            informaItionForm.ShowDialog();
+        }
     }
 }
