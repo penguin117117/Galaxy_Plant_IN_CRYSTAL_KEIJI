@@ -39,6 +39,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO
                 {
                     Debug.WriteLine(directory + "\\ProductMapObjDataTable.arc");
                     Game.Version = Directory.GetFiles(directory).Contains(directory + "\\ProductMapObjDataTable.arc")?Game.GameVersion.SMG2 : Game.GameVersion.SMG1;
+                    Properties.Settings.Default.GameVersion = (byte)Game.Version;
+                    Properties.Settings.Default.Save();
                     return true;
                 }
             }

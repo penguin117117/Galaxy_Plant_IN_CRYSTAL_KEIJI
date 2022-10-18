@@ -58,5 +58,17 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Properties {
                 this["AdvancedView"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte GameVersion {
+            get {
+                return ((byte)(this["GameVersion"]));
+            }
+            set {
+                this["GameVersion"] = value;
+            }
+        }
     }
 }
