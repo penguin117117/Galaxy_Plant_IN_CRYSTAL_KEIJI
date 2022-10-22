@@ -8,11 +8,18 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
 {
     internal class Game
     {
-        internal string Galaxy { get; private set; }
+        internal static GameVersion Version { get; set; }
 
         internal Game() 
         {
             
+        }
+
+        internal enum GameVersion :byte
+        {
+            None = 0b00000000,
+            SMG1 = 0b00000001,
+            SMG2 = 0b00000010
         }
     }
 }

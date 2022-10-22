@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARCDirectoryEdit;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,130 +16,43 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         
         }
 
+        /// <summary>
+        /// RARCファイルを指定したディレクトリに展開します。
+        /// </summary>
+        /// <param name="sourceArchiveFileName"></param>
+        /// <param name="destinationDirectoryName"></param>
+        /// <exception cref="FileNotFoundException"></exception>
         public static void ExtractToDirectory(string sourceArchiveFileName, string destinationDirectoryName) 
         {
             if (!File.Exists(sourceArchiveFileName)) 
             {
-                Debug.WriteLine($"このアーカイブファイルは存在しません\n{sourceArchiveFileName}");
-                return;
+                throw new FileNotFoundException($"このRARCファイルは存在しません\n{sourceArchiveFileName}");
             }
 
             using FileStream fs = new(sourceArchiveFileName, FileMode.Open);
-            RARCArchive rarcArchive = new(fs);
-            //foreach (RARCArchiveEntry entry in rarcArchive.Entries) 
-            //{
-
-            //}
+            ExtractToDirectoryFromStream(fs, destinationDirectoryName);
         }
 
-        public static void ExtractToDirectory(byte[] sourceArchiveBinaries, string yaz0FullPath)
+        /// <summary>
+        /// RARCファイル形式のバイナリファイルを指定したディレクトリに展開します。
+        /// </summary>
+        /// <param name="sourceArchiveBinaries">読み込むバイナリデータ</param>
+        /// <param name="destinationDirectoryName">解凍後のファイルを保存するディレクトリ</param>
+        /// <exception cref="NullReferenceException"><paramref name="sourceArchiveBinaries"/>がNullでした。</exception>
+        public static void ExtractToDirectory(byte[]? sourceArchiveBinaries, string destinationDirectoryName)
         {
+            sourceArchiveBinaries = 
+                sourceArchiveBinaries ?? throw new NullReferenceException($"{nameof(sourceArchiveBinaries)}がNullでした。");
+
             using MemoryStream ms = new(sourceArchiveBinaries);
-            RARCArchive rarcArchive = new(ms);
-            string yaz0IncludeDirectory = Path.GetDirectoryName(yaz0FullPath);
+            ExtractToDirectoryFromStream(ms, destinationDirectoryName);
+        }
 
-            string rootDirName = Path.GetFileNameWithoutExtension(yaz0FullPath);
-            
-
-            if (!Directory.Exists(yaz0IncludeDirectory)) 
-            {
-                throw new DirectoryNotFoundException();
-            }
-
-            //ルートディレクトリの作成
-            string rootDirFullPath = Path.Combine(yaz0IncludeDirectory, rootDirName);
-            if (!Directory.Exists(rootDirFullPath)) 
-            {
-                Directory.CreateDirectory(rootDirFullPath);
-            }
-
-            //foreach (var fileEntry in rarcArchive.FileKeyValuePairs)
-            //{
-            //    using FileStream fs = new(Path.Combine(Path.Combine(destinationDirectoryName, @"Export"), fileEntry.Key), FileMode.Create);
-            //    using BinaryWriter bw = new(fs);
-            //    bw.Write(fileEntry.Value);
-            //}
-
-            Dictionary<string,string> directoryNodeDirectoryNames = new();
-            for (int dirIndex = 0; dirIndex < rarcArchive.DirectoryNodes.Length; dirIndex++) 
-            {
-                
-                if (rarcArchive.DirectoryNodes[dirIndex].ParentDirectoryName == "ROOT")
-                {
-                    //現在のディレクトリの作成
-                    string curPath = Path.Combine(rootDirFullPath, rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName);
-                    if (!Directory.Exists(curPath))
-                    {
-                        Directory.CreateDirectory(curPath);
-                    }
-                    directoryNodeDirectoryNames.Add(rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName, curPath);
-
-                    //現在のディレクトリ内のサブディレクトリの作成
-                    foreach (string subDirName in rarcArchive.DirectoryNodes[dirIndex].SubDirectories)
-                    {
-                        string subPath = Path.Combine(curPath, subDirName);
-                        if (!Directory.Exists(subPath))
-                        {
-                            Directory.CreateDirectory(subPath);
-                        }
-                        directoryNodeDirectoryNames.Add(subDirName,subPath);
-                    }
-
-                    //現在のディレクトリ内にあるファイルを生成
-                    foreach (KeyValuePair<string, byte[]> includeFile in rarcArchive.DirectoryNodes[dirIndex].IncludeFileNameBinaryPairs)
-                    {
-                        string fileFullPath = Path.Combine(curPath, includeFile.Key);
-                        using FileStream fs = new(fileFullPath, FileMode.Create);
-                        using BinaryWriter bw = new(fs);
-                        bw.Write(includeFile.Value);
-                    }
-                }
-                else 
-                {
-                    string? serchDir = directoryNodeDirectoryNames.Keys.LastOrDefault(rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName);
-
-                    if (serchDir == default)
-                    {
-                        //if (!Directory.Exists())
-                        //{
-                        //    Directory.CreateDirectory(curPath);
-                        //}
-                        Debug.WriteLine("\n\r\n\rSarchDir_DEF↓"+serchDir);
-                    }
-                    else 
-                    {
-                        Debug.WriteLine("\n\r\n\rSarchDir↓" + serchDir);
-                        Debug.WriteLine(rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName);
-                        Debug.WriteLine("////////////////////////////////////////");
-                        string parentDirFullPath = directoryNodeDirectoryNames[rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName];
-
-                        //現在のディレクトリの作成
-                        string curPath = parentDirFullPath;
-                        //string curPath = Path.Combine(parentDirFullPath, rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName);
-                        if (!Directory.Exists(curPath))
-                        {
-                            Directory.CreateDirectory(curPath);
-                            directoryNodeDirectoryNames.Add(rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName, curPath);
-                        }
-                        
-
-                        foreach (string subDirName in rarcArchive.DirectoryNodes[dirIndex].SubDirectories)
-                        {
-                            DirectoryUtil.CreateDirectoryWhenDirectoryNotExist(curPath,subDirName,out string subPath);
-                            directoryNodeDirectoryNames.Add(subDirName, subPath);
-                        }
-
-                        foreach (KeyValuePair<string, byte[]> includeFile in rarcArchive.DirectoryNodes[dirIndex].IncludeFileNameBinaryPairs)
-                        {
-                            string fileFullPath = Path.Combine(curPath, includeFile.Key);
-                            using FileStream fs = new(fileFullPath, FileMode.Create);
-                            using BinaryWriter bw = new(fs);
-                            bw.Write(includeFile.Value);
-                        }
-                    }
-                    
-                }
-            }
+        private static void ExtractToDirectoryFromStream(Stream stream ,string destinationDirectoryName) 
+        {
+            using BinaryReader br = new(stream);
+            RARCArchive rarcArchive = new(br);
+            RARCDirectorySystem.ExtractToDirectoryCore(rarcArchive, destinationDirectoryName);
         }
 
         public static RARCArchive Open(string arciveFileName) 
@@ -148,18 +62,16 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
         public static RARCArchive OpenRead(string arciveFileName) 
         {
-            using (FileStream fs = new(arciveFileName, FileMode.Open))
-            {
-                return new RARCArchive(fs);
-            };
+            using FileStream fs = new(arciveFileName, FileMode.Open);
+            using BinaryReader br = new(fs);
+            return new RARCArchive(br);
         }
 
         public static RARCArchive OpenRead(byte[] arciveBinaries)
         {
-            using (MemoryStream ms = new(arciveBinaries))
-            {
-                return new RARCArchive(ms);
-            };
+            using MemoryStream ms = new(arciveBinaries);
+            using BinaryReader br = new(ms);
+            return new RARCArchive(br);
         }
     }
 }

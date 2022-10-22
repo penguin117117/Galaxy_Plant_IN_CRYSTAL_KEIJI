@@ -19,9 +19,13 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
                 using (BinaryReader br = new(fs)) 
                 {
                     Header = new(br);
-                    if (Header.SectionName == 0x59617A30) 
+                    if (Header.SectionName == 0x59617A30)
                     {
                         Decord(br);
+                    }
+                    else 
+                    {
+                        throw new DataMisalignedException("このファイルはYaz0ファイルではありません。");
                     }
                     
                 };

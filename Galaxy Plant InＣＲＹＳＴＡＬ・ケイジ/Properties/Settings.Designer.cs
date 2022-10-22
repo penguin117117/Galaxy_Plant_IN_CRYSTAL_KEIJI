@@ -34,5 +34,41 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Properties {
                 this["GalaxyProjectPath"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("日本語")]
+        public string Language {
+            get {
+                return ((string)(this["Language"]));
+            }
+            set {
+                this["Language"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool AdvancedView {
+            get {
+                return ((bool)(this["AdvancedView"]));
+            }
+            set {
+                this["AdvancedView"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public byte GameVersion {
+            get {
+                return ((byte)(this["GameVersion"]));
+            }
+            set {
+                this["GameVersion"] = value;
+            }
+        }
     }
 }
