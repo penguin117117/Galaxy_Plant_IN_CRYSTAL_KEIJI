@@ -1,5 +1,6 @@
 ﻿using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util;
 using System.Buffers.Binary;
+using System.Text;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 {
@@ -9,7 +10,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     /// </summary>
     public class RARCHeader
     {
-
         public uint SectionName { get; private set; }
         public int FileSize { get; set; }
         public int Unknown1 { get; set; }
@@ -31,14 +31,20 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             FileDataLength_2 = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             Unknown2         = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             Unknown3         = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
+
+            if (!IsRARC())
+            {
+                byte[] littleEndian = BitConverter.GetBytes(SectionName);
+                byte[] bigEndian = littleEndian.Reverse().ToArray();
+                throw new DataMisalignedException(
+                    $"このファイルは、「RARCファイル」ではなく {Encoding.ASCII.GetString(bigEndian)}ファイルです。"
+                    );
+            }
         }
 
-        public bool IsRARC() 
+        private bool IsRARC() 
         {
             return SectionName == 0x52415243;
         }
-
-        
-
     }
 }

@@ -7,20 +7,19 @@ using System.Buffers.Binary;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 {
-    /// <summary>
-    /// 4文字,4byte,2byte,2byte,4byteで区切られるセクション。
-    /// ディレクトリの情報を格納します。
-    /// </summary>
     public class DirectoryNode
     {
         /// <summary>
-        /// ディレクトリ名の先頭4文字を大文字で表す。4文字に満たない場合は空白文字で埋められる。
+        /// ディレクトリ名の先頭4文字を大文字で表す。4文字に満たない場合は末尾を空白文字で埋める。
         /// </summary>
-        public char[] EntryShortName { get; private set; }
+        public char[] EntryNameShort { get; private set; } = new char[entryNameShortSize];
         public int DirectoryNameOffset { get; private set; }
         public ushort StringHash { get; private set; }
         public short FolderDirectoryCount { get; private set; }
         public int FirstDirectoryIndex { get; private set; }
+
+        private const byte entryNameShortSize = 4; 
+
         public string CurrentDirectoryName = string.Empty;
         public string ParentDirectoryName = string.Empty;
         public List<RARCEntry> RARCEntries = new();
@@ -31,7 +30,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         {
             return new DirectoryNode
             {
-                EntryShortName       = br.ReadChars(4),
+                EntryNameShort       = br.ReadChars(entryNameShortSize),
                 DirectoryNameOffset  = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4)),
                 StringHash           = BinaryPrimitives.ReadUInt16BigEndian(br.ReadBytes(2)),
                 FolderDirectoryCount = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2)),
