@@ -32,7 +32,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             {
 
                 Yaz0DecComboBox.Items.Add(@"ObjectData\" + Path.GetFileName(fileName));
-                Yaz0EncComboBox.Items.Add(@"ObjectData\" + Path.GetFileName(fileName));
             }
 
             //Yaz0DecComboBox.Items.Add(@"StageData\MagicGalaxy\MagicGalaxyLight.arc");
@@ -143,11 +142,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             }
             Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
             rarcArchive = RARCFile.OpenRead(yaz0Decord.BinaryData);
-            RARCDirectorySystem.ExtractToDirectoryCore(rarcArchive,_yaz0DecFullPath);
-
-            //RARCFile.ExtractToDirectory(yaz0Decord.BinaryData, _yaz0DecFullPath);
-            //byte[]? nullTest = null;
-            //RARCFile.ExtractToDirectory(nullTest, _yaz0DecFullPath);
+            RARCArchiveDataEdit rarcArchiveDataEdit = new();
+            rarcArchiveDataEdit.ExtractToDictionary(rarcArchive,_yaz0DecFullPath);
             RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。";
             RARCStatusToolStripStatusLabel.ForeColor = Color.Green;
 
