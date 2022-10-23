@@ -34,7 +34,7 @@
             this.Yaz0GroupBox = new System.Windows.Forms.GroupBox();
             this.Yaz0EncButton = new System.Windows.Forms.Button();
             this.Yaz0FilePathLabel = new System.Windows.Forms.Label();
-            this.Yaz0DecRARCExtButton = new System.Windows.Forms.Button();
+            this.Yaz0DecRARCExtDirectoryButton = new System.Windows.Forms.Button();
             this.Yaz0DecComboBox = new System.Windows.Forms.ComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusTextToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
@@ -43,7 +43,11 @@
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.RARCGroupBox = new System.Windows.Forms.GroupBox();
+            this.RARCExtDirectoryButton = new System.Windows.Forms.Button();
+            this.Yaz0DecRARCExtDictionaryButton = new System.Windows.Forms.Button();
+            this.RARCExtDictinaryButton = new System.Windows.Forms.Button();
             this.RARCArchiveGroupBox = new System.Windows.Forms.GroupBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.Yaz0GroupBox.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -110,15 +114,15 @@
             this.Yaz0FilePathLabel.TabIndex = 3;
             this.Yaz0FilePathLabel.Text = "TargetFilePath";
             // 
-            // Yaz0DecRARCExtButton
+            // Yaz0DecRARCExtDirectoryButton
             // 
-            this.Yaz0DecRARCExtButton.Location = new System.Drawing.Point(6, 46);
-            this.Yaz0DecRARCExtButton.Name = "Yaz0DecRARCExtButton";
-            this.Yaz0DecRARCExtButton.Size = new System.Drawing.Size(148, 23);
-            this.Yaz0DecRARCExtButton.TabIndex = 6;
-            this.Yaz0DecRARCExtButton.Text = "Yaz0DecRARCExt";
-            this.Yaz0DecRARCExtButton.UseVisualStyleBackColor = true;
-            this.Yaz0DecRARCExtButton.Click += new System.EventHandler(this.Yaz0DecRARCExtButton_Click);
+            this.Yaz0DecRARCExtDirectoryButton.Location = new System.Drawing.Point(6, 46);
+            this.Yaz0DecRARCExtDirectoryButton.Name = "Yaz0DecRARCExtDirectoryButton";
+            this.Yaz0DecRARCExtDirectoryButton.Size = new System.Drawing.Size(148, 23);
+            this.Yaz0DecRARCExtDirectoryButton.TabIndex = 6;
+            this.Yaz0DecRARCExtDirectoryButton.Text = "Yaz0DecRARCExtDirectory";
+            this.Yaz0DecRARCExtDirectoryButton.UseVisualStyleBackColor = true;
+            this.Yaz0DecRARCExtDirectoryButton.Click += new System.EventHandler(this.Yaz0DecRARCExtDirectoryButton_Click);
             // 
             // Yaz0DecComboBox
             // 
@@ -168,14 +172,14 @@
             this.textBox1.Multiline = true;
             this.textBox1.Name = "textBox1";
             this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(394, 259);
+            this.textBox1.Size = new System.Drawing.Size(394, 142);
             this.textBox1.TabIndex = 10;
             // 
             // label1
             // 
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Yu Gothic UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.label1.Location = new System.Drawing.Point(287, 50);
+            this.label1.Location = new System.Drawing.Point(287, 168);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(119, 15);
             this.label1.TabIndex = 11;
@@ -183,10 +187,14 @@
             // 
             // RARCGroupBox
             // 
+            this.RARCGroupBox.Controls.Add(this.label2);
+            this.RARCGroupBox.Controls.Add(this.RARCExtDirectoryButton);
+            this.RARCGroupBox.Controls.Add(this.Yaz0DecRARCExtDictionaryButton);
+            this.RARCGroupBox.Controls.Add(this.RARCExtDictinaryButton);
             this.RARCGroupBox.Controls.Add(this.RARCArchiveGroupBox);
             this.RARCGroupBox.Controls.Add(this.Yaz0DecComboBox);
             this.RARCGroupBox.Controls.Add(this.label1);
-            this.RARCGroupBox.Controls.Add(this.Yaz0DecRARCExtButton);
+            this.RARCGroupBox.Controls.Add(this.Yaz0DecRARCExtDirectoryButton);
             this.RARCGroupBox.Location = new System.Drawing.Point(12, 104);
             this.RARCGroupBox.Name = "RARCGroupBox";
             this.RARCGroupBox.Size = new System.Drawing.Size(418, 397);
@@ -194,16 +202,56 @@
             this.RARCGroupBox.TabStop = false;
             this.RARCGroupBox.Text = "RARCFile";
             // 
+            // RARCExtDirectoryButton
+            // 
+            this.RARCExtDirectoryButton.Location = new System.Drawing.Point(6, 75);
+            this.RARCExtDirectoryButton.Name = "RARCExtDirectoryButton";
+            this.RARCExtDirectoryButton.Size = new System.Drawing.Size(148, 23);
+            this.RARCExtDirectoryButton.TabIndex = 15;
+            this.RARCExtDirectoryButton.Text = "RARCExtDirectory";
+            this.RARCExtDirectoryButton.UseVisualStyleBackColor = true;
+            this.RARCExtDirectoryButton.Click += new System.EventHandler(this.RARCExtDirectoryButton_Click);
+            // 
+            // Yaz0DecRARCExtDictionaryButton
+            // 
+            this.Yaz0DecRARCExtDictionaryButton.Location = new System.Drawing.Point(258, 46);
+            this.Yaz0DecRARCExtDictionaryButton.Name = "Yaz0DecRARCExtDictionaryButton";
+            this.Yaz0DecRARCExtDictionaryButton.Size = new System.Drawing.Size(148, 23);
+            this.Yaz0DecRARCExtDictionaryButton.TabIndex = 14;
+            this.Yaz0DecRARCExtDictionaryButton.Text = "Yaz0DecRARCExtDictionary";
+            this.Yaz0DecRARCExtDictionaryButton.UseVisualStyleBackColor = true;
+            this.Yaz0DecRARCExtDictionaryButton.Click += new System.EventHandler(this.Yaz0DecRARCExtDictionaryButton_Click);
+            // 
+            // RARCExtDictinaryButton
+            // 
+            this.RARCExtDictinaryButton.Location = new System.Drawing.Point(258, 75);
+            this.RARCExtDictinaryButton.Name = "RARCExtDictinaryButton";
+            this.RARCExtDictinaryButton.Size = new System.Drawing.Size(148, 23);
+            this.RARCExtDictinaryButton.TabIndex = 13;
+            this.RARCExtDictinaryButton.Text = "RARCExtDictinary";
+            this.RARCExtDictinaryButton.UseVisualStyleBackColor = true;
+            this.RARCExtDictinaryButton.Click += new System.EventHandler(this.RARCExtDictinaryButton_Click);
+            // 
             // RARCArchiveGroupBox
             // 
             this.RARCArchiveGroupBox.Controls.Add(this.comboBox1);
             this.RARCArchiveGroupBox.Controls.Add(this.textBox1);
-            this.RARCArchiveGroupBox.Location = new System.Drawing.Point(6, 75);
+            this.RARCArchiveGroupBox.Location = new System.Drawing.Point(6, 186);
             this.RARCArchiveGroupBox.Name = "RARCArchiveGroupBox";
-            this.RARCArchiveGroupBox.Size = new System.Drawing.Size(406, 316);
+            this.RARCArchiveGroupBox.Size = new System.Drawing.Size(406, 205);
             this.RARCArchiveGroupBox.TabIndex = 12;
             this.RARCArchiveGroupBox.TabStop = false;
             this.RARCArchiveGroupBox.Text = "RARCArchive";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(6, 101);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(331, 45);
+            this.label2.TabIndex = 16;
+            this.label2.Text = "XXXXDirectoryはファイルの生成と内部データの取り込みを行います。\r\nXXXXDictionaryは内部データの取り込みのみ行います。\r\n生成機能と読み" +
+    "込みの機能で分かれています。";
             // 
             // IODebugForm
             // 
@@ -241,7 +289,7 @@
         private ComboBox Yaz0DecComboBox;
         private Button Yaz0EncButton;
         private ToolStripMenuItem ファイルToolStripMenuItem;
-        private Button Yaz0DecRARCExtButton;
+        private Button Yaz0DecRARCExtDirectoryButton;
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel StatusTextToolStripStatusLabel;
         private ToolStripStatusLabel RARCStatusToolStripStatusLabel;
@@ -250,5 +298,9 @@
         private Label label1;
         private GroupBox RARCGroupBox;
         private GroupBox RARCArchiveGroupBox;
+        private Button RARCExtDictinaryButton;
+        private Button Yaz0DecRARCExtDictionaryButton;
+        private Button RARCExtDirectoryButton;
+        private Label label2;
     }
 }

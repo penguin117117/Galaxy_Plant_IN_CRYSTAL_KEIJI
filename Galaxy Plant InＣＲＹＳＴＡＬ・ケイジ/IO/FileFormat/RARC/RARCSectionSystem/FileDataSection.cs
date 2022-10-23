@@ -25,8 +25,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
                     if ((rarcEntry.EntryType & RARCEntryType.File) == RARCEntryType.File)
                     {
                         //ファイルデータの取得
-                        byte[] fileBinaryData = br.ReadBytes((int)rarcEntry.Argments.Item2);
-                        BinarySystem.PaddingSkip(br.BaseStream);
+
+                        long originPos = br.BaseStream.Position;
+
+                        long fileEndPos = originPos + rarcEntry.Argments.Item2;
+
+                        int padding = (int)BinarySystem.GetPaddingReaderCount(fileEndPos);
+
+                        byte[] fileBinaryData = br.ReadBytes((int)rarcEntry.Argments.Item2+padding);
+                        //BinarySystem.PaddingSkip(br.BaseStream);
 
                         //ファイル名の取得
                         string fileName = stringTableSection.ReadNullEnd(rarcEntry.NameOffset);

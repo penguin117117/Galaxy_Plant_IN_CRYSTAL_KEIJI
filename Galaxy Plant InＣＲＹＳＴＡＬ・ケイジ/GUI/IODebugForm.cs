@@ -130,7 +130,39 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             
         }
 
-        private void Yaz0DecRARCExtButton_Click(object sender, EventArgs e)
+        private void RARCExtDictinaryButton_Click(object sender, EventArgs e)
+        {
+            RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
+            RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
+
+            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
+            if (File.Exists(_yaz0DecFullPath) == false)
+            {
+                return;
+            }
+            //Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
+            rarcArchive = RARCFile.OpenRead(_yaz0DecFullPath);
+            RARCArchiveDataEdit rarcArchiveDataEdit = new();
+            rarcArchiveDataEdit.ExtractToDictionary(rarcArchive, _yaz0DecFullPath);
+            RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。";
+            RARCStatusToolStripStatusLabel.ForeColor = Color.Green;
+
+
+            comboBox1.Items.Clear();
+            foreach (KeyValuePair<string, byte[]> keyValuePair in rarcArchive.FilePathBinaryDataPairs)
+            {
+                comboBox1.Items.Add(keyValuePair.Key);
+            }
+            if (rarcArchive.FilePathBinaryDataPairs.Count < 1)
+            {
+                return;
+            }
+
+            comboBox1.Enabled = true;
+            comboBox1.SelectedItem = rarcArchive.FilePathBinaryDataPairs.Keys.First();
+        }
+
+        private void Yaz0DecRARCExtDictionaryButton_Click(object sender, EventArgs e)
         {
             RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
             RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
@@ -143,7 +175,71 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
             rarcArchive = RARCFile.OpenRead(yaz0Decord.BinaryData);
             RARCArchiveDataEdit rarcArchiveDataEdit = new();
-            rarcArchiveDataEdit.ExtractToDictionary(rarcArchive,_yaz0DecFullPath);
+            rarcArchiveDataEdit.ExtractToDictionary(rarcArchive, _yaz0DecFullPath);
+            RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。";
+            RARCStatusToolStripStatusLabel.ForeColor = Color.Green;
+
+
+            comboBox1.Items.Clear();
+            foreach (KeyValuePair<string, byte[]> keyValuePair in rarcArchive.FilePathBinaryDataPairs)
+            {
+                comboBox1.Items.Add(keyValuePair.Key);
+            }
+            if (rarcArchive.FilePathBinaryDataPairs.Count < 1)
+            {
+                return;
+            }
+
+            comboBox1.Enabled = true;
+            comboBox1.SelectedItem = rarcArchive.FilePathBinaryDataPairs.Keys.First();
+        }
+
+        private void RARCExtDirectoryButton_Click(object sender, EventArgs e)
+        {
+            RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
+            RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
+
+            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
+            if (File.Exists(_yaz0DecFullPath) == false)
+            {
+                return;
+            }
+            //Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
+            rarcArchive = RARCFile.OpenRead(_yaz0DecFullPath);
+            RARCArchiveDataEdit rarcArchiveDataEdit = new();
+            rarcArchiveDataEdit.ExtractToDirectory(rarcArchive, _yaz0DecFullPath);
+            RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。";
+            RARCStatusToolStripStatusLabel.ForeColor = Color.Green;
+
+
+            comboBox1.Items.Clear();
+            foreach (KeyValuePair<string, byte[]> keyValuePair in rarcArchive.FilePathBinaryDataPairs)
+            {
+                comboBox1.Items.Add(keyValuePair.Key);
+            }
+            if (rarcArchive.FilePathBinaryDataPairs.Count < 1)
+            {
+                return;
+            }
+
+            comboBox1.Enabled = true;
+            comboBox1.SelectedItem = rarcArchive.FilePathBinaryDataPairs.Keys.First();
+        }
+
+        private void Yaz0DecRARCExtDirectoryButton_Click(object sender, EventArgs e)
+        {
+            RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
+            RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
+
+            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
+            if (File.Exists(_yaz0DecFullPath) == false)
+            {
+                return;
+            }
+            Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
+            rarcArchive = RARCFile.OpenRead(yaz0Decord.BinaryData);
+            RARCArchiveDataEdit rarcArchiveDataEdit = new();
+            rarcArchiveDataEdit.ExtractToDirectory(rarcArchive,_yaz0DecFullPath);
             RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。";
             RARCStatusToolStripStatusLabel.ForeColor = Color.Green;
 
