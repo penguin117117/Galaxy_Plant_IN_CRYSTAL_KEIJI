@@ -11,7 +11,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     /// <summary>
     /// RARCにアーカイブされているフォルダとファイルの情報を格納しているクラス。
     /// </summary>
-    public class RARCEntry
+    public class DirectoryItem
     {
         /// <summary>
         /// ファイルのIDを格納します。サブディレクトリの場合は、0xFFFF
@@ -34,7 +34,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         public (uint, uint) Argments { get; private set; }
         public int Padding { get; private set; }
 
-        public RARCEntry(BinaryReader br) 
+        public DirectoryItem(BinaryReader br) 
         {
             ID = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2));
             Hash = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2));

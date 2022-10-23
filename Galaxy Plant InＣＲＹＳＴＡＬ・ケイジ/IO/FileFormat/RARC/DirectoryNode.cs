@@ -15,14 +15,14 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         public char[] EntryNameShort { get; private set; } = new char[entryNameShortSize];
         public int DirectoryNameOffset { get; private set; }
         public ushort StringHash { get; private set; }
-        public short FolderDirectoryCount { get; private set; }
+        public short DirectoryNodeEntriesCount { get; private set; }
         public int FirstDirectoryIndex { get; private set; }
 
         private const byte entryNameShortSize = 4; 
 
         public string CurrentDirectoryName = string.Empty;
         public string ParentDirectoryName = string.Empty;
-        public List<RARCEntry> RARCEntries = new();
+        public List<DirectoryItem> DirectoryItems = new();
         public Dictionary<(string,uint), byte[]>IncludeFileNameBinaryPairs = new();
         public List<string> SubDirectories = new();
 
@@ -33,7 +33,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
                 EntryNameShort       = br.ReadChars(entryNameShortSize),
                 DirectoryNameOffset  = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4)),
                 StringHash           = BinaryPrimitives.ReadUInt16BigEndian(br.ReadBytes(2)),
-                FolderDirectoryCount = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2)),
+                DirectoryNodeEntriesCount = BinaryPrimitives.ReadInt16BigEndian(br.ReadBytes(2)),
                 FirstDirectoryIndex  = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4))
             };
         }

@@ -21,6 +21,21 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
             }
         }
 
+        public static long GetPaddingReaderCount(long pos) 
+        {
+            long addPos = 0;
+            if (pos % 32f != 0)
+            {
+                while (true)
+                {
+                    if (pos % 32f == 0) break;
+                    pos++;
+                    addPos++;
+                }
+            }
+            return addPos;
+        }
+
         public static string ReadStringNullEnd(BinaryReader br , long nameoffset , bool isLastItem = false) {
             var oldpos = br.BaseStream.Position;
 
