@@ -40,6 +40,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusTextToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.RARCStatusToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             this.menuStrip1.SuspendLayout();
             this.Yaz0GroupBox.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -115,7 +117,7 @@
             // 
             // Yaz0DecRARCExtButton
             // 
-            this.Yaz0DecRARCExtButton.Location = new System.Drawing.Point(320, 372);
+            this.Yaz0DecRARCExtButton.Location = new System.Drawing.Point(172, 155);
             this.Yaz0DecRARCExtButton.Name = "Yaz0DecRARCExtButton";
             this.Yaz0DecRARCExtButton.Size = new System.Drawing.Size(148, 23);
             this.Yaz0DecRARCExtButton.TabIndex = 6;
@@ -126,7 +128,7 @@
             // Yaz0DecComboBox
             // 
             this.Yaz0DecComboBox.FormattingEnabled = true;
-            this.Yaz0DecComboBox.Location = new System.Drawing.Point(12, 373);
+            this.Yaz0DecComboBox.Location = new System.Drawing.Point(18, 126);
             this.Yaz0DecComboBox.Name = "Yaz0DecComboBox";
             this.Yaz0DecComboBox.Size = new System.Drawing.Size(302, 23);
             this.Yaz0DecComboBox.TabIndex = 4;
@@ -155,11 +157,32 @@
             this.RARCStatusToolStripStatusLabel.Size = new System.Drawing.Size(162, 17);
             this.RARCStatusToolStripStatusLabel.Text = "ファイルが読み込まれていません。";
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(326, 155);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(462, 23);
+            this.comboBox1.TabIndex = 9;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(326, 184);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBox1.Size = new System.Drawing.Size(462, 241);
+            this.textBox1.TabIndex = 10;
+            // 
             // IODebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.Yaz0EncComboBox);
             this.Controls.Add(this.Yaz0DecRARCExtButton);
             this.Controls.Add(this.statusStrip1);
@@ -194,5 +217,7 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel StatusTextToolStripStatusLabel;
         private ToolStripStatusLabel RARCStatusToolStripStatusLabel;
+        private ComboBox comboBox1;
+        private TextBox textBox1;
     }
 }
