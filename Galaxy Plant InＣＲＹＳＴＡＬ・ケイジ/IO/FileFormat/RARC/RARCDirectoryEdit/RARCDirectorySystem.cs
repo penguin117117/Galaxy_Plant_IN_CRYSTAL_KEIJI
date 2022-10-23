@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARCSectionSystem;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
         /// <param name="destinationDirectoryName"></param>
         /// <returns><see cref="string"/>型 作業ディレクトリのフルパス</returns>
         /// <exception cref="DirectoryNotFoundException"></exception>
-        private static string GetWorkingDirectory(string destinationDirectoryName) 
+        private static string GetExtractTargetDirectory(string destinationDirectoryName) 
         {
             string? rarcFileDirectory = Path.GetDirectoryName(destinationDirectoryName);
             if (!Directory.Exists(rarcFileDirectory))
@@ -42,138 +43,117 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
         /// <exception cref="DirectoryNotFoundException"></exception>
         public static void ExtractToDirectoryCore(RARCArchive rarcArchive, string destinationDirectoryName) 
         {
-            string? rarcExtractDirectoryPath = 
-                GetWorkingDirectory(destinationDirectoryName);
+            string? rarcExtractDirectoryFullPath = GetExtractTargetDirectory(destinationDirectoryName);
 
-            string rootDirectoryName = 
-                Path.GetFileNameWithoutExtension(destinationDirectoryName);
+            string workingDirectoryName = Path.GetFileNameWithoutExtension(destinationDirectoryName);
 
-            string rootDirFullPath = 
-                Path.Combine(rarcExtractDirectoryPath, rootDirectoryName);
+            string workingDirFullPath = Path.Combine(rarcExtractDirectoryFullPath, workingDirectoryName);
 
-            CreateDirectoryWhenDirectoryNotExist(rootDirFullPath);
+            CreateDirectoryWhenDirectoryNotExist(workingDirFullPath);
 
             Dictionary<(string,uint), string> directoryNodeDirectoryNames = new();
 
-            for (int dirIndex = 0; dirIndex < rarcArchive.DirectoryNodes.Length; dirIndex++)
+            for (int dirIndex = 0; dirIndex < rarcArchive.DirectoryNodeSection.DirectoryNodes.Length; dirIndex++)
             {
-                uint curDirectoryID = rarcArchive.DirectoryNodes[dirIndex].
-                    RARCEntries[rarcArchive.DirectoryNodes[dirIndex].RARCEntries.Count() - 2].Argments.Item1;
 
-                if (rarcArchive.DirectoryNodes[dirIndex].ParentDirectoryName == "ROOT")
+                uint currentDirectoryID = rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].DirectoryItems[^2].Argments.Item1;
+
+                if (rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].ParentDirectoryName == "ROOT")
                 {
                     //ルートディレクトリの作成
-                    string curPath = Path.Combine(rootDirFullPath, rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName);
-                    if (!Directory.Exists(curPath))
+                    string rootDirectoryFullPath = Path.Combine(workingDirFullPath, rarcArchive.StringTableSection.ReadRootName());
+                    if (!Directory.Exists(rootDirectoryFullPath))
                     {
-                        Directory.CreateDirectory(curPath);
+                        Directory.CreateDirectory(rootDirectoryFullPath);
                     }
-                    directoryNodeDirectoryNames.Add((rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName, curDirectoryID), curPath);
+                    directoryNodeDirectoryNames.Add((rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].CurrentDirectoryName, currentDirectoryID), rootDirectoryFullPath);
 
                     //現在のディレクトリ内のサブディレクトリの作成
-                    foreach (string subDirName in rarcArchive.DirectoryNodes[dirIndex].SubDirectories)
+                    foreach (string subDirName in rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].SubDirectories)
                     {
-                        string subPath = Path.Combine(curPath, subDirName);
+                        string subPath = Path.Combine(rootDirectoryFullPath, subDirName);
                         if (!Directory.Exists(subPath))
                         {
                             Directory.CreateDirectory(subPath);
                         }
 
-                        directoryNodeDirectoryNames.Add((subDirName, (uint)rarcArchive.DirectoryNodes[dirIndex].SubDirectories.IndexOf(subDirName)), subPath);
-
-                        //foreach (var a in rarcArchive.DirectoryNodes[dirIndex].RARCEntries) 
-                        //{
-                        //    if(a.EntryType)
-
-                        //}
+                        directoryNodeDirectoryNames.Add((subDirName, (uint)rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].SubDirectories.IndexOf(subDirName)), subPath);
 
                     }
 
                     //現在のディレクトリ内にあるファイルを生成
-                    foreach (KeyValuePair<(string,uint), byte[]> includeFile in rarcArchive.DirectoryNodes[dirIndex].IncludeFileNameBinaryPairs)
+                    foreach (KeyValuePair<(string,uint), byte[]> includeFile in rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].IncludeFileNameBinaryPairs)
                     {
-                        string fileFullPath = Path.Combine(curPath, includeFile.Key.Item1);
-                        Debug.WriteLine(fileFullPath);
+                        string fileFullPath = Path.Combine(rootDirectoryFullPath, includeFile.Key.Item1);
                         using FileStream fs = new(fileFullPath, FileMode.Create);
                         using BinaryWriter bw = new(fs);
                         bw.Write(includeFile.Value);
+                        Debug.WriteLine(fileFullPath.Substring(workingDirFullPath.Length));
+                        rarcArchive.FilePathBinaryDataPairs.Add(fileFullPath.Substring(workingDirFullPath.Length), includeFile.Value);
                     }
                 }
                 else
                 {
                     var FoundSerchDirectory = directoryNodeDirectoryNames.ContainsKey
-                        ((rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName,curDirectoryID));
+                        ((rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].CurrentDirectoryName,currentDirectoryID));
 
                     if (!FoundSerchDirectory)
                     {
-                        int rarcEntryCount = rarcArchive.DirectoryNodes[dirIndex].RARCEntries.Count();
-                        uint parentDirectoryIndex =rarcArchive.DirectoryNodes[dirIndex].RARCEntries[rarcEntryCount -1].Argments.Item1;
+                        int rarcEntryCount = rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].DirectoryItems.Count();
+                        uint parentDirectoryIndex =rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].DirectoryItems[rarcEntryCount -1].Argments.Item1;
                         
-                        string parentDirFullPath = directoryNodeDirectoryNames[(rarcArchive.DirectoryNodes[parentDirectoryIndex].CurrentDirectoryName, parentDirectoryIndex)];
-                        string curFullPath = Path.Combine(parentDirFullPath, rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName);
-                        //var a = Path.Combine(rarcArchive.DirectoryNodes[(int)rarcArchive.DirectoryNodes[dirIndex].RARCEntries[rarcArchive.DirectoryNodes[dirIndex].RARCEntries.Count() -2] , rarcArchive.DirectoryNodes[dirIndex].SubDirectories[(int)directoryID]);
+                        string parentDirFullPath = directoryNodeDirectoryNames[(rarcArchive.DirectoryNodeSection.DirectoryNodes[parentDirectoryIndex].CurrentDirectoryName, parentDirectoryIndex)];
+                        string curFullPath = Path.Combine(parentDirFullPath, rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].CurrentDirectoryName);
                         if (!Directory.Exists(curFullPath))
                         {
                             Directory.CreateDirectory(curFullPath);
                         }
-                        directoryNodeDirectoryNames.Add((rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName, curDirectoryID), curFullPath);
+                        directoryNodeDirectoryNames.Add((rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].CurrentDirectoryName, currentDirectoryID), curFullPath);
 
-                        foreach (string subDirName in rarcArchive.DirectoryNodes[dirIndex].SubDirectories)
+                        foreach (string subDirName in rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].SubDirectories)
                         {
-                            //var a = rarcArchive.DirectoryNodes[dirIndex].SubDirectories.IndexOf(subDirName);
-                            //uint SubDirectoryID = rarcArchive.DirectoryNodes[dirIndex].
-                            //    RARCEntries[rarcArchive.DirectoryNodes[dirIndex].RARCEntries.Count() - 2 /*- (1 + a)*/].Argments.Item1;
                             DirectoryUtil.CreateDirectoryWhenDirectoryNotExist(curFullPath, subDirName, out string subPath);
-                            directoryNodeDirectoryNames.Add((subDirName, curDirectoryID), subPath);
+                            directoryNodeDirectoryNames.Add((subDirName, currentDirectoryID), subPath);
                         }
 
-                        foreach (KeyValuePair<(string, uint), byte[]> includeFile in rarcArchive.DirectoryNodes[dirIndex].IncludeFileNameBinaryPairs)
+                        foreach (KeyValuePair<(string, uint), byte[]> includeFile in rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].IncludeFileNameBinaryPairs)
                         {
                             string fileFullPath = Path.Combine(curFullPath, includeFile.Key.Item1);
-                            Debug.WriteLine(fileFullPath);
+                            //Debug.WriteLine(fileFullPath);
                             using FileStream fs = new(fileFullPath, FileMode.Create);
                             using BinaryWriter bw = new(fs);
                             bw.Write(includeFile.Value);
+                            Debug.WriteLine(fileFullPath.Substring(workingDirFullPath.Length));
+                            rarcArchive.FilePathBinaryDataPairs.Add(fileFullPath.Substring(workingDirFullPath.Length), includeFile.Value);
                         }
-
-                        //Debug.WriteLine("\n\r\n\rSarchDir_DEF↓" + serchDir);
-                        Debug.WriteLine("DEF//////////////////////////////////////");
                     }
                     else
                     {
-                        //Debug.WriteLine("\n\r\n\rSarchDir↓" + serchDir);
-                        //Debug.WriteLine(rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName);
-                        //Debug.WriteLine("////////////////////////////////////////");
-
-                        string parentDirFullPath = directoryNodeDirectoryNames[(rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName, curDirectoryID)];
-                            //= directoryNodeDirectoryNames[serchDirectory/*(rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName, directoryID)*/];
-
+                        string parentDirFullPath = directoryNodeDirectoryNames[(rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].CurrentDirectoryName, currentDirectoryID)];
+                        
                         //現在のディレクトリの作成
                         string curPath = parentDirFullPath;
-                        //string curPath = Path.Combine(parentDirFullPath, rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName);
                         if (!Directory.Exists(curPath))
                         {
                             Directory.CreateDirectory(curPath);
                             
                         }
-                        directoryNodeDirectoryNames.Add((rarcArchive.DirectoryNodes[dirIndex].CurrentDirectoryName, curDirectoryID), curPath);
+                        directoryNodeDirectoryNames.Add((rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].CurrentDirectoryName, currentDirectoryID), curPath);
 
-                        foreach (string subDirName in rarcArchive.DirectoryNodes[dirIndex].SubDirectories)
+                        foreach (string subDirName in rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].SubDirectories)
                         {
-                            //var a = rarcArchive.DirectoryNodes[dirIndex].SubDirectories.IndexOf(subDirName);
-                            //uint SubDirectoryID = rarcArchive.DirectoryNodes[dirIndex].
-                            //    RARCEntries[rarcArchive.DirectoryNodes[dirIndex].RARCEntries.Count() - 2 /*- (1 + a)*/].Argments.Item1;
                             DirectoryUtil.CreateDirectoryWhenDirectoryNotExist(curPath, subDirName, out string subPath);
-                            directoryNodeDirectoryNames.Add((subDirName,curDirectoryID), subPath);
+                            directoryNodeDirectoryNames.Add((subDirName,currentDirectoryID), subPath);
                         }
 
-                        foreach (KeyValuePair<(string,uint), byte[]> includeFile in rarcArchive.DirectoryNodes[dirIndex].IncludeFileNameBinaryPairs)
+                        foreach (KeyValuePair<(string,uint), byte[]> includeFile in rarcArchive.DirectoryNodeSection.DirectoryNodes[dirIndex].IncludeFileNameBinaryPairs)
                         {
                             string fileFullPath = Path.Combine(curPath, includeFile.Key.Item1);
-                            Debug.WriteLine(fileFullPath);
                             using FileStream fs = new(fileFullPath, FileMode.Create);
                             using BinaryWriter bw = new(fs);
                             bw.Write(includeFile.Value);
+                            Debug.WriteLine(fileFullPath.Substring(workingDirFullPath.Length));
+                            rarcArchive.FilePathBinaryDataPairs.Add(fileFullPath.Substring(workingDirFullPath.Length), includeFile.Value);
                         }
                     }
 
