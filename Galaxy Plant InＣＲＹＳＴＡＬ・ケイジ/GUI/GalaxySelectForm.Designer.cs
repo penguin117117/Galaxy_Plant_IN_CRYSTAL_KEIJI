@@ -145,7 +145,7 @@
 
         #endregion
 
-        private MenuStrip MainMenuStrip;
+        private new MenuStrip MainMenuStrip;
         private ToolStripMenuItem ファイルToolStripMenuItem;
         private StatusStrip statusStrip1;
         private Panel MainPanel;
