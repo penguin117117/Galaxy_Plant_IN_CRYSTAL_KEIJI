@@ -18,6 +18,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
     {
         private string? _yaz0DecFullPath, _yaz0EncFullPath;
         private string[] _objectDataFilesNameArray = Array.Empty<string>();
+        private Dictionary<string, string[]> filesInSubfolders = new();
         private RARCArchive? rarcArchive = null;
 
         public IODebugForm()
@@ -28,18 +29,56 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 
             Yaz0GroupBox.AllowDrop = true;
 
-            var objectDataDirPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\");
+            var projectDirectories = Directory.GetDirectories(Properties.Settings.Default.GalaxyProjectPath);
+            foreach (string projectSubDirectoryFullPath in projectDirectories) 
+            {
+                if (Directory.Exists(projectSubDirectoryFullPath)) 
+                {
+                    var projectSubDirectoryName = Path.GetFileName(projectSubDirectoryFullPath);
+
+
+                    var files = Directory.GetFiles(projectSubDirectoryFullPath);
+
+                    filesInSubfolders.Add(projectSubDirectoryName, files);
+                    ProjectDirectoryComboBox.Items.Add(projectSubDirectoryName);
+                }
+            }
+            if (ProjectDirectoryComboBox.Items.Count < 1) 
+            {
+                return;
+            }
+            ProjectDirectoryComboBox.SelectedIndex = 0;
+
+            SetRARCDecComboBoxItems();
+            
+            comboBox1.Enabled = false;
+        }
+
+        private void SetRARCDecComboBoxItems() 
+        {
+            if (ProjectDirectoryComboBox.SelectedItem == null) 
+            {
+                return;
+            }
+
+            var objectDataDirPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, (string)ProjectDirectoryComboBox.SelectedItem);
+            Debug.WriteLine(objectDataDirPath);
             _objectDataFilesNameArray = Directory.GetFiles(objectDataDirPath);
             foreach (string fileName in _objectDataFilesNameArray)
             {
-                Yaz0DecComboBox.Items.Add(@"ObjectData\" + Path.GetFileName(fileName));
+                RARCDecComboBox.Items.Add($"{ProjectDirectoryComboBox.SelectedItem}\\{Path.GetFileName(fileName)}");
             }
 
-            //Yaz0DecComboBox.Items.Add(@"StageData\MagicGalaxy\MagicGalaxyLight.arc");
-            Yaz0DecComboBox.Items.Add(@"StageData\IslandFleetGalaxy\IslandFleetGalaxyScenario.arc");
-            Yaz0DecComboBox.Items.Add(@"StageData\IslandFleetGalaxy\IslandFleetGalaxyMap.arc");
-            Yaz0DecComboBox.SelectedIndex = 0;
-            comboBox1.Enabled = false;
+            if (RARCDecComboBox.Items.Count > 0)
+            {
+                RARCDecComboBox.SelectedIndex = 0;
+                RARCDecComboBox.Enabled = true;
+            }
+            else 
+            {
+                RARCDecComboBox.Enabled = false;
+            }
+                
         }
 
         private void ButtonDisable()
@@ -115,12 +154,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            if (rarcArchive == null) return;
             textBox1.Text = string.Empty;
             byte count = 0;
             Debug.WriteLine(comboBox1.SelectedItem);
-            StringBuilder sb = new StringBuilder();
-            foreach (byte byteData in rarcArchive.FilePathBinaryDataPairs[comboBox1.SelectedItem.ToString()])
+            StringBuilder sb = new();
+            foreach (byte byteData in rarcArchive.FilePathBinaryDataPairs[(string)comboBox1.SelectedItem])
             {
                 if (count == 15)
                 {
@@ -145,7 +184,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
             RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
 
-            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
+            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, RARCDecComboBox.Text);
             if (File.Exists(_yaz0DecFullPath) == false)
             {
                 return;
@@ -192,12 +231,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
             RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
 
-            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
+            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, RARCDecComboBox.Text);
             if (File.Exists(_yaz0DecFullPath) == false)
             {
                 return;
             }
-            Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
+            Yaz0Decord? yaz0Decord = new(_yaz0DecFullPath);
             rarcArchive = RARCFile.OpenRead(yaz0Decord.BinaryData);
             RARCArchiveDataEdit rarcArchiveDataEdit = new();
             rarcArchiveDataEdit.ExtractToDictionary(rarcArchive, _yaz0DecFullPath);
@@ -225,13 +264,14 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
             RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
 
-            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
+            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, RARCDecComboBox.Text);
             if (File.Exists(_yaz0DecFullPath) == false)
             {
                 return;
             }
             //Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
             rarcArchive = RARCFile.OpenRead(_yaz0DecFullPath);
+            if (rarcArchive == null) return;
             RARCArchiveDataEdit rarcArchiveDataEdit = new();
             rarcArchiveDataEdit.ExtractToDirectory(rarcArchive, _yaz0DecFullPath);
             RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。";
@@ -257,7 +297,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             RARCStatusToolStripStatusLabel.Text = Path.GetFileName(_yaz0DecFullPath) + "を展開中・・・";
             RARCStatusToolStripStatusLabel.ForeColor = Color.Black;
 
-            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, Yaz0DecComboBox.Text);
+            _yaz0DecFullPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, RARCDecComboBox.Text);
             if (File.Exists(_yaz0DecFullPath) == false)
             {
                 return;
@@ -284,6 +324,14 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             comboBox1.SelectedItem = rarcArchive.FilePathBinaryDataPairs.Keys.First();
 
 
+        }
+
+        private void ProjectDirectoryComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            RARCDecComboBox.Items.Clear();
+            RARCDecComboBox.SelectedText = String.Empty;
+            SetRARCDecComboBoxItems();
+            
         }
 
         private void Yaz0EncButton_Click(object sender, EventArgs e)
