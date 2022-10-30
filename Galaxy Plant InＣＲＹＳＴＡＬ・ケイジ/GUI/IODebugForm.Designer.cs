@@ -39,8 +39,8 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.StatusTextToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.RARCStatusToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.RARCInFilesComboBox = new System.Windows.Forms.ComboBox();
+            this.RARCInFileBinaryTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.RARCGroupBox = new System.Windows.Forms.GroupBox();
             this.ProjectDirectoryComboBox = new System.Windows.Forms.ComboBox();
@@ -158,22 +158,22 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(6, 22);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(394, 23);
-            this.comboBox1.TabIndex = 9;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
-            this.comboBox1.SelectionChangeCommitted += new System.EventHandler(this.comboBox1_SelectionChangeCommitted);
+            this.RARCInFilesComboBox.FormattingEnabled = true;
+            this.RARCInFilesComboBox.Location = new System.Drawing.Point(6, 22);
+            this.RARCInFilesComboBox.Name = "comboBox1";
+            this.RARCInFilesComboBox.Size = new System.Drawing.Size(394, 23);
+            this.RARCInFilesComboBox.TabIndex = 9;
+            this.RARCInFilesComboBox.SelectedIndexChanged += new System.EventHandler(this.RARCInFilesComboBox_SelectedIndexChanged);
+            this.RARCInFilesComboBox.SelectionChangeCommitted += new System.EventHandler(this.RARCInFilesComboBox_SelectionChangeCommitted);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(6, 51);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.textBox1.Size = new System.Drawing.Size(394, 340);
-            this.textBox1.TabIndex = 10;
+            this.RARCInFileBinaryTextBox.Location = new System.Drawing.Point(6, 51);
+            this.RARCInFileBinaryTextBox.Multiline = true;
+            this.RARCInFileBinaryTextBox.Name = "textBox1";
+            this.RARCInFileBinaryTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.RARCInFileBinaryTextBox.Size = new System.Drawing.Size(394, 340);
+            this.RARCInFileBinaryTextBox.TabIndex = 10;
             // 
             // label1
             // 
@@ -241,8 +241,8 @@
             // 
             // RARCArchiveGroupBox
             // 
-            this.RARCArchiveGroupBox.Controls.Add(this.comboBox1);
-            this.RARCArchiveGroupBox.Controls.Add(this.textBox1);
+            this.RARCArchiveGroupBox.Controls.Add(this.RARCInFilesComboBox);
+            this.RARCArchiveGroupBox.Controls.Add(this.RARCInFileBinaryTextBox);
             this.RARCArchiveGroupBox.Location = new System.Drawing.Point(473, 104);
             this.RARCArchiveGroupBox.Name = "RARCArchiveGroupBox";
             this.RARCArchiveGroupBox.Size = new System.Drawing.Size(406, 397);
@@ -291,8 +291,8 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel StatusTextToolStripStatusLabel;
         private ToolStripStatusLabel RARCStatusToolStripStatusLabel;
-        private ComboBox comboBox1;
-        private TextBox textBox1;
+        private ComboBox RARCInFilesComboBox;
+        private TextBox RARCInFileBinaryTextBox;
         private Label label1;
         private GroupBox RARCGroupBox;
         private GroupBox RARCArchiveGroupBox;
