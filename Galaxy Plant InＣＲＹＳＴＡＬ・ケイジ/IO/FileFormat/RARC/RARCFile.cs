@@ -61,11 +61,21 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
             throw new NotImplementedException();
         }
 
-        public static RARCArchive OpenRead(string arciveFileName) 
+        public static RARCArchive? OpenRead(string arciveFileName) 
         {
             using FileStream fs = new(arciveFileName, FileMode.Open);
             using BinaryReader br = new(fs);
-            return new RARCArchive(br);
+
+            try
+            {
+                return new RARCArchive(br);
+            }
+            catch (DataMisalignedException dataMisalignedException) 
+            {
+                MessageBox.Show(dataMisalignedException.Message);
+                return null;
+            }
+            
         }
 
         public static RARCArchive OpenRead(byte[] arciveBinaries)
