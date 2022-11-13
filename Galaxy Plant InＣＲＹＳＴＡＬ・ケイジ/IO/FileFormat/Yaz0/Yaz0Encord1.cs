@@ -8,7 +8,7 @@ using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
 {
-    internal class Yaz0Encord : Yaz0
+    internal class Yaz0Encord
     {
         const int HeaderIndex = 16;
 
@@ -187,6 +187,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
         }
 
 
+        int ThroughNumber = 0x01;
+
         private Dictionary SerchDictionaly(int SourceDataPlace)
         {
             int CompLength = 0,
@@ -194,46 +196,86 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0
                 CompLengthOffset = 0,
                 MinReferencePlace = SourceDataPlace - 1,
                 MaxReferencePlace = MinReferencePlace - 0x0fff; // 0xfff は参照できる最大要素数
+            bool overWriteFlag = false;
+            bool ThroughFlag = false;
 
-            if(MaxReferencePlace < 0)
+            if (MaxReferencePlace < 0)
             {
                 MaxReferencePlace = 0;
-
             }
 
-            for(int DictionaryPlace = MaxReferencePlace; DictionaryPlace < SourceDataPlace; DictionaryPlace++)
+            // serch dictionaly
+            for (int DictionaryPlace = MaxReferencePlace; DictionaryPlace < SourceDataPlace; DictionaryPlace++)
             {
                 CompLengthBuf = 0;
 
                 while (SourceData[DictionaryPlace + CompLengthBuf] == SourceData[SourceDataPlace + CompLengthBuf])
                 {
-                    CompLengthBuf++;
-
-                    if (SourceDataPlace + CompLengthBuf == DecordDataSize ||
-                        CompLengthBuf > 0x0112 //0x0112 = (0x10 + 0x2) + 0x100 : 最大圧縮データサイズ = 2Byteの要素数 + 3Byteの要素数
+                    if (SourceDataPlace + CompLengthBuf == DecordDataSize - 0x01 || // file end over
+                        CompLengthBuf == 0x0111 //0x0111 = 0x02 + 0x0f + 0x100 : 最大圧縮データサイズ = 非圧縮サイズ + 2Byteの要素数 + 3Byteの要素数
                         )
                     {
-                        CompLengthBuf--;
+                        overWriteFlag = true;
                         break;
-
                     }
 
+                    CompLengthBuf++;
                 }
 
-
-
-                if(CompLengthBuf > CompLength)
+                if (CompLengthBuf > CompLength)
                 {
                     CompLength = CompLengthBuf;
                     CompLengthOffset = MinReferencePlace - DictionaryPlace;
-
+                    ThroughFlag = false;
                 }
+            }
 
+            // serch skipping
+            if (!overWriteFlag)
+            {
+                for (int DictionaryPlace = MaxReferencePlace; DictionaryPlace < SourceDataPlace; DictionaryPlace++)
+                {
+                    int ifComp3byte = 0;
+                    CompLengthBuf = 1;
+
+                    while (SourceData[DictionaryPlace + CompLengthBuf] == SourceData[SourceDataPlace + CompLengthBuf])
+                    {
+                        if (SourceDataPlace + CompLengthBuf == DecordDataSize - 0x01 || // file end over
+                            CompLengthBuf == 0x0112 //0x0111 = 0x02 + 0x0f + 0x100 : 最大圧縮データサイズ = 非圧縮サイズ + 2Byteの要素数 + 3Byteの要素数 + 初期値
+                            )
+                        {
+                            overWriteFlag = true;
+                            break;
+                        }
+
+                        CompLengthBuf++;
+                    }
+
+                    if(CompLengthBuf > 0x11)    // 0x11 is 2 byte compress max
+                    {
+                        ifComp3byte = 0x01;
+                    }
+
+                    if (CompLengthBuf > CompLength + ThroughNumber + ifComp3byte) // default is "compLength + 0x01"
+                    {
+                        CompLength = CompLengthBuf;
+                        ThroughFlag = true;
+                    }
+                }
+            }
+
+            if (ThroughFlag)
+            {
+                CompLength = 0;
+                CompLengthOffset = 0;
+                ThroughNumber += 0x01;
+            }
+            else
+            {
+                ThroughNumber = 0x01;
             }
 
             return new Dictionary((uint)CompLength, (uint)CompLengthOffset);
         }
-
     }
-
 }
