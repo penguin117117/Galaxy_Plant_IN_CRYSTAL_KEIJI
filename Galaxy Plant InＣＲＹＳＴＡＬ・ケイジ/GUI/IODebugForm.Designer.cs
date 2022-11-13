@@ -48,6 +48,7 @@
             this.Yaz0DecRARCExtDictionaryButton = new System.Windows.Forms.Button();
             this.RARCExtDictinaryButton = new System.Windows.Forms.Button();
             this.RARCArchiveGroupBox = new System.Windows.Forms.GroupBox();
+            this.RARCArchiveCreateButton = new System.Windows.Forms.Button();
             this.menuStrip1.SuspendLayout();
             this.Yaz0GroupBox.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -156,21 +157,21 @@
             this.RARCStatusToolStripStatusLabel.Size = new System.Drawing.Size(162, 17);
             this.RARCStatusToolStripStatusLabel.Text = "ファイルが読み込まれていません。";
             // 
-            // comboBox1
+            // RARCInFilesComboBox
             // 
             this.RARCInFilesComboBox.FormattingEnabled = true;
             this.RARCInFilesComboBox.Location = new System.Drawing.Point(6, 22);
-            this.RARCInFilesComboBox.Name = "comboBox1";
+            this.RARCInFilesComboBox.Name = "RARCInFilesComboBox";
             this.RARCInFilesComboBox.Size = new System.Drawing.Size(394, 23);
             this.RARCInFilesComboBox.TabIndex = 9;
             this.RARCInFilesComboBox.SelectedIndexChanged += new System.EventHandler(this.RARCInFilesComboBox_SelectedIndexChanged);
             this.RARCInFilesComboBox.SelectionChangeCommitted += new System.EventHandler(this.RARCInFilesComboBox_SelectionChangeCommitted);
             // 
-            // textBox1
+            // RARCInFileBinaryTextBox
             // 
             this.RARCInFileBinaryTextBox.Location = new System.Drawing.Point(6, 51);
             this.RARCInFileBinaryTextBox.Multiline = true;
-            this.RARCInFileBinaryTextBox.Name = "textBox1";
+            this.RARCInFileBinaryTextBox.Name = "RARCInFileBinaryTextBox";
             this.RARCInFileBinaryTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.RARCInFileBinaryTextBox.Size = new System.Drawing.Size(394, 340);
             this.RARCInFileBinaryTextBox.TabIndex = 10;
@@ -250,11 +251,22 @@
             this.RARCArchiveGroupBox.TabStop = false;
             this.RARCArchiveGroupBox.Text = "RARCArchive";
             // 
+            // RARCArchiveCreateButton
+            // 
+            this.RARCArchiveCreateButton.Location = new System.Drawing.Point(473, 38);
+            this.RARCArchiveCreateButton.Name = "RARCArchiveCreateButton";
+            this.RARCArchiveCreateButton.Size = new System.Drawing.Size(182, 23);
+            this.RARCArchiveCreateButton.TabIndex = 13;
+            this.RARCArchiveCreateButton.Text = "RARCArchiveCreate";
+            this.RARCArchiveCreateButton.UseVisualStyleBackColor = true;
+            this.RARCArchiveCreateButton.Click += new System.EventHandler(this.RARCArchiveCreateButton_Click);
+            // 
             // IODebugForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(889, 526);
+            this.Controls.Add(this.RARCArchiveCreateButton);
             this.Controls.Add(this.RARCGroupBox);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.Yaz0GroupBox);
@@ -300,5 +312,6 @@
         private Button Yaz0DecRARCExtDictionaryButton;
         private Button RARCExtDirectoryButton;
         private ComboBox ProjectDirectoryComboBox;
+        private Button RARCArchiveCreateButton;
     }
 }

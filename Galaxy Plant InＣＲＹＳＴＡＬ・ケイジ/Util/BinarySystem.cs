@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
 {
@@ -100,6 +96,47 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
             br.BaseStream.Seek(fixPosition, SeekOrigin.Begin);
 
             return dirName;
+        }
+
+        /// <summary>
+        /// <paramref name="bw"/>で指定された<see cref="BinaryWriter"/>に、BigEndianでUint32のデータを書き込みます。
+        /// </summary>
+        /// <param name="bw"></param>
+        /// <param name="writeData"></param>
+        public static void WriteUint32BigEndian(BinaryWriter bw, uint writeData) 
+        {
+            if (!BitConverter.IsLittleEndian) 
+            {
+                bw.Write(BitConverter.GetBytes(writeData));
+            }
+
+            bw.Write(BitConverter.GetBytes(writeData).Reverse().ToArray());
+        }
+
+        /// <summary>
+        /// ファイルにint32型のNullデータを書き込みます。
+        /// </summary>
+        /// <param name="bw"></param>
+        /// <param name="writeRepeatCount"><see cref="int"/>型のNullデータを書き込む回数</param>
+        public static void NullWriterInt32(BinaryWriter bw, int writeRepeatCount = 1)
+        {
+
+            //0以上または、int型の最大値までしか選択できないようにする。
+            if (writeRepeatCount < 1)
+            {
+                writeRepeatCount = 1;
+            }
+
+            if (int.MaxValue < writeRepeatCount) 
+            {
+                writeRepeatCount = int.MaxValue;
+            }
+
+            for (int i = 0; i < writeRepeatCount; i++) 
+            {
+                bw.Write(BitConverter.GetBytes(0x00000000));
+            }
+                
         }
     }
 }

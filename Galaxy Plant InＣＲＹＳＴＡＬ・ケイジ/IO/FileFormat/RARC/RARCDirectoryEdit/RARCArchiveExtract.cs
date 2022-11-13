@@ -7,19 +7,20 @@ using System.Threading.Tasks;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARCDirectoryEdit
 {
-    internal class RARCArchiveDataEdit
+    internal class RARCArchiveExtract
     {
-        private string rarcExtractDirectoryFullPath;
-        private string workingDirectoryName;
-        private string workingDirFullPath;
-        private bool isCreateDirectoryAndFile;
-        private Dictionary<(string, uint), string> directoryNodeDirectoryNames = new();
+        private static string rarcExtractDirectoryFullPath = string.Empty;
+        private static string workingDirectoryName = string.Empty;
+        private static string workingDirFullPath = string.Empty;
+        private static bool isCreateDirectoryAndFile;
+        private static Dictionary<(string, uint), string> directoryNodeDirectoryNames = new();
 
-        internal RARCArchiveDataEdit() 
+        private static void Init() 
         {
             rarcExtractDirectoryFullPath = string.Empty;
             workingDirectoryName = string.Empty;
             workingDirFullPath = string.Empty;
+            directoryNodeDirectoryNames = new();
         }
 
         /// <summary>
@@ -27,14 +28,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
         /// </summary>
         /// <param name="rarcArchive"></param>
         /// <param name="destinationDirectoryName"></param>
-        internal void ExtractToDirectory (RARCArchive rarcArchive, string destinationDirectoryName)
+        internal static void ToDirectory(RARCArchive rarcArchive, string destinationDirectoryName)
         {
             isCreateDirectoryAndFile = true;
+            Init();
 
             SetWorkingDirectoryPath(destinationDirectoryName);
             CreateDirectoryWhenDirectoryNotExist(workingDirFullPath);
 
-            ReadDirectoryData(rarcArchive,destinationDirectoryName);
+            ReadDirectoryData(rarcArchive);
         }
 
         /// <summary>
@@ -42,21 +44,21 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
         /// </summary>
         /// <param name="rarcArchive"></param>
         /// <param name="destinationDirectoryName"></param>
-        internal void ExtractToDictionary(RARCArchive rarcArchive, string destinationDirectoryName) 
+        internal static void ToDictionary(RARCArchive rarcArchive, string destinationDirectoryName)
         {
             isCreateDirectoryAndFile = false;
+            Init();
 
             SetWorkingDirectoryPath(destinationDirectoryName);
 
-            ReadDirectoryData(rarcArchive,destinationDirectoryName);
+            ReadDirectoryData(rarcArchive);
         }
 
         /// <summary>
         /// ディレクトリの情報を取得するためのクラス
         /// </summary>
         /// <param name="rarcArchive"></param>
-        /// <param name="destinationDirectoryName"></param>
-        private void ReadDirectoryData(RARCArchive rarcArchive, string destinationDirectoryName)
+        private static void ReadDirectoryData(RARCArchive rarcArchive)
         {
             foreach (DirectoryNode directoryNode in rarcArchive.DirectoryNodeSection.DirectoryNodes)
             {
@@ -64,48 +66,43 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
 
                 if (directoryNode.ParentDirectoryName == "ROOT")
                 {
-                    //ルートディレクトリの取得
                     string rootDirectoryFullPath = Path.Combine(workingDirFullPath, rarcArchive.StringTableSection.ReadRootName());
-                    SetCurrentDirectory(directoryNode, currentDirectoryID, rootDirectoryFullPath);
 
-                    //現在のディレクトリ内のサブディレクトリの取得
-                    SetDirectoryIncludeSubDirectory(directoryNode, rootDirectoryFullPath);
+                    SetCurrentDirectoryInfomation(rarcArchive, directoryNode, currentDirectoryID, rootDirectoryFullPath);
 
-                    //現在のディレクトリ内にあるファイルの取得
-                    SetDirectoryIncludeFile(rarcArchive, directoryNode, rootDirectoryFullPath);
+                    continue;
                 }
-                else
+
+                var FoundSerchDirectory = directoryNodeDirectoryNames.ContainsKey
+                    ((directoryNode.CurrentDirectoryName, currentDirectoryID));
+
+                if (FoundSerchDirectory)
                 {
-                    var FoundSerchDirectory = directoryNodeDirectoryNames.ContainsKey
-                        ((directoryNode.CurrentDirectoryName, currentDirectoryID));
+                    string curPath = directoryNodeDirectoryNames[(directoryNode.CurrentDirectoryName, currentDirectoryID)];
 
-                    if (!FoundSerchDirectory)
-                    {
-                        uint parentDirectoryIndex = directoryNode.DirectoryItems[^1].Argments.Item1;
+                    SetCurrentDirectoryInfomation(rarcArchive, directoryNode, currentDirectoryID, curPath);
 
-                        string parentDirFullPath = directoryNodeDirectoryNames[(rarcArchive.DirectoryNodeSection.DirectoryNodes[parentDirectoryIndex].CurrentDirectoryName, parentDirectoryIndex)];
-
-                        string curFullPath = Path.Combine(parentDirFullPath, directoryNode.CurrentDirectoryName);
-
-                        SetCurrentDirectory(directoryNode, currentDirectoryID, curFullPath);
-
-                        SetDirectoryIncludeSubDirectory(directoryNode, curFullPath);
-
-                        SetDirectoryIncludeFile(rarcArchive, directoryNode, curFullPath);
-                    }
-                    else
-                    {
-                        string curPath = directoryNodeDirectoryNames[(directoryNode.CurrentDirectoryName, currentDirectoryID)];
-
-                        SetCurrentDirectory(directoryNode, currentDirectoryID, curPath);
-
-                        SetDirectoryIncludeSubDirectory(directoryNode, curPath);
-
-                        SetDirectoryIncludeFile(rarcArchive, directoryNode, curPath);
-                    }
-
+                    continue;
                 }
+
+                uint parentDirectoryIndex = directoryNode.DirectoryItems[^1].Argments.Item1;
+
+                string parentDirFullPath = directoryNodeDirectoryNames[(rarcArchive.DirectoryNodeSection.DirectoryNodes[parentDirectoryIndex].CurrentDirectoryName, parentDirectoryIndex)];
+
+                string curFullPath = Path.Combine(parentDirFullPath, directoryNode.CurrentDirectoryName);
+
+                SetCurrentDirectoryInfomation(rarcArchive, directoryNode, currentDirectoryID, curFullPath);
+
             }
+        }
+
+        private static void SetCurrentDirectoryInfomation(RARCArchive rarcArchive, DirectoryNode directoryNode, uint currentDirectoryID, string curPath)
+        {
+            SetCurrentDirectory(directoryNode, currentDirectoryID, curPath);
+
+            SetSubDirectory(directoryNode, curPath);
+
+            SetIncludeFiles(rarcArchive, directoryNode, curPath);
         }
 
         /// <summary>
@@ -114,37 +111,51 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
         /// <param name="directoryNode"></param>
         /// <param name="currentDirectoryID"></param>
         /// <param name="curPath"></param>
-        private void SetCurrentDirectory(DirectoryNode directoryNode, uint currentDirectoryID, string curPath) 
+        private static void SetCurrentDirectory(DirectoryNode directoryNode, uint currentDirectoryID, string curPath)
         {
-            if(isCreateDirectoryAndFile)
+            if (isCreateDirectoryAndFile)
+            {
                 CreateDirectoryWhenDirectoryNotExist(curPath);
+            }
+
             directoryNodeDirectoryNames.Add((directoryNode.CurrentDirectoryName, currentDirectoryID), curPath);
         }
 
-        private void SetDirectoryIncludeSubDirectory(DirectoryNode directoryNode, string currentDirectoryFullPath) 
+        private static void SetSubDirectory(DirectoryNode directoryNode, string currentDirectoryFullPath)
         {
             foreach (string subDirName in directoryNode.SubDirectories)
             {
                 string subPath = Path.Combine(currentDirectoryFullPath, subDirName);
+
                 if (isCreateDirectoryAndFile)
+                {
                     CreateDirectoryWhenDirectoryNotExist(subPath);
+                }
+
                 var directoryNodeDirectoryName = (subDirName, (uint)directoryNode.SubDirectories.IndexOf(subDirName));
-                if (directoryNodeDirectoryNames.ContainsKey(directoryNodeDirectoryName)) continue;
+
+                if (directoryNodeDirectoryNames.ContainsKey(directoryNodeDirectoryName))
+                {
+                    continue;
+                }
+
                 directoryNodeDirectoryNames.Add(directoryNodeDirectoryName, subPath);
             }
         }
 
-        private void SetDirectoryIncludeFile(RARCArchive rarcArchive, DirectoryNode directoryNode, string currentPath) 
+        private static void SetIncludeFiles(RARCArchive rarcArchive, DirectoryNode directoryNode, string currentPath)
         {
             foreach (KeyValuePair<(string, uint), byte[]> includeFile in directoryNode.IncludeFileNameBinaryPairs)
             {
                 string fileFullPath = Path.Combine(currentPath, includeFile.Key.Item1);
-                if (isCreateDirectoryAndFile) 
+
+                if (isCreateDirectoryAndFile)
                 {
                     using FileStream fs = new(fileFullPath, FileMode.Create);
                     using BinaryWriter bw = new(fs);
                     bw.Write(includeFile.Value);
                 }
+
                 rarcArchive.FilePathBinaryDataPairs.Add(fileFullPath.Substring(workingDirFullPath.Length), includeFile.Value);
             }
         }
@@ -153,7 +164,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
         /// ファイルを展開する作業ファイルのパスを作成します。
         /// </summary>
         /// <param name="destinationDirectoryName"></param>
-        private void SetWorkingDirectoryPath(string destinationDirectoryName) 
+        private static void SetWorkingDirectoryPath(string destinationDirectoryName)
         {
             rarcExtractDirectoryFullPath = GetExtractTargetDirectory(destinationDirectoryName);
 
@@ -171,6 +182,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
         private static string GetExtractTargetDirectory(string destinationDirectoryName)
         {
             string? rarcFileDirectory = Path.GetDirectoryName(destinationDirectoryName);
+
             if (!Directory.Exists(rarcFileDirectory))
             {
                 throw new DirectoryNotFoundException($"{nameof(rarcFileDirectory)}で指定された{rarcFileDirectory}のディレクトリは存在しません。");

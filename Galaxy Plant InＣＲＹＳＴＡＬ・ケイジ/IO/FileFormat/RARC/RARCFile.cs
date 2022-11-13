@@ -52,8 +52,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         {
             using BinaryReader br = new(stream);
             RARCArchive rarcArchive = new(br);
-            RARCArchiveDataEdit rarcArchiveDataEdit = new();
-            rarcArchiveDataEdit.ExtractToDictionary(rarcArchive,destinationDirectoryName);
+            RARCArchiveExtract.ToDictionary(rarcArchive,destinationDirectoryName);
         }
 
         public static RARCArchive Open(string arciveFileName) 
