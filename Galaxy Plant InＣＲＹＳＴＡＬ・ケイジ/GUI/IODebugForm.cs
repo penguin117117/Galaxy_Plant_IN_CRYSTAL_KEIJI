@@ -30,12 +30,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             Yaz0GroupBox.AllowDrop = true;
 
             var projectDirectories = Directory.GetDirectories(Properties.Settings.Default.GalaxyProjectPath);
+
             foreach (string projectSubDirectoryFullPath in projectDirectories) 
             {
                 if (Directory.Exists(projectSubDirectoryFullPath)) 
                 {
                     var projectSubDirectoryName = Path.GetFileName(projectSubDirectoryFullPath);
-
 
                     var files = Directory.GetFiles(projectSubDirectoryFullPath);
 
@@ -68,6 +68,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             {
                 RARCDecComboBox.Items.Add($"{ProjectDirectoryComboBox.SelectedItem}\\{Path.GetFileName(fileName)}");
             }
+
 
             if (RARCDecComboBox.Items.Count > 0)
             {
@@ -206,8 +207,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
                 return;
             } 
 
-            RARCArchiveDataEdit rarcArchiveDataEdit = new();
-            rarcArchiveDataEdit.ExtractToDictionary(rarcArchive, _yaz0DecFullPath);
+            RARCArchiveExtract.ToDictionary(rarcArchive, _yaz0DecFullPath);
             SetRARCStatusToolStripStatusLabelText(Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。", Color.Green);
 
 
@@ -237,8 +237,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             }
             Yaz0Decord? yaz0Decord = new(_yaz0DecFullPath);
             rarcArchive = RARCFile.OpenRead(yaz0Decord.BinaryData);
-            RARCArchiveDataEdit rarcArchiveDataEdit = new();
-            rarcArchiveDataEdit.ExtractToDictionary(rarcArchive, _yaz0DecFullPath);
+            RARCArchiveExtract.ToDictionary(rarcArchive, _yaz0DecFullPath);
             SetRARCStatusToolStripStatusLabelText(Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。", Color.Green);
 
 
@@ -269,8 +268,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             //Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
             rarcArchive = RARCFile.OpenRead(_yaz0DecFullPath);
             if (rarcArchive == null) return;
-            RARCArchiveDataEdit rarcArchiveDataEdit = new();
-            rarcArchiveDataEdit.ExtractToDirectory(rarcArchive, _yaz0DecFullPath);
+            RARCArchiveExtract.ToDirectory(rarcArchive, _yaz0DecFullPath);
             SetRARCStatusToolStripStatusLabelText(Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。", Color.Green);
 
 
@@ -299,8 +297,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             }
             Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
             rarcArchive = RARCFile.OpenRead(yaz0Decord.BinaryData);
-            RARCArchiveDataEdit rarcArchiveDataEdit = new();
-            rarcArchiveDataEdit.ExtractToDirectory(rarcArchive, _yaz0DecFullPath);
+            RARCArchiveExtract.ToDirectory(rarcArchive, _yaz0DecFullPath);
             SetRARCStatusToolStripStatusLabelText(Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。", Color.Green);
             
 
@@ -338,6 +335,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             }
             Yaz0Encord yaz0Encord = new(File.ReadAllBytes(_yaz0EncFullPath));
             yaz0Encord.FileWrite(_yaz0EncFullPath, "yaz0");
+        }
+
+        private void RARCArchiveCreateButton_Click(object sender, EventArgs e)
+        {
+            string sourceDirPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\RARC_テスト\Abekobe2DMoveLift\");
+            RARCArchiveCreate.FromDirectory(sourceDirPath);
         }
 
         private void SetRARCStatusToolStripStatusLabelText(string message,Color color) 
