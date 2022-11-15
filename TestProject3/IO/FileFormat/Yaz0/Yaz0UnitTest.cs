@@ -1,8 +1,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Galaxy_Plant_In�b�q�x�r�s�`�k_�P�C�W.IO.FileFormat.Yaz0;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0;
 using System.IO;
 
-namespace Galaxy_Plant_In�b�q�x�r�s�`�k_�P�C�WTest
+namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジTest
 {
     [TestClass]
     public class Yaz0UnitTest
