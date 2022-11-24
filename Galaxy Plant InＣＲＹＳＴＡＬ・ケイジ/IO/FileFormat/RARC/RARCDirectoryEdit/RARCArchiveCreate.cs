@@ -11,10 +11,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
 {
     internal class RARCArchiveCreate
     {
-        public static void FromDirectory(string sourceDirectoryName) 
+        public static RARCArchive? FromDirectory(string sourceDirectoryName) 
         {
-            
-
             string[]? sortedDirectoriesPath = ReadDirectoryNameAndSort(sourceDirectoryName);
             string[]? sortedFilesPath = ReadFilesNameAndSort(sourceDirectoryName);
 
@@ -27,7 +25,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
             catch (DirectoryNotFoundException dirNotFoundEx) 
             {
                 MessageBox.Show(dirNotFoundEx.Message);
-                return;
+                return null;
             }
             
             //書き込みの開始
@@ -35,9 +33,15 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
             using BinaryWriter bw = new(fs);
 
             bw.Write(Encoding.ASCII.GetBytes("RARC"));
-            BinarySystem.NullWriterInt32(bw);
+            BinarySystem.NullWrite4Byte(bw);
             BinarySystem.WriteUint32BigEndian(bw,0x00000020);
-            BinarySystem.NullWriterInt32(bw, 5);
+            BinarySystem.NullWrite4Byte(bw, 5);
+
+            RARCArchive rarcArchive = new();
+            
+            
+
+            return rarcArchive;
         }
 
         public static void FromDirectory(string sourceDirectoryName, string destinationArchiveFileName)

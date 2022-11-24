@@ -51,7 +51,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         private static void ExtractToDirectoryFromStream(Stream stream ,string destinationDirectoryName) 
         {
             using BinaryReader br = new(stream);
-            RARCArchive rarcArchive = new(br);
+            RARCArchive rarcArchive = new();
+            rarcArchive.Read(br);
             RARCArchiveExtract.ToDictionary(rarcArchive,destinationDirectoryName);
         }
 
@@ -67,7 +68,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
             try
             {
-                return new RARCArchive(br);
+                RARCArchive rarcArchive = new();
+                rarcArchive.Read(br);
+                return rarcArchive;
             }
             catch (DataMisalignedException dataMisalignedException) 
             {
@@ -81,7 +84,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         {
             using MemoryStream ms = new(arciveBinaries);
             using BinaryReader br = new(ms);
-            return new RARCArchive(br);
+            RARCArchive rarcArchive = new();
+            rarcArchive.Read(br);
+            return rarcArchive;
         }
     }
 }

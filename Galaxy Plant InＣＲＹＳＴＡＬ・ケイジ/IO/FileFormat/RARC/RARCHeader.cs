@@ -21,7 +21,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 
         public const int HeaderSize = 0x20;
 
-        public RARCHeader(BinaryReader br)
+        public RARCHeader()
+        {
+            
+        }
+
+        public void Read(BinaryReader br) 
         {
             SectionName      = BinaryPrimitives.ReadUInt32BigEndian(br.ReadBytes(4));
             FileSize         = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));

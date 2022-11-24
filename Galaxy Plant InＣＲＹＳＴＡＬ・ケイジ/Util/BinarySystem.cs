@@ -114,11 +114,11 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
         }
 
         /// <summary>
-        /// ファイルにint32型のNullデータを書き込みます。
+        /// ファイルに4バイトのNullデータを書き込みます。
         /// </summary>
         /// <param name="bw"></param>
         /// <param name="writeRepeatCount"><see cref="int"/>型のNullデータを書き込む回数</param>
-        public static void NullWriterInt32(BinaryWriter bw, int writeRepeatCount = 1)
+        public static void NullWrite4Byte(BinaryWriter bw, int writeRepeatCount = 1)
         {
 
             //0以上または、int型の最大値までしか選択できないようにする。

@@ -17,8 +17,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     /// </summary>
     public sealed class RARCArchive
     {
-        public RARCHeader RARCHeader { get; private set; }
-        public RARCEntryHeader RARCEntryHeader { get; private set; }
+        public RARCHeader RARCHeader { get; private set; } = new();
+        public RARCEntryHeader RARCEntryHeader { get; private set; } = new();
         internal DirectoryNodeSection DirectoryNodeSection { get; private set; } = new();
         internal DirectoryItemSection DirectoryItemSection { get; private set; } = new();
         internal StringTableSection StringTableSection { get; private set; } = new();
@@ -33,30 +33,39 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         /// <param name="br"></param>
         /// <exception cref="NullReferenceException"></exception>
         /// <exception cref="ArgumentException"></exception>
-        public RARCArchive(BinaryReader br) 
+        public RARCArchive() 
         {
-            if (br.BaseStream is null) 
+            
+        }
+
+        public void Read(BinaryReader br) 
+        {
+            if (br.BaseStream is null)
             {
                 throw new NullReferenceException(nameof(br.BaseStream));
             }
 
-            if (br.BaseStream.CanRead == false) 
+            if (br.BaseStream.CanRead == false)
             {
                 throw new ArgumentException(
                     "このストリームは読み取りが出来ないかストリームが終了しています。"
                     );
             }
-            
+
             //ヘッダーの読み込み
-            RARCHeader = new(br);
-            RARCEntryHeader = new(br);
+            RARCHeader.Read(br);
+            RARCEntryHeader.Read(br);
 
             //各セクションの情報を読み込みます。
             DirectoryNodeSection.Read(br, RARCEntryHeader.NodeLength);
             DirectoryItemSection.Read(br, DirectoryNodeSection);
             StringTableSection.Read(br, RARCEntryHeader.StringTableLength);
-            FileDataSection.Read(br,DirectoryNodeSection,StringTableSection);
+            FileDataSection.Read(br, DirectoryNodeSection, StringTableSection);
+        }
 
+        public void Write(string sourceDirectoryFullPath) 
+        {
+            
         }
     }
 }

@@ -19,7 +19,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         public int Unknown4 { get; set; }
         public int Unknown5 { get; set; }
 
-        public RARCEntryHeader(BinaryReader br) 
+        public RARCEntryHeader() 
+        {
+            
+        }
+
+        public void Read(BinaryReader br) 
         {
             NodeLength           = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
             FirstNodeOffset      = BinaryPrimitives.ReadInt32BigEndian(br.ReadBytes(4));
