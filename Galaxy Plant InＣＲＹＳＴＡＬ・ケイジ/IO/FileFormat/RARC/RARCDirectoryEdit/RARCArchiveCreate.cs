@@ -16,6 +16,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
             string[]? sortedDirectoriesPath = ReadDirectoryNameAndSort(sourceDirectoryName);
             string[]? sortedFilesPath = ReadFilesNameAndSort(sourceDirectoryName);
 
+            if (sortedDirectoriesPath == null) return null;
+            if (sortedFilesPath == null) return null;
+
             var createRARCFileFullPath = GenerateDestinationPath(sourceDirectoryName);
 
             try

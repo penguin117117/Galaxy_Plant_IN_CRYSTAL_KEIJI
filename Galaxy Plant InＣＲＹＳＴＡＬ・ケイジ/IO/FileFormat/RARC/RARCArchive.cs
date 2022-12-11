@@ -17,14 +17,14 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     /// </summary>
     public sealed class RARCArchive
     {
-        public RARCHeader RARCHeader { get; private set; } = new();
-        public RARCEntryHeader RARCEntryHeader { get; private set; } = new();
-        internal DirectoryNodeSection DirectoryNodeSection { get; private set; } = new();
-        internal DirectoryItemSection DirectoryItemSection { get; private set; } = new();
-        internal StringTableSection StringTableSection { get; private set; } = new();
-        internal FileDataSection FileDataSection { get; private set; } = new();
+        public RARCHeader RARCHeader { get; private set; }
+        public RARCEntryHeader RARCEntryHeader { get; private set; }
+        internal DirectoryNodeSection DirectoryNodeSection { get; private set; }
+        internal DirectoryItemSection DirectoryItemSection { get; private set; }
+        internal StringTableSection StringTableSection { get; private set; }
+        internal FileDataSection FileDataSection { get; private set; }
 
-        public Dictionary<string, byte[]> FilePathBinaryDataPairs { get; set; } = new();
+        public Dictionary<string, byte[]> FilePathBinaryDataPairs { get; set; }
 
         /// <summary>
         /// RARCのアーカイブ情報を保持します。<br/>
@@ -35,7 +35,13 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         /// <exception cref="ArgumentException"></exception>
         public RARCArchive() 
         {
-            
+            RARCHeader = new();
+            RARCEntryHeader = new();
+            DirectoryNodeSection = new();
+            DirectoryItemSection = new();
+            StringTableSection = new();
+            FileDataSection = new();
+            FilePathBinaryDataPairs = new Dictionary<string, byte[]>();
         }
 
         public void Read(BinaryReader br) 

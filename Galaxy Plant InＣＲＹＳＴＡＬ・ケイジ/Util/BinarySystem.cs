@@ -108,6 +108,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util
             if (!BitConverter.IsLittleEndian) 
             {
                 bw.Write(BitConverter.GetBytes(writeData));
+                return;
             }
 
             bw.Write(BitConverter.GetBytes(writeData).Reverse().ToArray());
