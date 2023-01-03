@@ -124,6 +124,8 @@
             this.GalaxyNameTreeView.Name = "GalaxyNameTreeView";
             this.GalaxyNameTreeView.Size = new System.Drawing.Size(800, 404);
             this.GalaxyNameTreeView.TabIndex = 0;
+            this.GalaxyNameTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.GalaxyNameTreeView_NodeMouseDoubleClick);
+            //this.GalaxyNameTreeView.DoubleClick += new System.EventHandler(this.GalaxyNameTreeView_DoubleClick);
             // 
             // GalaxySelectForm
             // 

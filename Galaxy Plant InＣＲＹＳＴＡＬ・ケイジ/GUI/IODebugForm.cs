@@ -296,8 +296,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
                 return;
             }
             Yaz0Decord yaz0Decord = new(_yaz0DecFullPath);
+
+            //RARCFile.ExtractToDirectory(yaz0Decord.BinaryData, "");
+
             rarcArchive = RARCFile.OpenRead(yaz0Decord.BinaryData);
             RARCArchiveExtract.ToDirectory(rarcArchive, _yaz0DecFullPath);
+
             SetRARCStatusToolStripStatusLabelText(Path.GetFileName(_yaz0DecFullPath) + "の展開に成功しました。", Color.Green);
             
 

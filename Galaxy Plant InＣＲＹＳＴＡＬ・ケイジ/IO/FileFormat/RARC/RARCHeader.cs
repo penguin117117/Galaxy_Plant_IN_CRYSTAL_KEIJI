@@ -11,13 +11,13 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
     public class RARCHeader
     {
         public uint SectionName { get; private set; }
-        public int FileSize { get; set; }
-        public int Unknown1 { get; set; }
-        public int FileDataOffset { get; set; }
-        public int FileDataLength_1 { get; set; }
-        public int FileDataLength_2 { get; set; }
-        public int Unknown2 { get; set; }
-        public int Unknown3 { get; set; }
+        public int FileSize { get; private set; }
+        public int Unknown1 { get; private set; }
+        public int FileDataOffset { get; private set; }
+        public int FileDataLength_1 { get; private set; }
+        public int FileDataLength_2 { get; private set; }
+        public int Unknown2 { get; private set; }
+        public int Unknown3 { get; private set; }
 
         public const int HeaderSize = 0x20;
 

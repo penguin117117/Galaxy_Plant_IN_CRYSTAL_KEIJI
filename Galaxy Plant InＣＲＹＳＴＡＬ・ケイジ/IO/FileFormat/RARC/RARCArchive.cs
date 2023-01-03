@@ -24,7 +24,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
         internal StringTableSection StringTableSection { get; private set; }
         internal FileDataSection FileDataSection { get; private set; }
 
-        public Dictionary<string, byte[]> FilePathBinaryDataPairs { get; set; }
+        public Dictionary<string, byte[]> FilePathBinaryDataPairs { get;private set; }
 
         /// <summary>
         /// RARCのアーカイブ情報を保持します。<br/>

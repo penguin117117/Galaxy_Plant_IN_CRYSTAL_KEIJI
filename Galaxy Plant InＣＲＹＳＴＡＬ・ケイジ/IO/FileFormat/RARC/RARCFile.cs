@@ -11,16 +11,17 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC
 {
     public static class RARCFile
     {
+        /// <summary>
+        /// ディレクトリ情報からRARCファイルを作成します。
+        /// <para><paramref name="sourceDirectoryPath"/>で指定したディレクトリからRARCファイルを作成して</para>
+        /// <para><paramref name="destinationDirectoryPath"/>で指定されたディレクトリに保存します。</para>
+        /// </summary>
+        /// <param name="sourceDirectoryPath">アーカイブ化したいディレクトリのパス</param>
+        /// <param name="destinationDirectoryPath">保存先のディレクトリパス</param>
         public static void CreateFromDirectory(string sourceDirectoryPath, string destinationDirectoryPath) 
         {
         
         }
-
-        public static void CreateFromRARCArchive(RARCArchive rarcArchive,string destinationDirectoryPath)
-        {
-
-        }
-
 
         /// <summary>
         /// RARCファイルを指定したディレクトリに展開します。

@@ -39,7 +39,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
                     if (Path.GetFileNameWithoutExtension(file).Length < 8) continue;
                     var foundGalaxyScenarioIndex = Path.GetFileNameWithoutExtension(file).IndexOf("Scenario");
                     if (foundGalaxyScenarioIndex < 0) continue;
-                    GalaxyNameTreeView.Nodes.Add(string.Concat(Path.GetFileNameWithoutExtension(file).Take(foundGalaxyScenarioIndex)));
+                    GalaxyNameTreeView.Nodes.Add(string.Concat(Path.GetFileNameWithoutExtension(file).Take(foundGalaxyScenarioIndex)), string.Concat(Path.GetFileNameWithoutExtension(file).Take(foundGalaxyScenarioIndex)));
                 }
 
             }
@@ -61,6 +61,20 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
         {
             InformationForm informaItionForm = new InformationForm();
             informaItionForm.ShowDialog();
+        }
+
+        private void GalaxyNameTreeView_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Node.Name == null) 
+            {
+                MessageBox.Show("Null");
+                return;
+            }
+
+            string selectedGalaxyName = e.Node.Name;
+
+            GalaxyEditorForm galaxyEditorForm = new GalaxyEditorForm(selectedGalaxyName);
+            galaxyEditorForm.ShowDialog();
         }
     }
 }

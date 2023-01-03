@@ -32,8 +32,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARC
             }
             
             //書き込みの開始
-            using FileStream fs = new(createRARCFileFullPath, FileMode.Create);
-            using BinaryWriter bw = new(fs);
+            using MemoryStream ms = new();
+            using BinaryWriter bw = new(ms);
 
             bw.Write(Encoding.ASCII.GetBytes("RARC"));
             BinarySystem.NullWrite4Byte(bw);
