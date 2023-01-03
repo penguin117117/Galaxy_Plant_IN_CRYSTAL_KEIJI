@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Diagnostics;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARCDirectoryEdit;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 {
@@ -159,6 +160,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             RARCInFileBinaryTextBox.Text = string.Empty;
             byte count = 0;
             Debug.WriteLine(RARCInFilesComboBox.SelectedItem);
+
+
+
             StringBuilder sb = new();
             foreach (byte byteData in rarcArchive.FilePathBinaryDataPairs[(string)RARCInFilesComboBox.SelectedItem])
             {
@@ -345,6 +349,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
         {
             string sourceDirPath = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\RARC_テスト\Abekobe2DMoveLift\");
             RARCArchiveCreate.FromDirectory(sourceDirPath);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            var path = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\Battan\Battan\ActorInfo\ActionFlagCtrl.bcsv");
+            BCSVFile.ReadEntries(path);
         }
 
         private void SetRARCStatusToolStripStatusLabelText(string message,Color color) 

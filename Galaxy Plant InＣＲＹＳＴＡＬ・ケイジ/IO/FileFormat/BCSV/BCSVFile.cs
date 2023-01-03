@@ -12,13 +12,20 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
         {
             using MemoryStream ms = new(binaryData);
             using BinaryReader br = new(ms);
+
             BCSV bcsv= new();
             bcsv.Read(br);
         }
 
         internal static void ReadEntries(string filePath)
         {
+            if (!File.Exists(filePath)) return;
 
+            using FileStream fs = new(filePath,FileMode.Open);
+            using BinaryReader br = new(fs);
+
+            BCSV bcsv = new();
+            bcsv.Read(br);
         }
     }
 }
