@@ -76,5 +76,11 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
             GalaxyEditorForm galaxyEditorForm = new GalaxyEditorForm(selectedGalaxyName);
             galaxyEditorForm.ShowDialog();
         }
+
+        private void BCSVEditorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BCSVEditorForm bCSVEditorForm = new BCSVEditorForm();
+            bCSVEditorForm.ShowDialog();
+        }
     }
 }

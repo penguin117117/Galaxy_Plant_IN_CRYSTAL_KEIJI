@@ -38,6 +38,7 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.MainPanel = new System.Windows.Forms.Panel();
             this.GalaxyNameTreeView = new System.Windows.Forms.TreeView();
+            this.bCSVEditorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainMenuStrip.SuspendLayout();
             this.MainPanel.SuspendLayout();
             this.SuspendLayout();
@@ -67,12 +68,14 @@
             // openToolStripMenuItem
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.OpenToolStripMenuItem_Click);
             // 
             // openGalaxyToolStripMenuItem
             // 
+            this.openGalaxyToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.bCSVEditorToolStripMenuItem});
             this.openGalaxyToolStripMenuItem.Name = "openGalaxyToolStripMenuItem";
             this.openGalaxyToolStripMenuItem.Size = new System.Drawing.Size(62, 20);
             this.openGalaxyToolStripMenuItem.Text = "EditFiles";
@@ -125,7 +128,13 @@
             this.GalaxyNameTreeView.Size = new System.Drawing.Size(800, 404);
             this.GalaxyNameTreeView.TabIndex = 0;
             this.GalaxyNameTreeView.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.GalaxyNameTreeView_NodeMouseDoubleClick);
-            //this.GalaxyNameTreeView.DoubleClick += new System.EventHandler(this.GalaxyNameTreeView_DoubleClick);
+            // 
+            // bCSVEditorToolStripMenuItem
+            // 
+            this.bCSVEditorToolStripMenuItem.Name = "bCSVEditorToolStripMenuItem";
+            this.bCSVEditorToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bCSVEditorToolStripMenuItem.Text = "BCSVEditor";
+            this.bCSVEditorToolStripMenuItem.Click += new System.EventHandler(this.BCSVEditorToolStripMenuItem_Click);
             // 
             // GalaxySelectForm
             // 
@@ -157,5 +166,6 @@
         private ToolStripMenuItem configToolStripMenuItem;
         private ToolStripMenuItem infoToolStripMenuItem;
         private ToolStripMenuItem debugToolStripMenuItem;
+        private ToolStripMenuItem bCSVEditorToolStripMenuItem;
     }
 }
