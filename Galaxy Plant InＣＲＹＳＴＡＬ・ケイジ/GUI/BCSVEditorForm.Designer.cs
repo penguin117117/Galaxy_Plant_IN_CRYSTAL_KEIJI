@@ -32,10 +32,11 @@
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.DebugButton = new System.Windows.Forms.Button();
+            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.HashTableButton = new System.Windows.Forms.Button();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -79,16 +80,9 @@
             this.tabControl1.Size = new System.Drawing.Size(800, 380);
             this.tabControl1.TabIndex = 0;
             // 
-            // menuStrip2
-            // 
-            this.menuStrip2.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip2.Name = "menuStrip2";
-            this.menuStrip2.Size = new System.Drawing.Size(800, 24);
-            this.menuStrip2.TabIndex = 1;
-            this.menuStrip2.Text = "menuStrip2";
-            // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.HashTableButton);
             this.tabPage1.Controls.Add(this.DebugButton);
             this.tabPage1.Controls.Add(this.dataGridView1);
             this.tabPage1.Location = new System.Drawing.Point(4, 4);
@@ -98,6 +92,16 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // DebugButton
+            // 
+            this.DebugButton.Location = new System.Drawing.Point(610, 6);
+            this.DebugButton.Name = "DebugButton";
+            this.DebugButton.Size = new System.Drawing.Size(75, 23);
+            this.DebugButton.TabIndex = 1;
+            this.DebugButton.Text = "button1";
+            this.DebugButton.UseVisualStyleBackColor = true;
+            this.DebugButton.Click += new System.EventHandler(this.DebugButton_Click);
             // 
             // dataGridView1
             // 
@@ -109,15 +113,23 @@
             this.dataGridView1.Size = new System.Drawing.Size(601, 346);
             this.dataGridView1.TabIndex = 0;
             // 
-            // DebugButton
+            // menuStrip2
             // 
-            this.DebugButton.Location = new System.Drawing.Point(610, 6);
-            this.DebugButton.Name = "DebugButton";
-            this.DebugButton.Size = new System.Drawing.Size(75, 23);
-            this.DebugButton.TabIndex = 1;
-            this.DebugButton.Text = "button1";
-            this.DebugButton.UseVisualStyleBackColor = true;
-            this.DebugButton.Click += new System.EventHandler(this.DebugButton_Click);
+            this.menuStrip2.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip2.Name = "menuStrip2";
+            this.menuStrip2.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip2.TabIndex = 1;
+            this.menuStrip2.Text = "menuStrip2";
+            // 
+            // HashTableButton
+            // 
+            this.HashTableButton.Location = new System.Drawing.Point(610, 35);
+            this.HashTableButton.Name = "HashTableButton";
+            this.HashTableButton.Size = new System.Drawing.Size(145, 23);
+            this.HashTableButton.TabIndex = 2;
+            this.HashTableButton.Text = "ハッシュダウンロード";
+            this.HashTableButton.UseVisualStyleBackColor = true;
+            this.HashTableButton.Click += new System.EventHandler(this.HashTableButton_Click);
             // 
             // BCSVEditorForm
             // 
@@ -150,5 +162,6 @@
         private TabPage tabPage1;
         private DataGridView dataGridView1;
         private Button DebugButton;
+        private Button HashTableButton;
     }
 }

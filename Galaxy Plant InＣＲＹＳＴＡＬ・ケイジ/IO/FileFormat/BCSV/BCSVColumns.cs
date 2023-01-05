@@ -44,22 +44,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
                 Debug.WriteLine(Enum.GetName(typeof(PrimitiveType), FieldPrimitiveType));
             }
 
-            //https://kuribo64.net/wiki/?page=BCSV#The_fields
-            /// <summary>
-            /// <see cref="string"/>型の名前からハッシュ値を取得します。
-            /// </summary>
-            /// <param name="columnName"></param>
-            /// <returns><see cref="uint"/> Hash</returns>
-            public static uint NameToHash(string columnName)
-            {
-                uint ret = 0;
-                foreach (char ch in columnName)
-                {
-                    ret *= 0x1F;
-                    ret += ch;
-                }
-                return ret;
-            }
+            
         }
 
         internal BCSVColumn[]? Columns { get; private set; }

@@ -23,5 +23,11 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             var path = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\Battan\Battan\ActorInfo\ActionFlagCtrl.bcsv");
             dataGridView1.DataSource = BCSVFile.OpenRead(path).BCSVDataTable;
         }
+
+        private void HashTableButton_Click(object sender, EventArgs e)
+        {
+            string a = "";
+            BCSVHash.FeatchHashDictionary(a);
+        }
     }
 }
