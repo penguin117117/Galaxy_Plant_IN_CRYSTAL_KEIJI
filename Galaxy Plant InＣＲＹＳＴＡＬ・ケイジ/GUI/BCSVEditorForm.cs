@@ -27,7 +27,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
         private void HashTableButton_Click(object sender, EventArgs e)
         {
             string a = "";
-            BCSVHash.FeatchHashDictionary(a);
+            BCSVHash.FeatchHashCollectionFromWebSite(a);
         }
     }
 }
