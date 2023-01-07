@@ -35,7 +35,6 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
         {
             BCSVHeader.Read(br);
             var bcsvColumns = BCSVColumns.Read(br ,BCSVHeader.ColumnsCount);
-
             BCSVDataTable.Columns.AddRange(bcsvColumns);
         }
 

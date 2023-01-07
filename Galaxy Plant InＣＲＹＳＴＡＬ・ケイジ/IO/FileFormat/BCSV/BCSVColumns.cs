@@ -33,8 +33,16 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
                 DataShiftAmount = br.ReadByte();
                 FieldPrimitiveType = br.ReadByte();
 
-                DataColumn.ColumnName = NameHash.ToString();
+                //ハッシュテーブルからハッシュ値を取得
+                string hashToName = 
+                    Properties.Settings.Default.BCSVHashToTextDictionary.ContainsKey(NameHash) 
+                    ? Properties.Settings.Default.BCSVHashToTextDictionary[NameHash] 
+                    : NameHash.ToString();
+
+                DataColumn.ColumnName = hashToName;
+                DataColumn.MaxLength = 30;
                 DataColumn.DataType = PrimType[FieldPrimitiveType];
+                
 
                 Debug.WriteLine("////////////////");
                 Debug.WriteLine(NameHash.ToString("X8"));
@@ -85,6 +93,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
             {
                 Columns[i] = new BCSVColumn(br);
                 dataColumns[i] = Columns[i].DataColumn;
+                
             }
 
             Debug.WriteLine($"BCSVColumnsSectionEnd : {br.BaseStream.Position.ToString("X")}");

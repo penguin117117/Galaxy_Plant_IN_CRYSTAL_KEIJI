@@ -22,12 +22,14 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
         {
             var path = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\Battan\Battan\ActorInfo\ActionFlagCtrl.bcsv");
             dataGridView1.DataSource = BCSVFile.OpenRead(path).BCSVDataTable;
+
+            //セルの幅を内容に合わせて自動調整します。
+            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
         }
 
         private void HashTableButton_Click(object sender, EventArgs e)
         {
-            string a = "";
-            BCSVHash.FeatchHashCollectionFromWebSite(a);
+            //BCSVHash.FeatchHashCollectionFromWebSite();
         }
     }
 }

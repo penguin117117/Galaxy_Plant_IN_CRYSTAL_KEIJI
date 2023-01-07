@@ -23,15 +23,13 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Web
         /// </summary>
         private static HttpClient httpClient = new();
 
-        private static string downloadUrl = "https://raw.githubusercontent.com/SunakazeKun/pyjmap/main/pyjmap/lookup_supermariogalaxy.txt";
-
         /// <summary>
         /// WebページのBody要素を取得します。
         /// </summary>
         /// <exception cref="HttpRequestException">Httpのリクエストが失敗した場合に発生するエラー</exception>
         /// <param name="url"></param>
         /// <returns></returns>
-        internal static async Task<string> FeatchPageData(string url)
+        internal static async Task<string> FeatchPageData(string downloadUrl)
         {
             string responseBody = string.Empty;
 

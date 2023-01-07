@@ -2,6 +2,7 @@ using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI;
 using System.Diagnostics;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
 {
@@ -17,7 +18,12 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
             else 
             {
                 SetGalaxyNameTreeView();
-            }  
+            }
+
+            if (Properties.Settings.Default.BCSVHashToTextDictionary == default)
+            {
+                BCSVHash.FeatchHashCollectionFromWebSite();
+            }
         }
 
         private void OpenToolStripMenuItem_Click(object sender, EventArgs e)
