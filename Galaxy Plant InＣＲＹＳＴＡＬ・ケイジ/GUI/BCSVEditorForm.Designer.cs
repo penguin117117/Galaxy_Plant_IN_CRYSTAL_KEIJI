@@ -29,14 +29,19 @@
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.targetDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.RootDirectoryComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.targetSubDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.SubDirectoryComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.HashTableButton = new System.Windows.Forms.Button();
             this.DebugButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
-            this.HashTableButton = new System.Windows.Forms.Button();
+            this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
@@ -45,11 +50,44 @@
             // 
             // menuStrip1
             // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.targetDirectoryToolStripMenuItem,
+            this.RootDirectoryComboBox,
+            this.targetSubDirectoryToolStripMenuItem,
+            this.SubDirectoryComboBox});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(800, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(800, 27);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // targetDirectoryToolStripMenuItem
+            // 
+            this.targetDirectoryToolStripMenuItem.Name = "targetDirectoryToolStripMenuItem";
+            this.targetDirectoryToolStripMenuItem.Size = new System.Drawing.Size(62, 23);
+            this.targetDirectoryToolStripMenuItem.Text = "ファイル : ";
+            // 
+            // RootDirectoryComboBox
+            // 
+            this.RootDirectoryComboBox.Name = "RootDirectoryComboBox";
+            this.RootDirectoryComboBox.Size = new System.Drawing.Size(121, 23);
+            this.RootDirectoryComboBox.SelectedIndexChanged += new System.EventHandler(this.RootDirectoryComboBox_SelectedIndexChanged);
+            this.RootDirectoryComboBox.TextUpdate += new System.EventHandler(this.RootDirectoryComboBox_TextUpdate);
+            this.RootDirectoryComboBox.Click += new System.EventHandler(this.RootDirectoryComboBox_Click);
+            this.RootDirectoryComboBox.TextChanged += new System.EventHandler(this.RootDirectoryComboBox_TextChanged);
+            // 
+            // targetSubDirectoryToolStripMenuItem
+            // 
+            this.targetSubDirectoryToolStripMenuItem.Name = "targetSubDirectoryToolStripMenuItem";
+            this.targetSubDirectoryToolStripMenuItem.Size = new System.Drawing.Size(25, 23);
+            this.targetSubDirectoryToolStripMenuItem.Text = "\\";
+            // 
+            // SubDirectoryComboBox
+            // 
+            this.SubDirectoryComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SubDirectoryComboBox.Name = "SubDirectoryComboBox";
+            this.SubDirectoryComboBox.Size = new System.Drawing.Size(121, 23);
+            this.SubDirectoryComboBox.SelectedIndexChanged += new System.EventHandler(this.SubDirectoryComboBox_SelectedIndexChanged);
             // 
             // statusStrip1
             // 
@@ -64,9 +102,9 @@
             this.panel1.Controls.Add(this.tabControl1);
             this.panel1.Controls.Add(this.menuStrip2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 24);
+            this.panel1.Location = new System.Drawing.Point(0, 27);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(800, 404);
+            this.panel1.Size = new System.Drawing.Size(800, 401);
             this.panel1.TabIndex = 2;
             // 
             // tabControl1
@@ -77,7 +115,7 @@
             this.tabControl1.Location = new System.Drawing.Point(0, 24);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(800, 380);
+            this.tabControl1.Size = new System.Drawing.Size(800, 377);
             this.tabControl1.TabIndex = 0;
             // 
             // tabPage1
@@ -88,10 +126,20 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 4);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(792, 352);
+            this.tabPage1.Size = new System.Drawing.Size(792, 349);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "tabPage1";
             this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // HashTableButton
+            // 
+            this.HashTableButton.Location = new System.Drawing.Point(610, 35);
+            this.HashTableButton.Name = "HashTableButton";
+            this.HashTableButton.Size = new System.Drawing.Size(145, 23);
+            this.HashTableButton.TabIndex = 2;
+            this.HashTableButton.Text = "ハッシュダウンロード";
+            this.HashTableButton.UseVisualStyleBackColor = true;
+            this.HashTableButton.Click += new System.EventHandler(this.HashTableButton_Click);
             // 
             // DebugButton
             // 
@@ -110,7 +158,7 @@
             this.dataGridView1.Location = new System.Drawing.Point(3, 3);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(601, 346);
+            this.dataGridView1.Size = new System.Drawing.Size(601, 343);
             this.dataGridView1.TabIndex = 0;
             // 
             // menuStrip2
@@ -120,16 +168,6 @@
             this.menuStrip2.Size = new System.Drawing.Size(800, 24);
             this.menuStrip2.TabIndex = 1;
             this.menuStrip2.Text = "menuStrip2";
-            // 
-            // HashTableButton
-            // 
-            this.HashTableButton.Location = new System.Drawing.Point(610, 35);
-            this.HashTableButton.Name = "HashTableButton";
-            this.HashTableButton.Size = new System.Drawing.Size(145, 23);
-            this.HashTableButton.TabIndex = 2;
-            this.HashTableButton.Text = "ハッシュダウンロード";
-            this.HashTableButton.UseVisualStyleBackColor = true;
-            this.HashTableButton.Click += new System.EventHandler(this.HashTableButton_Click);
             // 
             // BCSVEditorForm
             // 
@@ -142,6 +180,8 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "BCSVEditorForm";
             this.Text = "BCSVEditorForm";
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.tabControl1.ResumeLayout(false);
@@ -163,5 +203,9 @@
         private DataGridView dataGridView1;
         private Button DebugButton;
         private Button HashTableButton;
+        private ToolStripComboBox RootDirectoryComboBox;
+        private ToolStripMenuItem targetDirectoryToolStripMenuItem;
+        private ToolStripMenuItem targetSubDirectoryToolStripMenuItem;
+        private ToolStripComboBox SubDirectoryComboBox;
     }
 }
