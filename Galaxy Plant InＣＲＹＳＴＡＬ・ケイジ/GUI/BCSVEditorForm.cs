@@ -1,16 +1,9 @@
 ﻿using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI.ControlsSetting.ProjectControls;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARCDirectoryEdit;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0;
 using System.Diagnostics;
-using System.Drawing;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 {
@@ -37,6 +30,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 
             RootDirectoryComboBox.SelectedIndex = 0;
             ComboBoxSizeTextFit(RootDirectoryComboBox.ComboBox);
+            
         }
 
         /// <summary>
@@ -57,11 +51,34 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 
         private void DebugButton_Click(object sender, EventArgs e)
         {
-            var path = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\Battan\Battan\ActorInfo\ActionFlagCtrl.bcsv");
-            dataGridView1.DataSource = BCSVFile.OpenRead(path).BCSVDataTable;
+            if (noneToolStripMenuItem.Text == "None") return;
+            var path = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, noneToolStripMenuItem.Text);
 
-            //セルの幅を内容に合わせて自動調整します。
-            dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+            if (!File.Exists(path)) return;
+            Debug.WriteLine((Path.GetExtension(path)));
+            if (!(Path.GetExtension(path) == ".arc")) return;
+
+            Yaz0Decord yaz0Decord = new Yaz0Decord(path);
+            var rarc = RARCFile.OpenRead(yaz0Decord.BinaryData);
+            RARCArchiveExtract.ToDictionary(rarc, path);
+            Debug.WriteLine(rarc.FilePathBinaryDataPairs.Count());
+            foreach (var a in rarc.FilePathBinaryDataPairs)
+            {
+                Debug.WriteLine(a.Key);
+                if (Path.GetExtension(a.Key) == ".bcsv")
+                {
+                    dataGridView1.DataSource = BCSVFile.OpenRead(a.Value).BCSVDataTable;
+
+                    //セルの幅を内容に合わせて自動調整します。
+                    dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+
+                    break;
+                }
+            }
+            //var path = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\Battan\Battan\ActorInfo\ActionFlagCtrl.bcsv");
+
+
+
         }
 
         private void HashTableButton_Click(object sender, EventArgs e)
@@ -81,7 +98,37 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 
         private void SubDirectoryComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ComboBoxSizeTextFit(SubDirectoryComboBox.ComboBox);
+            noneToolStripMenuItem.Text = Path.Combine(RootDirectoryComboBox.Text,SubDirectoryComboBoxNo1.Text);
+            ComboBoxSizeTextFit(SubDirectoryComboBoxNo1.ComboBox);
+            SubDirectoryComboBoxNo2.Items.Clear();
+
+            //エラーチェック
+            if (SubDirectoryComboBoxNo1.SelectedItem is null) return;
+            if (SubDirectoryComboBoxNo1.SelectedItem is not string) return;
+
+            //keyの作成
+            string key = (string)SubDirectoryComboBoxNo1.SelectedItem;
+            
+            if (projectSubDirectories[key].Length < 1) return;
+
+            if (projectSubDirectories[key].Length == 1) 
+            {
+                if (File.Exists(projectSubDirectories[key][0])) 
+                {
+                    SubDirectoryComboBoxNo2.Visible = false;
+                    return;
+                }
+
+                
+            }
+
+            SubDirectoryComboBoxNo2.Visible = true;
+
+            //SubDirectorySet
+            BCSVComboBoxSetting SubDirectoryComboBoxNo2Setting = new();
+            string[] subDirPath = projectSubDirectories[key];
+            SubDirectoryComboBoxNo2Setting.SetComboBoxItems(SubDirectoryComboBoxNo2.ComboBox, subDirPath);
+            //projectSubDirectories = SubDirectoryComboBoxSetting.NameAndPathDictionary;
         }
 
         private void RootDirectoryComboBox_TextUpdate(object sender, EventArgs e)
@@ -91,8 +138,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 
         private void RootDirectoryComboBox_TextChanged(object sender, EventArgs e)
         {
+            noneToolStripMenuItem.Text = RootDirectoryComboBox.Text;
             ComboBoxSizeTextFit(RootDirectoryComboBox.ComboBox);
-            SubDirectoryComboBox.Items.Clear();
+            SubDirectoryComboBoxNo1.Items.Clear();
 
             //エラーチェック
             if (RootDirectoryComboBox.SelectedItem is null      ) return;
@@ -105,9 +153,19 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             //SubDirectorySet
             BCSVComboBoxSetting SubDirectoryComboBoxSetting = new();
             string[] subDirPath = projectRootDirectories[key];
-            SubDirectoryComboBoxSetting.SetComboBoxItems(SubDirectoryComboBox.ComboBox, subDirPath);
+            SubDirectoryComboBoxSetting.SetComboBoxItems(SubDirectoryComboBoxNo1.ComboBox, subDirPath);
             projectSubDirectories = SubDirectoryComboBoxSetting.NameAndPathDictionary;
 
+        }
+
+        private void SubDirectoryComboBoxNo2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            ComboBoxSizeTextFit(SubDirectoryComboBoxNo2.ComboBox);
+        }
+
+        private void toolStripMenuItem2_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }

@@ -32,7 +32,9 @@
             this.targetDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.RootDirectoryComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.targetSubDirectoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.SubDirectoryComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.SubDirectoryComboBoxNo1 = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.SubDirectoryComboBoxNo2 = new System.Windows.Forms.ToolStripComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
@@ -41,11 +43,14 @@
             this.DebugButton = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
+            this.filePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -54,7 +59,9 @@
             this.targetDirectoryToolStripMenuItem,
             this.RootDirectoryComboBox,
             this.targetSubDirectoryToolStripMenuItem,
-            this.SubDirectoryComboBox});
+            this.SubDirectoryComboBoxNo1,
+            this.toolStripMenuItem1,
+            this.SubDirectoryComboBoxNo2});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(800, 27);
@@ -82,12 +89,24 @@
             this.targetSubDirectoryToolStripMenuItem.Size = new System.Drawing.Size(25, 23);
             this.targetSubDirectoryToolStripMenuItem.Text = "\\";
             // 
-            // SubDirectoryComboBox
+            // SubDirectoryComboBoxNo1
             // 
-            this.SubDirectoryComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.SubDirectoryComboBox.Name = "SubDirectoryComboBox";
-            this.SubDirectoryComboBox.Size = new System.Drawing.Size(121, 23);
-            this.SubDirectoryComboBox.SelectedIndexChanged += new System.EventHandler(this.SubDirectoryComboBox_SelectedIndexChanged);
+            this.SubDirectoryComboBoxNo1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.SubDirectoryComboBoxNo1.Name = "SubDirectoryComboBoxNo1";
+            this.SubDirectoryComboBoxNo1.Size = new System.Drawing.Size(121, 23);
+            this.SubDirectoryComboBoxNo1.SelectedIndexChanged += new System.EventHandler(this.SubDirectoryComboBox_SelectedIndexChanged);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(25, 23);
+            this.toolStripMenuItem1.Text = "\\";
+            // 
+            // SubDirectoryComboBoxNo2
+            // 
+            this.SubDirectoryComboBoxNo2.Name = "SubDirectoryComboBoxNo2";
+            this.SubDirectoryComboBoxNo2.Size = new System.Drawing.Size(121, 23);
+            this.SubDirectoryComboBoxNo2.SelectedIndexChanged += new System.EventHandler(this.SubDirectoryComboBoxNo2_SelectedIndexChanged);
             // 
             // statusStrip1
             // 
@@ -147,7 +166,7 @@
             this.DebugButton.Name = "DebugButton";
             this.DebugButton.Size = new System.Drawing.Size(75, 23);
             this.DebugButton.TabIndex = 1;
-            this.DebugButton.Text = "button1";
+            this.DebugButton.Text = "BCSVを開く";
             this.DebugButton.UseVisualStyleBackColor = true;
             this.DebugButton.Click += new System.EventHandler(this.DebugButton_Click);
             // 
@@ -163,11 +182,26 @@
             // 
             // menuStrip2
             // 
+            this.menuStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.filePathToolStripMenuItem,
+            this.noneToolStripMenuItem});
             this.menuStrip2.Location = new System.Drawing.Point(0, 0);
             this.menuStrip2.Name = "menuStrip2";
             this.menuStrip2.Size = new System.Drawing.Size(800, 24);
             this.menuStrip2.TabIndex = 1;
             this.menuStrip2.Text = "menuStrip2";
+            // 
+            // filePathToolStripMenuItem
+            // 
+            this.filePathToolStripMenuItem.Name = "filePathToolStripMenuItem";
+            this.filePathToolStripMenuItem.Size = new System.Drawing.Size(70, 20);
+            this.filePathToolStripMenuItem.Text = "FilePath : ";
+            // 
+            // noneToolStripMenuItem
+            // 
+            this.noneToolStripMenuItem.Name = "noneToolStripMenuItem";
+            this.noneToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.noneToolStripMenuItem.Text = "None";
             // 
             // BCSVEditorForm
             // 
@@ -187,6 +221,8 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.menuStrip2.ResumeLayout(false);
+            this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -206,6 +242,10 @@
         private ToolStripComboBox RootDirectoryComboBox;
         private ToolStripMenuItem targetDirectoryToolStripMenuItem;
         private ToolStripMenuItem targetSubDirectoryToolStripMenuItem;
-        private ToolStripComboBox SubDirectoryComboBox;
+        private ToolStripComboBox SubDirectoryComboBoxNo1;
+        private ToolStripMenuItem toolStripMenuItem1;
+        private ToolStripComboBox SubDirectoryComboBoxNo2;
+        private ToolStripMenuItem filePathToolStripMenuItem;
+        private ToolStripMenuItem noneToolStripMenuItem;
     }
 }

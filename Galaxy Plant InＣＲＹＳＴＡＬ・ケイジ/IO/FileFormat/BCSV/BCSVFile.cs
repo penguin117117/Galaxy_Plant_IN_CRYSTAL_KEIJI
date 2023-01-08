@@ -28,6 +28,17 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
             bcsv.Read(br);
         }
 
+        internal static BCSV OpenRead(byte[] binaryData)
+        {
+            using MemoryStream ms = new(binaryData);
+            using BinaryReader br = new(ms);
+
+            BCSV bcsv = new();
+            bcsv.Read(br);
+
+            return bcsv;
+        }
+
         internal static BCSV OpenRead(string filePath) 
         {
             if (!File.Exists(filePath)) throw new FileNotFoundException();
