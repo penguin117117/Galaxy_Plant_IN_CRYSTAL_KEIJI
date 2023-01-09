@@ -61,7 +61,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             Debug.WriteLine((Path.GetExtension(path)));
             if (!(Path.GetExtension(path) == ".arc")) return;
 
-            Yaz0Decord yaz0Decord = new Yaz0Decord(path);
+            Yaz0Decord yaz0Decord = new(path);
             var rarc = RARCFile.OpenRead(yaz0Decord.BinaryData);
             RARCArchiveExtract.ToDictionary(rarc, path);
             Debug.WriteLine(rarc.FilePathBinaryDataPairs.Count());
