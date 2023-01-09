@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Web;
 
-namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
+namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSVFileFormat
 {
     internal class BCSVHash
     {

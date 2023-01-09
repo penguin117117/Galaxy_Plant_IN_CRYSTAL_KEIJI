@@ -5,13 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
+namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSVFileFormat
 {
-    /*
-    TODO:
-    このクラスとサブクラス設計と整理
-     */
-    internal class BCSV
+    public class BCSV : CSVBase
     {
         internal BCSVHeader BCSVHeader { get; private set; }
         internal BCSVColumns BCSVColumns { get; private set; }
@@ -22,20 +18,21 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
         /// <!-- 
         /// DataGridViewクラスの制御に使用するためにこの型に入れる方が便利である。
         /// -->
-        internal DataTable BCSVDataTable { get; private set; }
+        public override DataTable DataTable { get; protected set; }
 
         internal BCSV() 
         {
-            BCSVDataTable= new DataTable();
+            DataTable= new DataTable();
             BCSVHeader   = new BCSVHeader();
             BCSVColumns  = new BCSVColumns();
+            
         }
 
-        internal void Read(BinaryReader br) 
+        public override void Read(BinaryReader br) 
         {
             BCSVHeader.Read(br);
             var bcsvColumns = BCSVColumns.Read(br ,BCSVHeader.ColumnsCount);
-            BCSVDataTable.Columns.AddRange(bcsvColumns);
+            DataTable.Columns.AddRange(bcsvColumns);
         }
 
         

@@ -1,5 +1,5 @@
 ﻿using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI.ControlsSetting.ProjectControls;
-using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSVFileFormat;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARCDirectoryEdit;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0;
@@ -62,8 +62,11 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             if (!(Path.GetExtension(path) == ".arc")) return;
 
             Yaz0Decord yaz0Decord = new(path);
+
             var rarc = RARCFile.OpenRead(yaz0Decord.BinaryData);
             RARCArchiveExtract.ToDictionary(rarc, path);
+
+
             Debug.WriteLine(rarc.FilePathBinaryDataPairs.Count());
 
 
@@ -73,7 +76,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
                 {
                     BCSV bcsv = BCSVFile.OpenRead(filePathBinaryDataPair.Value);
                     bcsvList.Add(bcsv);
-                    var fileName = Path.GetFileNameWithoutExtension(filePathBinaryDataPair.Key);
+                    var fileName = Path.GetFileName(filePathBinaryDataPair.Key);
 
                     TabPage tabPage = new()
                     {
@@ -84,7 +87,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 
                     DataGridView dataGridView = new()
                     {
-                        DataSource = bcsv.BCSVDataTable,
+                        DataSource = bcsv.DataTable,
                         Dock= DockStyle.Fill,
                         //セルの幅を内容に合わせて自動調整します。
                         AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells
@@ -94,6 +97,9 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
                     BCSVSheetTabControl.Controls.Add(tabPage);
                     tabPage.Controls.Add(dataGridView);
 
+                    //デバッグの際はここにbreak;を
+                    //入れるとファイルを一つのみ実行できます
+                    break;
                 }
             }
             //var path = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\Battan\Battan\ActorInfo\ActionFlagCtrl.bcsv");
@@ -182,6 +188,8 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
         private void SubDirectoryComboBoxNo2_SelectedIndexChanged(object sender, EventArgs e)
         {
             ComboBoxSizeTextFit(SubDirectoryComboBoxNo2.ComboBox);
+            noneToolStripMenuItem.Text = Path.Combine(RootDirectoryComboBox.Text, SubDirectoryComboBoxNo1.Text);
+            noneToolStripMenuItem.Text = Path.Combine(noneToolStripMenuItem.Text,SubDirectoryComboBoxNo2.Text);
         }
 
         private void toolStripMenuItem2_Click(object sender, EventArgs e)

@@ -2,7 +2,7 @@ using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI;
 using System.Diagnostics;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util;
-using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV;
+using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSVFileFormat;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ
 {

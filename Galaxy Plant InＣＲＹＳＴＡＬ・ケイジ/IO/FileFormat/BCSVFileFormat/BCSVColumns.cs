@@ -9,7 +9,7 @@ using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
+namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSVFileFormat
 {
     internal class BCSVColumns
     {
@@ -50,9 +50,23 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
                 Debug.WriteLine(NextFieldOffset.ToString("X4"));
                 Debug.WriteLine(DataShiftAmount.ToString("X2"));
                 Debug.WriteLine(Enum.GetName(typeof(PrimitiveType), FieldPrimitiveType));
+
+                Debug.WriteLine(PrimType[FieldPrimitiveType]);
             }
 
-            
+            internal Type GetTest(BinaryReader br)
+            {
+                //Enum.GetName(, FieldPrimitiveType)
+                Type b = PrimType[FieldPrimitiveType];
+                Type a = Get(br,b);
+                return a;
+            }
+
+            private T Get<T>(BinaryReader br,T b) 
+            {
+                var a = br.ReadByte;
+                return b;
+            }
         }
 
         internal BCSVColumn[]? Columns { get; private set; }
@@ -68,7 +82,7 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSV
             STRING_OFFSET = 0x06
         }
 
-        internal static readonly Dictionary<byte, Type> PrimType = new Dictionary<byte, Type>()
+        internal static readonly Dictionary<byte, Type> PrimType = new()
         {
             { 0x00 , typeof(long) },
             { 0x01 , typeof(string) },
