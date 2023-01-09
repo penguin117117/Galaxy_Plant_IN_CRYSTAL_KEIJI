@@ -4,6 +4,7 @@ using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.RARC.RARCDirectoryEdit;
 using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.Yaz0;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
 {
@@ -11,12 +12,14 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
     {
         private Dictionary<string, string[]> projectRootDirectories;
         private Dictionary<string, string[]> projectSubDirectories;
+        private List<BCSV> bcsvList { get; set; }
 
         public BCSVEditorForm()
         {
             InitializeComponent();
             projectRootDirectories = new();
             projectSubDirectories = new();
+            bcsvList = new List<BCSV>();
 
             //RootDirectorySet
             BCSVComboBoxSetting RootDirComboBoxSetting = new();
@@ -62,17 +65,35 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.GUI
             var rarc = RARCFile.OpenRead(yaz0Decord.BinaryData);
             RARCArchiveExtract.ToDictionary(rarc, path);
             Debug.WriteLine(rarc.FilePathBinaryDataPairs.Count());
-            foreach (var a in rarc.FilePathBinaryDataPairs)
+
+
+            foreach (var filePathBinaryDataPair in rarc.FilePathBinaryDataPairs)
             {
-                Debug.WriteLine(a.Key);
-                if (Path.GetExtension(a.Key) == ".bcsv")
+                if (Path.GetExtension(filePathBinaryDataPair.Key) == ".bcsv")
                 {
-                    dataGridView1.DataSource = BCSVFile.OpenRead(a.Value).BCSVDataTable;
+                    BCSV bcsv = BCSVFile.OpenRead(filePathBinaryDataPair.Value);
+                    bcsvList.Add(bcsv);
+                    var fileName = Path.GetFileNameWithoutExtension(filePathBinaryDataPair.Key);
 
-                    //セルの幅を内容に合わせて自動調整します。
-                    dataGridView1.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells;
+                    TabPage tabPage = new()
+                    {
+                        Name = fileName + "TabPage",
+                        Text = fileName,
+                        Tag = bcsv
+                    };
 
-                    break;
+                    DataGridView dataGridView = new()
+                    {
+                        DataSource = bcsv.BCSVDataTable,
+                        Dock= DockStyle.Fill,
+                        //セルの幅を内容に合わせて自動調整します。
+                        AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.DisplayedCells
+                    };
+
+                    //コントロールの追加順序は変えない事
+                    BCSVSheetTabControl.Controls.Add(tabPage);
+                    tabPage.Controls.Add(dataGridView);
+
                 }
             }
             //var path = Path.Combine(Properties.Settings.Default.GalaxyProjectPath, @"ObjectData\Battan\Battan\ActorInfo\ActionFlagCtrl.bcsv");

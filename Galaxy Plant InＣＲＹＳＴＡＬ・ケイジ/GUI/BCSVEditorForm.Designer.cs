@@ -37,19 +37,17 @@
             this.SubDirectoryComboBoxNo2 = new System.Windows.Forms.ToolStripComboBox();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.HashTableButton = new System.Windows.Forms.Button();
             this.DebugButton = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.HashTableButton = new System.Windows.Forms.Button();
+            this.BCSVSeetPanel = new System.Windows.Forms.Panel();
+            this.BCSVSheetTabControl = new System.Windows.Forms.TabControl();
+            this.menuStrip3 = new System.Windows.Forms.MenuStrip();
             this.menuStrip2 = new System.Windows.Forms.MenuStrip();
             this.filePathToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.noneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.BCSVSeetPanel.SuspendLayout();
             this.menuStrip2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -118,7 +116,9 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.tabControl1);
+            this.panel1.Controls.Add(this.DebugButton);
+            this.panel1.Controls.Add(this.HashTableButton);
+            this.panel1.Controls.Add(this.BCSVSeetPanel);
             this.panel1.Controls.Add(this.menuStrip2);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(0, 27);
@@ -126,59 +126,53 @@
             this.panel1.Size = new System.Drawing.Size(800, 401);
             this.panel1.TabIndex = 2;
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Alignment = System.Windows.Forms.TabAlignment.Bottom;
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 24);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(800, 377);
-            this.tabControl1.TabIndex = 0;
-            // 
-            // tabPage1
-            // 
-            this.tabPage1.Controls.Add(this.HashTableButton);
-            this.tabPage1.Controls.Add(this.DebugButton);
-            this.tabPage1.Controls.Add(this.dataGridView1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 4);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(792, 349);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "tabPage1";
-            this.tabPage1.UseVisualStyleBackColor = true;
-            // 
-            // HashTableButton
-            // 
-            this.HashTableButton.Location = new System.Drawing.Point(610, 35);
-            this.HashTableButton.Name = "HashTableButton";
-            this.HashTableButton.Size = new System.Drawing.Size(145, 23);
-            this.HashTableButton.TabIndex = 2;
-            this.HashTableButton.Text = "ハッシュダウンロード";
-            this.HashTableButton.UseVisualStyleBackColor = true;
-            this.HashTableButton.Click += new System.EventHandler(this.HashTableButton_Click);
-            // 
             // DebugButton
             // 
-            this.DebugButton.Location = new System.Drawing.Point(610, 6);
+            this.DebugButton.Location = new System.Drawing.Point(671, 48);
             this.DebugButton.Name = "DebugButton";
-            this.DebugButton.Size = new System.Drawing.Size(75, 23);
+            this.DebugButton.Size = new System.Drawing.Size(117, 23);
             this.DebugButton.TabIndex = 1;
             this.DebugButton.Text = "BCSVを開く";
             this.DebugButton.UseVisualStyleBackColor = true;
             this.DebugButton.Click += new System.EventHandler(this.DebugButton_Click);
             // 
-            // dataGridView1
+            // HashTableButton
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.dataGridView1.Location = new System.Drawing.Point(3, 3);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowTemplate.Height = 25;
-            this.dataGridView1.Size = new System.Drawing.Size(601, 343);
-            this.dataGridView1.TabIndex = 0;
+            this.HashTableButton.Location = new System.Drawing.Point(671, 94);
+            this.HashTableButton.Name = "HashTableButton";
+            this.HashTableButton.Size = new System.Drawing.Size(117, 23);
+            this.HashTableButton.TabIndex = 2;
+            this.HashTableButton.Text = "ハッシュダウンロード";
+            this.HashTableButton.UseVisualStyleBackColor = true;
+            this.HashTableButton.Click += new System.EventHandler(this.HashTableButton_Click);
+            // 
+            // BCSVSeetPanel
+            // 
+            this.BCSVSeetPanel.Controls.Add(this.BCSVSheetTabControl);
+            this.BCSVSeetPanel.Controls.Add(this.menuStrip3);
+            this.BCSVSeetPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.BCSVSeetPanel.Location = new System.Drawing.Point(0, 24);
+            this.BCSVSeetPanel.Name = "BCSVSeetPanel";
+            this.BCSVSeetPanel.Size = new System.Drawing.Size(665, 377);
+            this.BCSVSeetPanel.TabIndex = 2;
+            // 
+            // BCSVSheetTabControl
+            // 
+            this.BCSVSheetTabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.BCSVSheetTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BCSVSheetTabControl.Location = new System.Drawing.Point(0, 24);
+            this.BCSVSheetTabControl.Name = "BCSVSheetTabControl";
+            this.BCSVSheetTabControl.SelectedIndex = 0;
+            this.BCSVSheetTabControl.Size = new System.Drawing.Size(665, 353);
+            this.BCSVSheetTabControl.TabIndex = 2;
+            // 
+            // menuStrip3
+            // 
+            this.menuStrip3.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip3.Name = "menuStrip3";
+            this.menuStrip3.Size = new System.Drawing.Size(665, 24);
+            this.menuStrip3.TabIndex = 1;
+            this.menuStrip3.Text = "menuStrip3";
             // 
             // menuStrip2
             // 
@@ -218,9 +212,8 @@
             this.menuStrip1.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.BCSVSeetPanel.ResumeLayout(false);
+            this.BCSVSeetPanel.PerformLayout();
             this.menuStrip2.ResumeLayout(false);
             this.menuStrip2.PerformLayout();
             this.ResumeLayout(false);
@@ -233,10 +226,7 @@
         private MenuStrip menuStrip1;
         private StatusStrip statusStrip1;
         private Panel panel1;
-        private TabControl tabControl1;
         private MenuStrip menuStrip2;
-        private TabPage tabPage1;
-        private DataGridView dataGridView1;
         private Button DebugButton;
         private Button HashTableButton;
         private ToolStripComboBox RootDirectoryComboBox;
@@ -247,5 +237,8 @@
         private ToolStripComboBox SubDirectoryComboBoxNo2;
         private ToolStripMenuItem filePathToolStripMenuItem;
         private ToolStripMenuItem noneToolStripMenuItem;
+        private Panel BCSVSeetPanel;
+        private MenuStrip menuStrip3;
+        private TabControl BCSVSheetTabControl;
     }
 }
