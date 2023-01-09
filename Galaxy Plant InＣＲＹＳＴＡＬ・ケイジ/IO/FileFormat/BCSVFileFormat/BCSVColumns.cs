@@ -1,10 +1,15 @@
 ﻿using Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.Util;
 using System;
 using System.Buffers.Binary;
+using System.CodeDom;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using System.Runtime.Serialization.Formatters;
 using System.Security.Cryptography.Xml;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,15 +62,37 @@ namespace Galaxy_Plant_InＣＲＹＳＴＡＬ_ケイジ.IO.FileFormat.BCSVFileF
             internal Type GetTest(BinaryReader br)
             {
                 //Enum.GetName(, FieldPrimitiveType)
-                Type b = PrimType[FieldPrimitiveType];
-                Type a = Get(br,b);
-                return a;
+                var b = PrimType[FieldPrimitiveType];
+                //b =   br.ReadByte() as ;
+
+
+                //a = br.ReadByte();
+                return b;
             }
 
-            private T Get<T>(BinaryReader br,T b) 
+            internal T Get<T>(BinaryReader br, T b)
             {
-                var a = br.ReadByte;
-                return b;
+                object obj;
+                switch (FieldPrimitiveType)
+                {
+                    case 0x00:
+
+                        break;
+                    case 0x01:
+                        break;
+                    case 0x02:
+                        break;
+                    case 0x03:
+                        break;
+                    case 0x04:
+                        break;
+                    case 0x05:
+                        break;
+                    case 0x06:
+                        break;
+
+                }
+                return (T)(object)br.ReadByte();
             }
         }
 
